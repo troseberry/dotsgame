@@ -9,6 +9,13 @@ public class ComputerAI : MonoBehaviour
 	private GameObject computerLine;
 	private Vector3 lineGridScale;
 
+	private bool canDraw;
+	private GameObject lineToDraw;
+	private float drawingTime;
+	private float drawDuration = 2.0f;
+
+	private Vector3 endDrawPosition;
+
 	private bool placing;
 
 	private List<Box> boxObjects = new List<Box>();
@@ -19,6 +26,9 @@ public class ComputerAI : MonoBehaviour
 	{
 		computerLine = (GameObject) Resources.Load("ComputerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
+
+		canDraw = false;
+		drawingTime = 0f;
 
 		placing = false;
 
@@ -36,8 +46,25 @@ public class ComputerAI : MonoBehaviour
 		if (!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver())
 		{
 			//Invoke("ComputerPlaceLine", 2.0f);
-			StartCoroutine(ComputerPlaceLine( DetermineLineToPlace() ));
+
+			//StartCoroutine(ComputerPlaceLine( DetermineLineToPlace() ));
+			StartCoroutine( ComputerDrawLine( DetermineLineToPlace() ));
 			placing = true;
+		}
+
+
+		if (canDraw)
+		{
+			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
+			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
+			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
+		}
+
+		if (drawingTime >= 0.5f)
+		{
+			drawingTime = 0f;
+			canDraw = false;
+			if (lineToDraw) lineToDraw = null;
 		}
 	}
 
@@ -109,9 +136,9 @@ public class ComputerAI : MonoBehaviour
 	{
 		yield return new WaitForSeconds(2.0f);
 
-		GameObject computerChoice = (GameObject) Instantiate(computerLine, toPlace.linePosition, toPlace.lineRotation);
-		computerChoice.transform.localScale = lineGridScale;
-		computerChoice.name = "ComputerLine";
+		//GameObject computerChoice = (GameObject) Instantiate(computerLine, toPlace.linePosition, toPlace.lineRotation);
+		//computerChoice.transform.localScale = lineGridScale;
+		//computerChoice.name = "ComputerLine";
 		toPlace.isOpen = false;
 
 		toPlace.boxParentOne.UpdateSideCount(1);
@@ -125,6 +152,42 @@ public class ComputerAI : MonoBehaviour
 		placing = false;
 	}
 
+
+	IEnumerator ComputerDrawLine (Line computerChoice) 
+	{
+		yield return new WaitForSeconds(1.5f);
+		computerChoice.isOpen = false;
+
+		computerChoice.boxParentOne.UpdateSideCount(1);
+		if (computerChoice.boxParentOne != computerChoice.boxParentTwo) computerChoice.boxParentTwo.UpdateSideCount(1);
+
+		if (computerChoice.boxParentOne.IsComplete()) computerChoice.boxParentOne.SetOwner("Computer");
+		if (computerChoice.boxParentTwo.IsComplete()) computerChoice.boxParentTwo.SetOwner("Computer");
+
+		//Debug.Log("Computer Placed Line");
+		GameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+		placing = false;
+
+
+
+		Vector3 startPosition = computerChoice.linePosition;
+		endDrawPosition = computerChoice.linePosition;
+
+		if (computerChoice.lineRotation.z == 0)
+		{
+			startPosition.x = computerChoice.linePosition.x - (120f * lineGridScale.x);
+		}
+		else
+		{
+			startPosition.y = computerChoice.linePosition.y + (120f * lineGridScale.y);
+		}
+
+		GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
+		newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
+		newLine.name = "ComputerLine";
+		lineToDraw = newLine;
+		canDraw = true;
+	}
 
 	/*void ComputerPlaceLine()
 	{
