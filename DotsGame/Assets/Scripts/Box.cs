@@ -23,6 +23,8 @@ public class Box : MonoBehaviour
 	public Vector3 chipPlacement;
 	private GameObject playerChip;
 	private GameObject computerChip;
+	private GameObject playerOneChip;
+	private GameObject playerTwoChip;
 
 	private Vector3 ownerChipScale;
 	
@@ -42,6 +44,8 @@ public class Box : MonoBehaviour
 
 		playerChip = (GameObject) Resources.Load("PlayerChip");
 		computerChip = (GameObject) Resources.Load("ComputerChip");
+		playerOneChip = (GameObject) Resources.Load("PlayerOneChip");
+		playerTwoChip = (GameObject) Resources.Load("PlayerTwoChip");
 
 		//chipPlacement = transform.position;
 		ownerChipScale = GameObject.Find("BoxGroup").transform.localScale;
@@ -100,12 +104,28 @@ public class Box : MonoBehaviour
 		{
 			GameManager.UpdatePlayerPoints(1);
 			GameObject chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
+			chip.name = "PlayerChip";
 			chip.transform.localScale = ownerChipScale;
 		}
 		else if (owner == "Computer")
 		{
 
 			GameObject chip = (GameObject) Instantiate(computerChip, transform.position, computerChip.transform.rotation);
+			chip.name = "ComputerChip";
+			chip.transform.localScale = ownerChipScale;
+		}
+		else if (owner == "PlayerOne")
+		{
+			GameManagerTwoPlayer.UpdatePlayerPoints("One", 1);
+			GameObject chip = (GameObject) Instantiate(playerOneChip, transform.position, playerChip.transform.rotation);
+			chip.name = "PlayerOneChip";
+			chip.transform.localScale = ownerChipScale;
+		}
+		else if (owner == "PlayerTwo")
+		{
+			GameManagerTwoPlayer.UpdatePlayerPoints("Two", 1);
+			GameObject chip = (GameObject) Instantiate(playerTwoChip, transform.position, playerChip.transform.rotation);
+			chip.name = "PlayerTwoChip";
 			chip.transform.localScale = ownerChipScale;
 		}
 		claimed = true;
