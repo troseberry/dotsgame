@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour 
@@ -56,6 +57,9 @@ public class PlayerController : MonoBehaviour
 				DrawLine(playerChoice);
 				
 				playerChoice.isOpen = false;
+				playerChoice.owner = "Player";
+
+				//string newBoxOwner = SceneManager.GetActiveScene().name.Contains("Campaign") ? "CampaignPlayer" : "Player";
 
 				playerChoice.boxParentOne.UpdateSideCount(1);
 				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(1);

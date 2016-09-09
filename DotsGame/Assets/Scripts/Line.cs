@@ -15,12 +15,16 @@ public class Line : MonoBehaviour
 	public Quaternion lineRotation;
 	public Box boxParentOne;
 	public Box boxParentTwo;
-	private string owner;
+	public string owner;
+
+	public bool isStatic;
+	private bool calledAdd;
 	
 	void Start () 
 	{
 
-		isOpen = true;
+		isOpen = isStatic ? false : true;
+		calledAdd = false;
 		//linePosition = new Vector3(transform.localPosition.x / 100, transform.localPosition.y / 100, transform.localPosition.z / 100);
 		linePosition = transform.position;// new Vector3(transform.localPosition.x / 100, transform.localPosition.y / 100, transform.localPosition.z / 100);
 		lineRotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
@@ -113,15 +117,17 @@ public class Line : MonoBehaviour
 			boxParentOne = GameObject.Find("Box_" + firstBoxNumber).GetComponent<Box>();
 			boxParentTwo = GameObject.Find("Box_" + secondBoxNumber).GetComponent<Box>();
 		}
-
-		boxParentOne.AddLineToBox(this);
-		boxParentTwo.AddLineToBox(this);
 	}
 	
 	
 	void Update () 
 	{
-	
+		if(!calledAdd)
+		{
+			boxParentOne.AddLineToBox(this);
+			boxParentTwo.AddLineToBox(this);
+			calledAdd = true;
+		}
 	}
 
 	/*public bool IsSpotOpen ()

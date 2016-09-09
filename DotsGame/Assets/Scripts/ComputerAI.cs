@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,10 @@ public class ComputerAI : MonoBehaviour
 	private List<Box> boxObjects = new List<Box>();
 
 	private static System.Random rng = new System.Random();
+
+	private string mode;
+
+	//private PowerUp currentPowerUp;
 	
 	void Start () 
 	{
@@ -37,13 +42,15 @@ public class ComputerAI : MonoBehaviour
 		{
 			boxObjects.Add(child.GetComponent<Box>());
 		}
+
+		mode = SceneManager.GetActiveScene().name.Contains("Campaign") ? "campaign" : "versus";
 		
 	}
 	
 	
 	void Update () 
 	{
-		if (!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver())
+		if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
 		{
 			//Invoke("ComputerPlaceLine", 2.0f);
 
@@ -70,7 +77,7 @@ public class ComputerAI : MonoBehaviour
 
 	private Line DetermineLineToPlace ()
 	{
-		Line toPlace;
+		Line toPlace = null;
 		List<Box> boxObjectsClone = boxObjects;
 		Shuffle(boxObjectsClone);
 
@@ -118,8 +125,17 @@ public class ComputerAI : MonoBehaviour
 		//if no boxes with 3 open sides, or boxes with only one open side, then place randomly
 		//(should later come back and change this so that it places to limit the player's chain length)
 
-		int randomPlace = UnityEngine.Random.Range(0, GameManager.lineObjects.Count);
-		toPlace = GameManager.lineObjects.ElementAt(randomPlace);
+		if (mode == "versus")
+		{
+			int randomPlace = UnityEngine.Random.Range(0, GameManager.lineObjects.Count);
+			toPlace = GameManager.lineObjects.ElementAt(randomPlace);
+		}
+		else if (mode == "campaign")
+		{
+			int randomPlace = UnityEngine.Random.Range(0, CampaignGameManager.lineObjects.Count);
+			toPlace = CampaignGameManager.lineObjects.ElementAt(randomPlace);
+		}
+
 
 		if (toPlace.isOpen)
 		{
@@ -132,6 +148,7 @@ public class ComputerAI : MonoBehaviour
 	}
 
 
+	/*
 	IEnumerator ComputerPlaceLine(Line toPlace)
 	{
 		yield return new WaitForSeconds(2.0f);
@@ -140,6 +157,7 @@ public class ComputerAI : MonoBehaviour
 		//computerChoice.transform.localScale = lineGridScale;
 		//computerChoice.name = "ComputerLine";
 		toPlace.isOpen = false;
+		toPlace.owner = "Computer";
 
 		toPlace.boxParentOne.UpdateSideCount(1);
 		if (toPlace.boxParentOne != toPlace.boxParentTwo) toPlace.boxParentTwo.UpdateSideCount(1);
@@ -150,13 +168,14 @@ public class ComputerAI : MonoBehaviour
 		//Debug.Log("Computer Placed Line");
 		GameManager.isPlayerTurn = (toPlace.boxParentOne.IsComplete() || toPlace.boxParentTwo.IsComplete()) ? false : true;
 		placing = false;
-	}
+	}*/
 
 
 	IEnumerator ComputerDrawLine (Line computerChoice) 
 	{
 		yield return new WaitForSeconds(1.5f);
 		computerChoice.isOpen = false;
+		computerChoice.owner = "Computer";
 
 		computerChoice.boxParentOne.UpdateSideCount(1);
 		if (computerChoice.boxParentOne != computerChoice.boxParentTwo) computerChoice.boxParentTwo.UpdateSideCount(1);
@@ -165,9 +184,15 @@ public class ComputerAI : MonoBehaviour
 		if (computerChoice.boxParentTwo.IsComplete()) computerChoice.boxParentTwo.SetOwner("Computer");
 
 		//Debug.Log("Computer Placed Line");
-		GameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+		if(mode == "versus")
+		{
+			GameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+		}
+		else if (mode == "campaign")
+		{
+			CampaignGameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+		}
 		placing = false;
-
 
 
 		Vector3 startPosition = computerChoice.linePosition;

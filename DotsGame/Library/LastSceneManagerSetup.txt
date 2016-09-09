@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Menu.unity
+- path: Assets/Scenes/Campaign/Campaign1.1_5x5Board.unity
   isLoaded: 1
   isActive: 1

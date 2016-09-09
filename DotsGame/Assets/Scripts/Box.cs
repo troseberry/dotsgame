@@ -27,6 +27,8 @@ public class Box : MonoBehaviour
 	private GameObject playerTwoChip;
 
 	private Vector3 ownerChipScale;
+
+	//private PowerUp heldPowerUp;
 	
 	void Start () 
 	{
@@ -85,7 +87,12 @@ public class Box : MonoBehaviour
 
 	public void AddLineToBox (Line toAdd)
 	{
-		if(!boxLineObjects.Contains(toAdd)) boxLineObjects.Add(toAdd);
+		if(!boxLineObjects.Contains(toAdd)) 
+		{
+			boxLineObjects.Add(toAdd);
+			if (toAdd.isStatic) UpdateSideCount(1);
+		}
+
 	}
 
 	/*public void AddLinePositionToBox (GameObject toAdd)
@@ -100,7 +107,27 @@ public class Box : MonoBehaviour
 
 	void AwardPoint()
 	{
-		if (owner == "Player")
+		if (owner == "CampaignPlayer")
+		{
+			int pointsAwarded = 0;
+			foreach (Line line in boxLineObjects)
+			{
+				if (line.owner == "Player") pointsAwarded++;
+
+			}
+
+			//if (heldPowerUp is x2) pointsAwarded += pointsAwarded;
+
+			CampaignGameManager.UpdatePlayerPoints(pointsAwarded);
+
+			GameObject chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
+			chip.name = "PlayerChip";
+			chip.transform.localScale = ownerChipScale;
+
+			//determine if box had a power up
+			//if so, handle next step
+		}
+		else if (owner == "Player")
 		{
 			GameManager.UpdatePlayerPoints(1);
 			GameObject chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
@@ -129,5 +156,25 @@ public class Box : MonoBehaviour
 			chip.transform.localScale = ownerChipScale;
 		}
 		claimed = true;
+	}
+
+	public void ChangeOwnership ()
+	{
+		if (owner == "Computer")
+		{
+			//should check gameManagerObj, get mode from whichever GameManager, and make either CampaignPlayer or Player
+			owner = "CampaginPlayer";
+			AwardPoint();
+		}
+		else if (owner == "CampaginPlayer" || owner == "Player")
+		{
+			int pointsSubtracted = 0;
+			owner = "Computer";
+			foreach (Line line in boxLineObjects)
+			{
+				if (line.owner == "Player") pointsSubtracted--;
+			}
+			CampaignGameManager.UpdatePlayerPoints(pointsSubtracted);
+		}
 	}
 }

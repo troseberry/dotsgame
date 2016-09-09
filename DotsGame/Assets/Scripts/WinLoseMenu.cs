@@ -11,6 +11,7 @@ public class WinLoseMenu : MonoBehaviour
 	private GameObject gameManagerObj;
 	private GameManager gameManagerRef;
 	private GameManagerTwoPlayer gameManagerTwoPlayerRef;
+	private CampaignGameManager gameManagerCampaignRef;
 	private string mode;
 	
 	void Start () 
@@ -24,6 +25,11 @@ public class WinLoseMenu : MonoBehaviour
 
 
 			gameManagerObj = GameObject.Find("GameManager");
+			if (gameManagerObj.GetComponent<CampaignGameManager>())
+			{
+				gameManagerCampaignRef = gameManagerObj.GetComponent<CampaignGameManager>();
+				mode = "campaign";
+			}
 			if(gameManagerObj.GetComponent<GameManager>())
 			{
 				gameManagerRef =  gameManagerObj.GetComponent<GameManager>();
@@ -34,6 +40,7 @@ public class WinLoseMenu : MonoBehaviour
 				gameManagerTwoPlayerRef = gameManagerObj.GetComponent<GameManagerTwoPlayer>();
 				mode = "2player";
 			}
+
 		}
 	}
 	
@@ -46,7 +53,7 @@ public class WinLoseMenu : MonoBehaviour
 			ShowOutcomeText(mode);
 		}*/
 
-		if ((gameManagerRef && GameManager.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.RoundOver()) )
+		if ((gameManagerRef && GameManager.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.RoundOver()) )
 		{
 			ShowWinLoseMenu();
 			ShowOutcomeText(mode);
@@ -96,6 +103,17 @@ public class WinLoseMenu : MonoBehaviour
 			else if (GameManagerTwoPlayer.PlayerWon() == "W2")
 			{
 				winLoseText.text = "Player Two Wins";
+			}
+		}
+		else if (mode == "campaign")
+		{
+			if (CampaignGameManager.PlayerWon() == "W")
+			{
+				winLoseText.text = "Board Complete";
+			}
+			else if (CampaignGameManager.PlayerWon() == "L")
+			{
+				winLoseText.text = "Board Failed";
 			}
 		}
 		
