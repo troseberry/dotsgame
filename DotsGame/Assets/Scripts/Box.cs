@@ -20,6 +20,10 @@ public class Box : MonoBehaviour
 	private string owner;
 	private bool claimed;
 
+	private GameObject chipGroup;
+
+	private GameObject chip;
+
 	public Vector3 chipPlacement;
 	private GameObject playerChip;
 	private GameObject computerChip;
@@ -28,7 +32,7 @@ public class Box : MonoBehaviour
 
 	private Vector3 ownerChipScale;
 
-	//private PowerUp heldPowerUp;
+	private GameObject heldPowerUp;
 	
 	void Start () 
 	{
@@ -36,6 +40,7 @@ public class Box : MonoBehaviour
 		sideCount = 0;
 		owner = "";
 		claimed = false;
+		chip = null;
 
 		//Don't think these are being used
 		upperLeft = GameObject.Find("Dot_" + boxNumber).GetComponent<Dot>();
@@ -51,6 +56,15 @@ public class Box : MonoBehaviour
 
 		//chipPlacement = transform.position;
 		ownerChipScale = GameObject.Find("BoxGroup").transform.localScale;
+
+		if (transform.childCount > 1)
+		{
+			heldPowerUp = transform.GetChild(1).gameObject;
+		}
+		else
+		{
+			heldPowerUp = null;
+		}
 	}
 	
 	
@@ -107,6 +121,19 @@ public class Box : MonoBehaviour
 
 	void AwardPoint()
 	{
+		if (heldPowerUp)
+		{
+			heldPowerUp.SetActive(false);
+		}
+
+		
+
+		if (!GameObject.Find("ChipGroup"))
+		{
+			chipGroup = new GameObject();
+			chipGroup.name = "ChipGroup";
+		}
+
 		if (owner == "CampaignPlayer")
 		{
 			int pointsAwarded = 0;
@@ -116,11 +143,26 @@ public class Box : MonoBehaviour
 
 			}
 
-			//if (heldPowerUp is x2) pointsAwarded += pointsAwarded;
+			if (heldPowerUp)
+			{
+				if(heldPowerUp.name == "PowerUp_x2") 
+				{
+					pointsAwarded += pointsAwarded;
+				}
+				else if (heldPowerUp.name == "PowerUp_Bomb")
+				{
+					CampaignPlayerController.PickedUpBomb();
+				}
+				else if (heldPowerUp.name == "PowerUp_ThiefToken")
+				{
+					CampaignPlayerController.PickedUpThiefToken();
+				}
+			}
 
+			//Debug.Log("Points Awarded");
 			CampaignGameManager.UpdatePlayerPoints(pointsAwarded);
 
-			GameObject chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
+			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerChip";
 			chip.transform.localScale = ownerChipScale;
 
@@ -130,31 +172,36 @@ public class Box : MonoBehaviour
 		else if (owner == "Player")
 		{
 			GameManager.UpdatePlayerPoints(1);
-			GameObject chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
+			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerChip";
 			chip.transform.localScale = ownerChipScale;
 		}
 		else if (owner == "Computer")
 		{
 
-			GameObject chip = (GameObject) Instantiate(computerChip, transform.position, computerChip.transform.rotation);
+			chip = (GameObject) Instantiate(computerChip, transform.position, computerChip.transform.rotation);
 			chip.name = "ComputerChip";
 			chip.transform.localScale = ownerChipScale;
 		}
 		else if (owner == "PlayerOne")
 		{
 			GameManagerTwoPlayer.UpdatePlayerPoints("One", 1);
-			GameObject chip = (GameObject) Instantiate(playerOneChip, transform.position, playerChip.transform.rotation);
+			chip = (GameObject) Instantiate(playerOneChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerOneChip";
 			chip.transform.localScale = ownerChipScale;
 		}
 		else if (owner == "PlayerTwo")
 		{
 			GameManagerTwoPlayer.UpdatePlayerPoints("Two", 1);
-			GameObject chip = (GameObject) Instantiate(playerTwoChip, transform.position, playerChip.transform.rotation);
+			chip = (GameObject) Instantiate(playerTwoChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerTwoChip";
 			chip.transform.localScale = ownerChipScale;
 		}
+		else 
+		{
+			chip = new GameObject();
+		}
+		chip.transform.SetParent(GameObject.Find("ChipGroup").transform, false);	
 		claimed = true;
 	}
 
@@ -163,8 +210,22 @@ public class Box : MonoBehaviour
 		if (owner == "Computer")
 		{
 			//should check gameManagerObj, get mode from whichever GameManager, and make either CampaignPlayer or Player
+			Destroy(chip);
+
+			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
+			chip.name = "PlayerChip";
+			chip.transform.localScale = ownerChipScale;
+
 			owner = "CampaginPlayer";
-			AwardPoint();
+
+			int pointsAwarded = 0;
+			foreach (Line line in boxLineObjects)
+			{
+				if (line.owner == "Player") pointsAwarded++;
+
+			}
+			CampaignGameManager.UpdatePlayerPoints(pointsAwarded);
+			//AwardPoint();
 		}
 		else if (owner == "CampaginPlayer" || owner == "Player")
 		{
@@ -176,5 +237,10 @@ public class Box : MonoBehaviour
 			}
 			CampaignGameManager.UpdatePlayerPoints(pointsSubtracted);
 		}
+	}
+
+	public GameObject GetPowerUp ()
+	{
+		return heldPowerUp;
 	}
 }

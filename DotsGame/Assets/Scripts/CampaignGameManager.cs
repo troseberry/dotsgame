@@ -15,6 +15,12 @@ public class CampaignGameManager : MonoBehaviour
 	private Text playerPointsText;
 
 	private static int minWinPoints;
+	private static int totalPossiblePoints;
+	private static int oneStarScore;
+	private static int twoStarScore;
+	private static int threeStarScore;
+
+	private Text neededPointsText;
 	
 	void Start () 
 	{
@@ -24,14 +30,22 @@ public class CampaignGameManager : MonoBehaviour
 			lineObjects.Add(child.GetComponent<Line>());
 		}
 
-
 		isPlayerTurn = true;
 
 		playerPoints = 0;
 		playerPointsText = GameObject.Find("CurrentBoxesText").GetComponent<Text>();
 		playerPointsText.text = "" + playerPoints;
 
-		minWinPoints = int.Parse(GameObject.Find("TotalBoxesText").GetComponent<Text>().text);
+
+		//minWinPoints = int.Parse(GameObject.Find("TotalBoxesText").GetComponent<Text>().text);
+		totalPossiblePoints = GameObject.Find("LineGrid").transform.childCount;
+
+		oneStarScore = (int) Mathf.Ceil(totalPossiblePoints * 0.3f);
+		twoStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.6f);
+		threeStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.85f);
+
+		neededPointsText = GameObject.Find("TotalBoxesText").GetComponent<Text>();
+		neededPointsText.text = "" + oneStarScore;
 	}
 	
 	
@@ -41,6 +55,8 @@ public class CampaignGameManager : MonoBehaviour
 		DebugPanel.Log("Player Points: ", playerPoints);
 
 		playerPointsText.text = "" + playerPoints;
+
+		UpdateNeededPointsText();
 	}
 
 	public static bool RoundOver ()
@@ -62,11 +78,31 @@ public class CampaignGameManager : MonoBehaviour
 		return playerPoints;
 	}
 
+	void UpdateNeededPointsText ()
+	{
+		if (playerPoints >= oneStarScore)
+		{
+			neededPointsText.text = "" + twoStarScore;
+		}
+		else if (playerPoints >= twoStarScore)
+		{
+			neededPointsText.text = "" + threeStarScore;
+		}
+	}
+
 	public static string PlayerWon ()
 	{
-		if (playerPoints >= minWinPoints)
+		if (playerPoints >= oneStarScore && playerPoints < twoStarScore)
 		{
-			return "W";
+			return "S01";
+		}
+		else if (playerPoints >= twoStarScore && playerPoints < threeStarScore)
+		{
+			return "S02";
+		}
+		else if (playerPoints >= threeStarScore)
+		{
+			return "S03";
 		}
 		else
 		{

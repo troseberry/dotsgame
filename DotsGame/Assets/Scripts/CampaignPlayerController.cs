@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
@@ -7,6 +8,8 @@ public class CampaignPlayerController : MonoBehaviour
 	private GameObject playerLine;
 	private Vector3 lineGridScale;
 
+	private GameObject placedLineGroup;
+
 	private bool canDraw;
 	private GameObject lineToDraw;
 	private float drawingTime;
@@ -14,7 +17,12 @@ public class CampaignPlayerController : MonoBehaviour
 
 	private Vector3 endDrawPosition;
 
-	//private PowerUp currentPowerUp;
+	private static string currentPowerUp;
+
+	private static GameObject bombButton;
+	private bool canUseBomb;
+
+	private static GameObject thiefTokenButton;
 	private bool canUseThiefToken;
 
 	
@@ -24,6 +32,26 @@ public class CampaignPlayerController : MonoBehaviour
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 		canDraw = false;
 		drawingTime = 0f;
+
+		if (!GameObject.Find("PlacedLineGroup"))
+		{
+			placedLineGroup = new GameObject();
+			placedLineGroup.name = "PlacedLineGroup";
+		}
+		else
+		{
+			placedLineGroup = GameObject.Find("PlacedLineGroup");
+		}
+
+		currentPowerUp = "";
+
+		canUseBomb = false;
+		bombButton = GameObject.Find("BombButton");
+		bombButton.SetActive(false);
+
+		canUseThiefToken = false;
+		thiefTokenButton = GameObject.Find("ThiefTokenButton");
+		thiefTokenButton.SetActive(false);
 	}
 	
 	
@@ -43,6 +71,13 @@ public class CampaignPlayerController : MonoBehaviour
 			canDraw = false;
 			if (lineToDraw) lineToDraw = null;
 		}
+
+		if(!CampaignGameManager.isPlayerTurn) 
+		{
+			canUseBomb = false;
+			canUseThiefToken = false;
+		}
+
 	}
 
 	public void PlayerDrawLine () 
@@ -69,13 +104,12 @@ public class CampaignPlayerController : MonoBehaviour
 				}
 
 
-
 				GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
 				newLine.name = "PlayerLine";
 				newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
+				newLine.transform.SetParent(placedLineGroup.transform, false);
 				lineToDraw = newLine;
 				canDraw = true;
-
 
 				
 				//Update side counts and dole out points if need be
@@ -105,38 +139,74 @@ public class CampaignPlayerController : MonoBehaviour
 	}
 
 
+	public static void SetCurrentPowerUp (GameObject powerUp)
+	{
+		currentPowerUp = powerUp.name;
+	}
 	//BEGINNING OF POWERUP METHODS (x2 powerup is in Box.cs)
+
+	public static void PickedUpBomb ()
+	{
+		bombButton.SetActive(true);
+	}
+
+	public void ToggleBomb ()			//attach to powerup button
+	{
+		if (CampaignGameManager.isPlayerTurn) canUseBomb = !canUseBomb;
+	}
 
 	//Bomb PowerUp
 	public void DestroyStaticLine ()			//attach to static line buttons
 	{
-		if(CampaignGameManager.isPlayerTurn && !CampaignGameManager.RoundOver())
+		if(canUseBomb && !CampaignGameManager.RoundOver())
 		{
 			Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 			if (playerChoice.isStatic)
 			{
-				//do line destruction stuff
-				//call PlayerDrawLine. maybe make an override PlayerDrawLine that takes in a Line
+				//Debug.Log("Destroy Line");
+				Color change = playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color;
+				change.a = 0f;
+				playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color = change;
+
+				playerChoice.isStatic = false;
+				playerChoice.isOpen = true;
+
+				playerChoice.boxParentOne.UpdateSideCount(-1);
+				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(-1);
+
+				PlayerDrawLine();
+				CampaignGameManager.isPlayerTurn = true;		//Seems to work to not make next turn the player's unless they complete a NEW box
+																//Bomb power up is being held, instead of consumed on immediate next place
+
+				//currentPowerUp = "";
+				canUseBomb = false;
+				bombButton.SetActive(false);
 			}
 		}
 	}
 
-	//Thief Token PowerUp	
-	public void ActivateThiefToken ()			//attach to powerup button
+	public static void PickedUpThiefToken ()
 	{
-		canUseThiefToken = true;
+		thiefTokenButton.SetActive(true);
+	}
+
+	//Thief Token PowerUp	
+	public void ToggleThiefToken ()			//attach to powerup button
+	{
+		if (CampaignGameManager.isPlayerTurn) canUseThiefToken = !canUseThiefToken;
 	}
 	public void UseThiefToken ()				//attach to boxObject. (give box objects button components)
 	{
-		Box chosenBox = EventSystem.current.currentSelectedGameObject.GetComponent<Box>();
+		Box chosenBox = EventSystem.current.currentSelectedGameObject.transform.parent.transform.parent.GetComponent<Box>();
 
 		if (canUseThiefToken && chosenBox.IsComplete())
 		{
 			chosenBox.ChangeOwnership();
 			canUseThiefToken = false;
 			//hide thief token button, or gray it out
+			thiefTokenButton.SetActive(false);
 		}
 	}
 }

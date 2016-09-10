@@ -10,6 +10,8 @@ public class ComputerAI : MonoBehaviour
 	private GameObject computerLine;
 	private Vector3 lineGridScale;
 
+	private GameObject placedLineGroup;
+
 	private bool canDraw;
 	private GameObject lineToDraw;
 	private float drawingTime;
@@ -44,6 +46,16 @@ public class ComputerAI : MonoBehaviour
 		}
 
 		mode = SceneManager.GetActiveScene().name.Contains("Campaign") ? "campaign" : "versus";
+
+		if (!GameObject.Find("PlacedLineGroup"))
+		{
+			placedLineGroup = new GameObject();
+			placedLineGroup.name = "PlacedLineGroup";
+		}
+		else
+		{
+			placedLineGroup = GameObject.Find("PlacedLineGroup");
+		}
 		
 	}
 	
@@ -209,6 +221,7 @@ public class ComputerAI : MonoBehaviour
 
 		GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
 		newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
+		newLine.transform.SetParent(placedLineGroup.transform, false);
 		newLine.name = "ComputerLine";
 		lineToDraw = newLine;
 		canDraw = true;

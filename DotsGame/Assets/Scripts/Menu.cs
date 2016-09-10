@@ -64,6 +64,14 @@ public class Menu : MonoBehaviour
 		versusTwoPlayerMenu.SetActive(true);
 	}
 
+	public void LoadCampaignBoard ()
+	{
+		string buttonName = EventSystem.current.currentSelectedGameObject.name;
+		string levelToLoad = buttonName.Substring(6, 3);
+
+		SceneManager.LoadScene("Campaign5x5_" + levelToLoad);
+	}
+
 	public void LoadClassicVersus ()
 	{
 		string buttonName = EventSystem.current.currentSelectedGameObject.name;

@@ -8,11 +8,17 @@ public class WinLoseMenu : MonoBehaviour
 
 	private Canvas winLoseMenuCanvas;
 	private Text winLoseText;
+
 	private GameObject gameManagerObj;
 	private GameManager gameManagerRef;
 	private GameManagerTwoPlayer gameManagerTwoPlayerRef;
 	private CampaignGameManager gameManagerCampaignRef;
+
 	private string mode;
+
+	private GameObject star01;
+	private GameObject star02;
+	private GameObject star03;
 	
 	void Start () 
 	{
@@ -41,6 +47,14 @@ public class WinLoseMenu : MonoBehaviour
 				mode = "2player";
 			}
 
+			star01 = transform.Find("Star_01").gameObject;
+			star01.transform.GetChild(1).gameObject.SetActive(false);
+
+			star02 = transform.Find("Star_02").gameObject;
+			star02.transform.GetChild(1).gameObject.SetActive(false);
+
+			star03 = transform.Find("Star_03").gameObject;
+			star03.transform.GetChild(1).gameObject.SetActive(false);
 		}
 	}
 	
@@ -107,13 +121,28 @@ public class WinLoseMenu : MonoBehaviour
 		}
 		else if (mode == "campaign")
 		{
-			if (CampaignGameManager.PlayerWon() == "W")
-			{
-				winLoseText.text = "Board Complete";
-			}
-			else if (CampaignGameManager.PlayerWon() == "L")
+			if (CampaignGameManager.PlayerWon() == "L")
 			{
 				winLoseText.text = "Board Failed";
+			}
+			else
+			{
+				winLoseText.text = "Board Complete";
+				if (CampaignGameManager.PlayerWon() == "S01")
+				{
+					star01.transform.GetChild(1).gameObject.SetActive(true);	
+				}
+				else if (CampaignGameManager.PlayerWon() == "S02")
+				{
+					star01.transform.GetChild(1).gameObject.SetActive(true);	
+					star02.transform.GetChild(1).gameObject.SetActive(true);
+				}
+				else if (CampaignGameManager.PlayerWon() == "S03")
+				{
+					star01.transform.GetChild(1).gameObject.SetActive(true);
+					star02.transform.GetChild(1).gameObject.SetActive(true);
+					star03.transform.GetChild(1).gameObject.SetActive(true);	
+				}
 			}
 		}
 		
