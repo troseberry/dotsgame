@@ -80,7 +80,7 @@ public class CampaignGameManager : MonoBehaviour
 
 	void UpdateNeededPointsText ()
 	{
-		if (playerPoints >= oneStarScore)
+		if (playerPoints >= oneStarScore && playerPoints < twoStarScore)
 		{
 			neededPointsText.text = "" + twoStarScore;
 		}
@@ -108,5 +108,11 @@ public class CampaignGameManager : MonoBehaviour
 		{
 			return "L";
 		}
+	}
+
+
+	public void ClearStaticVars ()
+	{
+		
 	}
 }

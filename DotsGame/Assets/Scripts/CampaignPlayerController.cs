@@ -43,7 +43,7 @@ public class CampaignPlayerController : MonoBehaviour
 			placedLineGroup = GameObject.Find("PlacedLineGroup");
 		}
 
-		currentPowerUp = "";
+		//currentPowerUp = "";
 
 		canUseBomb = false;
 		bombButton = GameObject.Find("BombButton");
@@ -84,7 +84,7 @@ public class CampaignPlayerController : MonoBehaviour
 	{
 		if(CampaignGameManager.isPlayerTurn && !CampaignGameManager.RoundOver())
 		{
-			Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
+			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 
@@ -139,10 +139,10 @@ public class CampaignPlayerController : MonoBehaviour
 	}
 
 
-	public static void SetCurrentPowerUp (GameObject powerUp)
+	/*public static void SetCurrentPowerUp (GameObject powerUp)
 	{
 		currentPowerUp = powerUp.name;
-	}
+	}*/
 	//BEGINNING OF POWERUP METHODS (x2 powerup is in Box.cs)
 
 	public static void PickedUpBomb ()
@@ -160,7 +160,7 @@ public class CampaignPlayerController : MonoBehaviour
 	{
 		if(canUseBomb && !CampaignGameManager.RoundOver())
 		{
-			Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
+			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 			if (playerChoice.isStatic)
@@ -176,8 +176,8 @@ public class CampaignPlayerController : MonoBehaviour
 				playerChoice.boxParentOne.UpdateSideCount(-1);
 				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(-1);
 
-				PlayerDrawLine();
-				CampaignGameManager.isPlayerTurn = true;		//Seems to work to not make next turn the player's unless they complete a NEW box
+				//PlayerDrawLine();
+				//CampaignGameManager.isPlayerTurn = true;		//Seems to work to not make next turn the player's unless they complete a NEW box
 																//Bomb power up is being held, instead of consumed on immediate next place
 
 				//currentPowerUp = "";

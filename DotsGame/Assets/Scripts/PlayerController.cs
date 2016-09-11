@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
 	{
 		if(GameManager.isPlayerTurn && !GameManager.RoundOver())
 		{
-			Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
+			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 

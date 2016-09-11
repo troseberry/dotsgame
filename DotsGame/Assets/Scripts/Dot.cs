@@ -13,11 +13,11 @@ public class Dot : MonoBehaviour
 	
 	void Start () 
 	{
-		attachedDot = gameObject;
-		string dotTextureName = GetComponent<SpriteRenderer>().sprite.name;
+		//attachedDot = gameObject;
+		//string dotTextureName = GetComponent<SpriteRenderer>().sprite.name;
 		currentNotchCount = 0;
 
-		switch(dotTextureName)
+		/*switch(dotTextureName)
 		{
 			case "Dot_SingleNotch":
 				type = DotType.SingleNotch;
@@ -39,7 +39,7 @@ public class Dot : MonoBehaviour
 				type = DotType.QuadNotch;
 				totalNotches = 4;
 				break;
-		}
+		}*/
 	}
 	
 	

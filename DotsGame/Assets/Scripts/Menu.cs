@@ -66,10 +66,15 @@ public class Menu : MonoBehaviour
 
 	public void LoadCampaignBoard ()
 	{
-		string buttonName = EventSystem.current.currentSelectedGameObject.name;
+		//if have not done tutorial
+		SceneManager.LoadScene("Campaign3x3_Tutorial01");
+		
+
+		//if have
+		/*string buttonName = EventSystem.current.currentSelectedGameObject.name;
 		string levelToLoad = buttonName.Substring(6, 3);
 
-		SceneManager.LoadScene("Campaign5x5_" + levelToLoad);
+		SceneManager.LoadScene("Campaign5x5_" + levelToLoad);*/
 	}
 
 	public void LoadClassicVersus ()
@@ -130,12 +135,12 @@ public class Menu : MonoBehaviour
 	public void Back ()
 	{
 
-		if (versusMainMenu.active || campaignMainMenu.active)
+		if (versusMainMenu.activeSelf || campaignMainMenu.activeSelf)
 		{
 			HideMenus();
 			mainMenuButtons.SetActive(true);
 		}
-		else if (versusClassicMenu.active || versusBattleMenu.active || versusTwoPlayerMenu.active)
+		else if (versusClassicMenu.activeSelf || versusBattleMenu.activeSelf || versusTwoPlayerMenu.activeSelf)
 		{
 			HideMenus();
 			versusMainMenu.SetActive(true);

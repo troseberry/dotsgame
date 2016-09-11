@@ -25,8 +25,8 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 
 		canDraw = false;
-		canPlayerOneDraw = false;
-		canPlayerTwoDraw = false;
+		//canPlayerOneDraw = false;
+		//canPlayerTwoDraw = false;
 		drawingTime = 0f;
 	}
 	
@@ -56,7 +56,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 	{
 		if(!GameManagerTwoPlayer.RoundOver())
 		{
-			Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
+			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 

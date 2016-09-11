@@ -43,10 +43,10 @@ public class Box : MonoBehaviour
 		chip = null;
 
 		//Don't think these are being used
-		upperLeft = GameObject.Find("Dot_" + boxNumber).GetComponent<Dot>();
-		upperRight = GameObject.Find("Dot_" + (boxNumber + 1)).GetComponent<Dot>();
-		lowerLeft = GameObject.Find("Dot_" + (boxNumber + 10)).GetComponent<Dot>();
-		lowerRight = GameObject.Find("Dot_" + (boxNumber + 11)).GetComponent<Dot>();
+		//upperLeft = GameObject.Find("Dot_" + boxNumber).GetComponent<Dot>();
+		//upperRight = GameObject.Find("Dot_" + (boxNumber + 1)).GetComponent<Dot>();
+		//lowerLeft = GameObject.Find("Dot_" + (boxNumber + 10)).GetComponent<Dot>();
+		//lowerRight = GameObject.Find("Dot_" + (boxNumber + 11)).GetComponent<Dot>();
 
 
 		playerChip = (GameObject) Resources.Load("PlayerChip");
