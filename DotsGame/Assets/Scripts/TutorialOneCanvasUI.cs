@@ -3,9 +3,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class TutorialCanvasUI : MonoBehaviour 
+public class TutorialOneCanvasUI : MonoBehaviour 
 {
-	public static TutorialCanvasUI Instance;
+	public static TutorialOneCanvasUI Instance;
 
 	private RectTransform step1LeftArrow;
 	private RectTransform step1RightArrow;
@@ -45,6 +45,12 @@ public class TutorialCanvasUI : MonoBehaviour
 	
 	void Update () 
 	{
+		HandleTutorialOneArrows();
+	}
+
+
+	void HandleTutorialOneArrows ()
+	{
 		if(step1.activeSelf)
 		{	step1LeftArrow.transform.localPosition = new Vector3 (step1LeftArrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 115, step1LeftArrow.transform.localPosition.z);
 			step1RightArrow.transform.localPosition = new Vector3 (step1RightArrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 115, step1RightArrow.transform.localPosition.z);
@@ -62,13 +68,8 @@ public class TutorialCanvasUI : MonoBehaviour
 		}
 	}
 
-	public void ContinueToNextTutorial ()
-	{
-		SceneManager.LoadScene("Campaign5x5_1-1");
-	}
 
-
-	public IEnumerator DisplayNextSteps (int tutorialStep, int tutorialPath, float waitTime)
+	public IEnumerator DisplayTutorialSteps (int tutorialStep, int tutorialPath, float waitTime)
 	{
 		yield return new WaitForSeconds(waitTime);
 

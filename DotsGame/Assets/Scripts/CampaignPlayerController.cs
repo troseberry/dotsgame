@@ -183,6 +183,10 @@ public class CampaignPlayerController : MonoBehaviour
 				//currentPowerUp = "";
 				canUseBomb = false;
 				bombButton.SetActive(false);
+
+				//if either box parent was complete, list it as incomplete/unowned
+				//if either belonged to the player, subtract the correct amount of points 
+				//then when player draw a lines, it wll complete the box and give them the updated points
 			}
 		}
 	}

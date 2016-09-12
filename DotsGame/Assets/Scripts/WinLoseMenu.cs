@@ -130,7 +130,7 @@ public class WinLoseMenu : MonoBehaviour
 				winLoseText.text = "Board Complete";
 				if (CampaignGameManager.PlayerWon() == "S01")
 				{
-					star01.transform.GetChild(1).gameObject.SetActive(true);	
+					star01.transform.GetChild(1).gameObject.SetActive(true);
 				}
 				else if (CampaignGameManager.PlayerWon() == "S02")
 				{

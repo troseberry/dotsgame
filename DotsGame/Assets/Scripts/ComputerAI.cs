@@ -45,7 +45,26 @@ public class ComputerAI : MonoBehaviour
 			boxObjects.Add(child.GetComponent<Box>());
 		}
 
-		mode = SceneManager.GetActiveScene().name.Contains("Campaign") ? "campaign" : "versus";
+
+		//mode = SceneManager.GetActiveScene().name.Contains("Campaign") ? "campaign" : "versus";
+
+		
+		if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+		{
+			mode = "tutorial";
+		}
+		else
+		{
+			if (SceneManager.GetActiveScene().name.Contains("Campaign"))
+			{
+				mode = "campaign";
+			}
+			else
+			{
+				mode = "versus";
+			}
+		}
+
 
 		if (!GameObject.Find("PlacedLineGroup"))
 		{
@@ -62,7 +81,12 @@ public class ComputerAI : MonoBehaviour
 	
 	void Update () 
 	{
-		if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
+		bool versusConditions = !GameManager.isPlayerTurn && !placing && !GameManager.RoundOver();
+		bool campaignConditions = !CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver();
+		bool tutorialConditions = !TutorialGameManager.isPlayerTurn && !placing && !TutorialGameManager.RoundOver();
+
+		//if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
+		if (versusConditions || campaignConditions || tutorialConditions)
 		{
 			//Invoke("ComputerPlaceLine", 2.0f);
 
@@ -147,6 +171,11 @@ public class ComputerAI : MonoBehaviour
 			int randomPlace = UnityEngine.Random.Range(0, CampaignGameManager.lineObjects.Count);
 			toPlace = CampaignGameManager.lineObjects.ElementAt(randomPlace);
 		}
+		else if (mode == "tutorial")
+		{
+			int randomPlace = UnityEngine.Random.Range(0, TutorialGameManager.lineObjects.Count);
+			toPlace = TutorialGameManager.lineObjects.ElementAt(randomPlace);
+		}
 
 
 		if (toPlace.isOpen)
@@ -203,6 +232,10 @@ public class ComputerAI : MonoBehaviour
 		else if (mode == "campaign")
 		{
 			CampaignGameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+		}
+		else if (mode == "tutorial")
+		{
+			TutorialGameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
 		}
 		placing = false;
 

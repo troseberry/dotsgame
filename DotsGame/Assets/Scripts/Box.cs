@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -160,7 +161,14 @@ public class Box : MonoBehaviour
 			}
 
 			//Debug.Log("Points Awarded");
-			CampaignGameManager.UpdatePlayerPoints(pointsAwarded);
+			if (SceneManager.GetActiveScene().name.Contains("Tutorial") && !SceneManager.GetActiveScene().name.Contains("01"))
+			{
+				TutorialGameManager.UpdatePlayerPoints(pointsAwarded);
+			}
+			else
+			{
+				CampaignGameManager.UpdatePlayerPoints(pointsAwarded);
+			}
 
 			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerChip";

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -21,11 +22,24 @@ public class TutorialGameManager : MonoBehaviour
 	public static bool isPlayerTurn;
 	private bool placing;
 
-	private int tutorialStep;
+	private static int tutorialStep;
 	private static int tutorialPath;
 	public static bool isPassiveInstruction;
 
 	public static float passiveDismissDelay;
+
+
+
+	private static int playerPoints;
+	private Text playerPointsText;
+
+	private static int minWinPoints;
+	private static int totalPossiblePoints;
+	public static int oneStarScore;
+	public static int twoStarScore;
+	public static int threeStarScore;
+
+	private Text neededPointsText;
 	
 	void Start () 
 	{
@@ -41,15 +55,41 @@ public class TutorialGameManager : MonoBehaviour
 		canDraw = false;
 		drawingTime = 0f;
 
-		isPlayerTurn = false;
+		
 		//placing = false;
 
 		tutorialStep = 1;
-		isPassiveInstruction = false;
+
+		if (SceneManager.GetActiveScene().name.Contains("Tutorial01"))
+		{
+			isPassiveInstruction = false;
+			isPlayerTurn = false;
+		}
+		else
+		{
+			isPassiveInstruction = true;
+			isPlayerTurn = true;
+		}
 		passiveDismissDelay = 0;
 
 
+		if (!SceneManager.GetActiveScene().name.Contains("Tutorial01"))
+		{
+			playerPoints = 0;
+			playerPointsText = GameObject.Find("CurrentBoxesText").GetComponent<Text>();
+			playerPointsText.text = "" + playerPoints;
 
+
+			//minWinPoints = int.Parse(GameObject.Find("TotalBoxesText").GetComponent<Text>().text);
+			totalPossiblePoints = GameObject.Find("LineGrid").transform.childCount;
+
+			oneStarScore = (int) Mathf.Ceil(totalPossiblePoints * 0.3f);
+			twoStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.6f);
+			threeStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.85f);
+
+			neededPointsText = GameObject.Find("TotalBoxesText").GetComponent<Text>();
+			neededPointsText.text = "" + oneStarScore;
+		}
 	}
 	
 	
@@ -72,57 +112,79 @@ public class TutorialGameManager : MonoBehaviour
 		if (isPassiveInstruction)
 		{
 			passiveDismissDelay += Time.deltaTime;
-			//get tap or mouse down?
-			if(Input.GetMouseButtonDown(0))
+			
+			if (SceneManager.GetActiveScene().name.Contains("Tutorial01"))
 			{
-				if(tutorialStep == 2 && passiveDismissDelay > 2.5f)
-				{
-					Debug.Log("Next step");
-					tutorialStep = 3;
-					StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 0f));
-				}
-				else if (tutorialStep == 4 && passiveDismissDelay > 1.0f)
-				{
-					tutorialStep = 5;
-					StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 0f));
-				}
-				else if (tutorialStep == 5 && passiveDismissDelay > 1.0f)
-				{
-					tutorialStep = 6;
-					StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 0f));
-				}
-				else if (tutorialStep == 6 && passiveDismissDelay > 1.0f)
-				{
-					tutorialStep = 7;
-					StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 0f));
-				}
-				/*else if (tutorialStep == 8 && passiveDismissDelay > 1.5f)
-				{
-					//load next level
-					SceneManager.LoadScene("Campaign5x5_1-1");
-				}*/
+				HandleTutorialOnePassiveInstructions();
 			}
+			else if (SceneManager.GetActiveScene().name.Contains("Tutorial02"))
+			{
+				HandleTutorialTwoPassiveInstructions();
+			}
+			
+		}
+
+		if (!SceneManager.GetActiveScene().name.Contains("Tutorial01"))
+		{
+			playerPointsText.text = "" + playerPoints;
+			UpdateNeededPointsText();
 		}
 
 		if (RoundOver())
 		{
-			tutorialStep = 8;
-			StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 0.75f));
-			isPassiveInstruction = true;
+			if(SceneManager.GetActiveScene().name.Contains("Tutorial01"))
+			{
+				tutorialStep = 8;
+				StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0.75f));
+				isPassiveInstruction = true;
+			}
+			else if(SceneManager.GetActiveScene().name.Contains("Tutorial02"))
+			{
+				tutorialStep = 9;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0.75f));
+				//isPassiveInstruction = true;
+			}
 		}
 	}
 
-	public static bool RoundOver ()
+	
+
+	public void ContinueToNextTutorial ()
 	{
-		foreach (Line obj in lineObjects)
+		//if current scene is the last tutorial, set lastScene as such, load main menu
+		if (SceneManager.GetActiveScene().name == "Campaign3x3_Tutorial02")
 		{
-			if (obj.isOpen) return false;
+			CampaignData.SetFinishedTutorial(true);
+			SaveLoad.Save();
+			CampaignData.SetLastScene("Campaign3x3_Tutorial02");
+			//SceneManager.LoadScene("Campaign5x5_1-1");
+			SceneManager.LoadScene("Menu");
 		}
-		return true;
+		//otherwise, loading another tutorial, reset paths and steps
+		else
+		{
+			CampaignData.SetLastScene(SceneManager.GetActiveScene().name);		//set current scene as lastScene
+			SetTutorialPath(0);					//these next two lines aren't necessary. wil be reset on scene load
+			SetTutorialStep(1);
+
+			//If,Else: Look at currentscene, Load next tutorial
+			if (SceneManager.GetActiveScene().name.Contains("01"))
+			{
+				SceneManager.LoadScene("Campaign3x3_Tutorial02");
+			}
+			
+		}
 	}
 
 
-	public void SetTutorialStep (int step)
+
+
+	public static int GetTutorialSet ()
+	{
+		return tutorialStep;
+	}
+
+	public static void SetTutorialStep (int step)
 	{
 		tutorialStep = step;
 	}
@@ -132,76 +194,170 @@ public class TutorialGameManager : MonoBehaviour
 		return tutorialPath;
 	}
 
-	public void DoTutorialStep ()
+	public static void SetTutorialPath (int path)
 	{
-		if (tutorialStep < 7)
+		tutorialPath = path;
+	}
+
+
+
+
+	public void DoTutorialOneStep ()
+	{
+		if(SceneManager.GetActiveScene().name.Contains("Tutorial01"))
 		{
-			if (!isPassiveInstruction)
+			if (tutorialStep < 7)
 			{
-				GameObject tutorialButton = EventSystem.current.currentSelectedGameObject;
-
-				if (tutorialButton.name.Contains("StepOne") && tutorialStep == 1)
+				if (!isPassiveInstruction)
 				{
-					PlayerDrawLine();
-					tutorialStep = 2;
+					GameObject tutorialButton = EventSystem.current.currentSelectedGameObject;
 
-					if (tutorialButton.name == "StepOne_01")
+					if (tutorialButton.name.Contains("StepOne") && tutorialStep == 1)
 					{
-						tutorialPath = 1;
-						StartCoroutine(ComputerDrawLine(GameObject.Find("Line_20").GetComponentInChildren<Line>()));
-						StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 2.0f));
+						PlayerDrawLine();
+						tutorialStep = 2;
+
+						if (tutorialButton.name == "StepOne_01")
+						{
+							tutorialPath = 1;
+							StartCoroutine(ComputerDrawLine(GameObject.Find("Line_20").GetComponentInChildren<Line>()));
+							StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 2.0f));
+							isPassiveInstruction = true;
+						}
+						else if (tutorialButton.name == "StepOne_02")
+						{
+							tutorialPath = 2;
+							StartCoroutine(ComputerDrawLine(GameObject.Find("Line_22").GetComponentInChildren<Line>()));
+							StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 2.0f));
+							isPassiveInstruction = true;
+						}
+					}
+					else if (tutorialButton.name.Contains("StepThree") && tutorialStep == 3)
+					{
+						PlayerDrawLine();
+						tutorialStep = 4;
+
+						StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 2.0f));
 						isPassiveInstruction = true;
 					}
-					else if (tutorialButton.name == "StepOne_02")
-					{
-						tutorialPath = 2;
-						StartCoroutine(ComputerDrawLine(GameObject.Find("Line_22").GetComponentInChildren<Line>()));
-						StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 2.0f));
-						isPassiveInstruction = true;
-					}
-				}
-				else if (tutorialButton.name.Contains("StepThree") && tutorialStep == 3)
-				{
-					PlayerDrawLine();
-					tutorialStep = 4;
-
-					StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 2.0f));
-					isPassiveInstruction = true;
 				}
 			}
-		}
-		else
-		{
-			if (isPlayerTurn)
+			else
 			{
-				PlayerDrawLine();
-				isPlayerTurn = false;
-
-
-				Line computerDrawChoice = null;
-				foreach (Line line in lineObjects)
+				if (isPlayerTurn)
 				{
-					if (line.isOpen) computerDrawChoice = line;
+					PlayerDrawLine();
+					isPlayerTurn = false;
+
+
+					Line computerDrawChoice = null;
+					foreach (Line line in lineObjects)
+					{
+						if (line.isOpen) computerDrawChoice = line;
+					}
+					Debug.Log("Computer Drawing");
+					StartCoroutine(ComputerDrawLine(computerDrawChoice));
 				}
-				Debug.Log("Computer Drawing");
-				StartCoroutine(ComputerDrawLine(computerDrawChoice));
 			}
 		}
 	}
 
-	/*public void DismissPassiveInstruction ()
+	void HandleTutorialOnePassiveInstructions ()
 	{
-		if (isPassiveInstruction)
+		if(Input.GetMouseButtonDown(0))
 		{
-			if(tutorialStep == 2)
+			if(tutorialStep == 2 && passiveDismissDelay > 2.5f)
 			{
 				Debug.Log("Next step");
 				tutorialStep = 3;
-				Debug.Log("got here");
-				StartCoroutine(TutorialCanvasUI.Instance.DisplayNextSteps(tutorialStep, tutorialPath, 0f));
+				StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 4 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 5;
+				StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 5 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 6;
+				StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 6 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 7;
+				StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			/*else if (tutorialStep == 8 && passiveDismissDelay > 1.5f)
+			{
+				//load next level
+				SceneManager.LoadScene("Campaign5x5_1-1");
+			}*/
+		}
+	}
+
+
+	public void DoTutorialTwoStep ()
+	{
+		if (isPlayerTurn && !RoundOver() && tutorialStep >= 8)
+		{
+			PlayerDrawLine();
+		}
+	}
+
+	void HandleTutorialTwoPassiveInstructions ()
+	{
+		if(Input.GetMouseButtonDown(0))
+		{
+			if(tutorialStep == 1 && passiveDismissDelay > 0.75f)
+			{
+				Debug.Log("Next step");
+				tutorialStep = 2;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if(tutorialStep == 2 && passiveDismissDelay > 0.75f)
+			{
+				tutorialStep = 3;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 3 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 4;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 4 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 5;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 5 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 6;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 6 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 7;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			else if (tutorialStep == 7 && passiveDismissDelay > 1.0f)
+			{
+				tutorialStep = 8;
+				StartCoroutine(TutorialTwoCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
 			}
 		}
-	}*/
+	}
+
+
+
+
+	public static bool RoundOver ()
+	{
+		foreach (Line obj in lineObjects)
+		{
+			if (obj.isOpen) return false;
+		}
+		return true;
+	}
 
 	void PlayerDrawLine () 
 	{
@@ -243,7 +399,12 @@ public class TutorialGameManager : MonoBehaviour
 			if (playerChoice.boxParentTwo.IsComplete()) playerChoice.boxParentTwo.SetOwner("CampaignPlayer");
 
 			
-			playerChoice.isOpen = false;		
+			playerChoice.isOpen = false;	
+
+			if (SceneManager.GetActiveScene().name.Contains("Tutorial02")) 
+			{
+				isPlayerTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
+			}
 		}	
 	}
 
@@ -283,6 +444,31 @@ public class TutorialGameManager : MonoBehaviour
 			canDraw = true;
 
 			if(tutorialStep >= 7) isPlayerTurn = true;
+		}
+	}
+
+
+
+
+	public static void UpdatePlayerPoints (int amount)
+	{
+		playerPoints += amount;
+	}
+
+	public static int GetPlayerPoints ()
+	{
+		return playerPoints;
+	}
+
+	void UpdateNeededPointsText ()
+	{
+		if (playerPoints >= oneStarScore && playerPoints < twoStarScore)
+		{
+			neededPointsText.text = "" + twoStarScore;
+		}
+		else if (playerPoints >= twoStarScore)
+		{
+			neededPointsText.text = "" + threeStarScore;
 		}
 	}
 }

@@ -19,6 +19,15 @@ public class Menu : MonoBehaviour
 	{
 		HideMenus();
 		mainMenuButtons.SetActive(true);
+
+		SaveLoad.Load();
+		Debug.Log(Application.persistentDataPath);
+
+		if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial02")
+		{
+			//HideMenus();
+			ShowCampaignMenu();
+		}
 	}
 	
 	
@@ -36,8 +45,16 @@ public class Menu : MonoBehaviour
 
 	public void ShowCampaignMenu ()
 	{
-		HideMenus();
-		campaignMainMenu.SetActive(true);
+		if (!CampaignData.GetFinishedTutorial())
+		{
+			//if haven't done tutorial, load first tutorial scene
+			SceneManager.LoadScene("Campaign3x3_Tutorial01");
+		}
+		else
+		{
+			HideMenus();
+			campaignMainMenu.SetActive(true);
+		}
 	}
 
 	public void ShowVersusMenu ()
@@ -66,15 +83,10 @@ public class Menu : MonoBehaviour
 
 	public void LoadCampaignBoard ()
 	{
-		//if have not done tutorial
-		SceneManager.LoadScene("Campaign3x3_Tutorial01");
-		
-
-		//if have
-		/*string buttonName = EventSystem.current.currentSelectedGameObject.name;
+		string buttonName = EventSystem.current.currentSelectedGameObject.name;
 		string levelToLoad = buttonName.Substring(6, 3);
 
-		SceneManager.LoadScene("Campaign5x5_" + levelToLoad);*/
+		SceneManager.LoadScene("Campaign5x5_" + levelToLoad);
 	}
 
 	public void LoadClassicVersus ()
