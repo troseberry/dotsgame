@@ -23,7 +23,7 @@ public class Menu : MonoBehaviour
 		SaveLoad.Load();
 		Debug.Log(Application.persistentDataPath);
 
-		if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial02")
+		if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial03")
 		{
 			//HideMenus();
 			ShowCampaignMenu();

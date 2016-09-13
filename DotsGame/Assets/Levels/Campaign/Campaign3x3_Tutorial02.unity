@@ -8920,7 +8920,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: finish this board with at least 3 points
+  m_Text: finish this board with at least 4 points
 --- !u!222 &1400415264
 CanvasRenderer:
   m_ObjectHideFlags: 0

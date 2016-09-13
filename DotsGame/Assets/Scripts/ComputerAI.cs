@@ -86,13 +86,29 @@ public class ComputerAI : MonoBehaviour
 		bool tutorialConditions = !TutorialGameManager.isPlayerTurn && !placing && !TutorialGameManager.RoundOver();
 
 		//if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
-		if (versusConditions || campaignConditions || tutorialConditions)
+		if (versusConditions || campaignConditions/* || tutorialConditions*/)
 		{
 			//Invoke("ComputerPlaceLine", 2.0f);
 
 			//StartCoroutine(ComputerPlaceLine( DetermineLineToPlace() ));
 			StartCoroutine( ComputerDrawLine( DetermineLineToPlace() ));
 			placing = true;
+		}
+		else if (tutorialConditions)
+		{
+			if (!SceneManager.GetActiveScene().name.Contains("03"))
+			{
+				StartCoroutine( ComputerDrawLine( DetermineLineToPlace() ));
+				placing = true;
+			}
+			else
+			{
+				if (TutorialGameManager.GetTutorialStep() >= 12)
+				{
+					StartCoroutine( ComputerDrawLine( DetermineLineToPlace() ));
+					placing = true;
+				}
+			}
 		}
 
 

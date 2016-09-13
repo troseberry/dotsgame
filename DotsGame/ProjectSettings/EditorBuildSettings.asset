@@ -30,4 +30,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Levels/Campaign/Campaign3x3_Tutorial02.unity
   - enabled: 1
+    path: Assets/Levels/Campaign/Campaign3x3_Tutorial03.unity
+  - enabled: 1
     path: Assets/Levels/Campaign/Campaign5x5_1-1.unity

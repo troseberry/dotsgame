@@ -152,7 +152,14 @@ public class Box : MonoBehaviour
 				}
 				else if (heldPowerUp.name == "PowerUp_Bomb")
 				{
-					CampaignPlayerController.PickedUpBomb();
+					if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+					{
+						TutorialGameManager.PickedUpBomb();
+					}
+					else
+					{	
+						CampaignPlayerController.PickedUpBomb();
+					}
 				}
 				else if (heldPowerUp.name == "PowerUp_ThiefToken")
 				{
