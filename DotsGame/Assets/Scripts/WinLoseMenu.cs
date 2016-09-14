@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WinLoseMenu : MonoBehaviour 
 {
@@ -19,11 +20,14 @@ public class WinLoseMenu : MonoBehaviour
 	private GameObject star01;
 	private GameObject star02;
 	private GameObject star03;
+
+	private bool didSave;
 	
 	void Start () 
 	{
 		if (SceneManager.GetActiveScene().buildIndex > 0)
 		{
+			//SaveLoad.Load();
 			winLoseMenuCanvas = GameObject.Find("WinLoseMenuCanvas").GetComponent<Canvas>();
 			winLoseMenuCanvas.enabled = false;
 
@@ -55,6 +59,14 @@ public class WinLoseMenu : MonoBehaviour
 
 			star03 = transform.Find("Star_03").gameObject;
 			star03.transform.GetChild(1).gameObject.SetActive(false);
+
+
+			Debug.Log(CampaignData.GetBoardOneDictionary());
+			didSave = false;
+			/*foreach (KeyValuePair<string, bool> pair in CampaignData.GetBoardOneDictionary())
+			{
+			    Debug.Log(pair.Key + pair.Value);
+			}*/
 		}
 	}
 	
@@ -92,7 +104,7 @@ public class WinLoseMenu : MonoBehaviour
 
 	void ShowOutcomeText (string mode)
 	{
-		if (GameManager.PlayerWon() == "D" || GameManagerTwoPlayer.PlayerWon() == "D")
+		if (mode != "campaign" && (GameManager.PlayerWon() == "D" || GameManagerTwoPlayer.PlayerWon() == "D"))
 		{
 			winLoseText.text = "Draw";
 		}
@@ -142,6 +154,16 @@ public class WinLoseMenu : MonoBehaviour
 					star01.transform.GetChild(1).gameObject.SetActive(true);
 					star02.transform.GetChild(1).gameObject.SetActive(true);
 					star03.transform.GetChild(1).gameObject.SetActive(true);	
+				}
+
+				string sceneName = SceneManager.GetActiveScene().name;
+				Debug.Log(sceneName.Substring(12, sceneName.Length - 12));
+				CampaignData.SetLevelStatus(sceneName.Substring(12, sceneName.Length - 12), true);
+				
+				if(!didSave)
+				{
+					SaveLoad.Save();
+					didSave = true;
 				}
 			}
 		}

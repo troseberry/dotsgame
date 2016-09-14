@@ -87,13 +87,14 @@ public class TutorialGameManager : MonoBehaviour
 
 		canUseBomb = false;
 		bombButton = GameObject.Find("BombButton");
-		bombButton.SetActive(false);
+		if (bombButton) bombButton.SetActive(false);
 
 
 		if (!isTutorial01)
 		{
 			playerPoints = 0;
 			playerPointsText = GameObject.Find("CurrentBoxesText").GetComponent<Text>();
+			Debug.Log("Found Player Points");
 			playerPointsText.text = "" + playerPoints;
 
 

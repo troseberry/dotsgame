@@ -58,7 +58,7 @@ public class Box : MonoBehaviour
 		//chipPlacement = transform.position;
 		ownerChipScale = GameObject.Find("BoxGroup").transform.localScale;
 
-		if (transform.childCount > 1)
+		if (transform.childCount > 1/* && transform.GetChild(1).gameObject.activeSelf*/) //if there is a power up gameobject that is inactive, that can still trigger powerups
 		{
 			heldPowerUp = transform.GetChild(1).gameObject;
 		}

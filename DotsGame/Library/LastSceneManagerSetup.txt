@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Levels/Campaign/Campaign3x3_Tutorial03.unity
+- path: Assets/Levels/Menu.unity
   isLoaded: 1
   isActive: 1
