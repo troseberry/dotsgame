@@ -66,10 +66,10 @@ public class CampaignData : MonoBehaviour
 		}
 		
 
-		Debug.Log(boardOneLevels);
+		//Debug.Log(boardOneLevels);
 		foreach (KeyValuePair<string, bool> pair in boardOneLevels)
 		{
-		    Debug.Log(pair.Key + pair.Value);
+		    //Debug.Log(pair.Key + pair.Value);
 		}
 
 

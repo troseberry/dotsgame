@@ -10,6 +10,10 @@ public class Menu : MonoBehaviour
 	public GameObject mainMenuButtons;
 
 	public GameObject campaignMainMenu;
+	public GameObject boardSelectMenu;
+
+	private GameObject levelsGroup;
+	public GameObject boardOne;
 
 	public GameObject versusMainMenu;
 	public GameObject versusClassicMenu;
@@ -20,9 +24,27 @@ public class Menu : MonoBehaviour
 
 	//private bool deleteSave;
 	private int devOptionTapCount;
+
+
+
+	//Vars for Detecting Swipe
+	private float startTime;
+	private Vector2 startPos;
+	private bool couldBeSwipe;
+	private float comfortZone;
+	private float minSwipeDist;
+	private float maxSwipeTime;
+
+	private GameObject boardToSlide;
+	private int totalSlidePositions;
+	private int currentSlidePosition;
+	private bool canSlideBoard;
 	
+
 	void Start () 
 	{
+		levelsGroup = GameObject.Find("Levels");
+
 		HideMenus();
 		mainMenuButtons.SetActive(true);
 
@@ -36,6 +58,70 @@ public class Menu : MonoBehaviour
 		}
 
 		devOptionTapCount = 0;
+
+		comfortZone = 5.0f;
+		minSwipeDist = 90.0f;
+		maxSwipeTime = 2.0f;
+	}
+
+
+
+	void Update ()
+	{
+		//Detect Swipe
+
+		//Only detect swipe if a board menu is active
+		if (campaignMainMenu.activeSelf && !boardSelectMenu.activeSelf)
+		{
+			//Debug.Log("Can Swipe");
+
+			if (Input.touchCount > 0) {
+		        Touch touch = Input.touches[0];
+		       
+		        switch (touch.phase) {
+		            case TouchPhase.Began:
+		            	//Debug.Log("Began Touch");
+		                couldBeSwipe = true;
+		                startPos = touch.position;
+		                startTime = Time.time;
+		                break;
+		           
+		            case TouchPhase.Moved:
+		            	//Debug.Log("Change From Horizontal: " + Mathf.Abs(touch.position.x - startPos.x));
+
+		                if (Mathf.Abs(touch.position.x - startPos.x) > comfortZone) {
+		                    couldBeSwipe = false;
+		                }
+		                break;
+		           
+		            case TouchPhase.Stationary:
+		                couldBeSwipe = false;
+		                break;
+		           
+		            case TouchPhase.Ended:
+
+		                float swipeTime = Time.time - startTime;
+		                float swipeDist = (touch.position - startPos).magnitude;
+
+		               // Debug.Log("End Swipe Time: " + swipeTime);
+		                //Debug.Log("End Swipe Distance: " + swipeDist);
+		               
+		                if (couldBeSwipe || (swipeTime < maxSwipeTime) || (swipeDist > minSwipeDist)) {
+		                    // It's a swiiiiiiiiiiiipe!
+		                    float swipeDirection = Mathf.Sign(touch.position.x - startPos.x);
+		                   
+		                    // Do something here in reaction to the swipe.
+		                    MoveLevelSlider(swipeDirection);
+		                }
+
+		                //after first swipe, set canSlideBoard true
+		                //doing this because a swipe is detected when pressing board select button. maybe change comfortZone val
+		            	if(!canSlideBoard) canSlideBoard = true;
+
+		                break;
+		        }
+		    }
+		}
 	}
 	
 	public void ShowDeveloperMenu ()
@@ -83,13 +169,23 @@ public class Menu : MonoBehaviour
 	void HideMenus ()
 	{
 		mainMenuButtons.SetActive(false);
+
 		campaignMainMenu.SetActive(false);
+		boardSelectMenu.SetActive(false);
+
+		boardOne.SetActive(false);
+
 		versusMainMenu.SetActive(false);
 		versusClassicMenu.SetActive(false);
 		versusBattleMenu.SetActive(false);
 		versusTwoPlayerMenu.SetActive(false);
 
 		developerOptionsMenu.SetActive(false);
+	}
+
+	void HideBoards ()
+	{
+		boardOne.SetActive(false);
 	}
 
 	public void ShowCampaignMenu ()
@@ -103,43 +199,93 @@ public class Menu : MonoBehaviour
 		{
 			HideMenus();
 			campaignMainMenu.SetActive(true);
+			boardSelectMenu.SetActive(true);
 
-			GameObject[] levelButtons = GameObject.FindGameObjectsWithTag("LevelButton");
-			foreach (GameObject btn in levelButtons)
+			
+		}
+	}
+
+	public void ShowCampaignBoard ()
+	{
+		string buttonName = EventSystem.current.currentSelectedGameObject.name;
+		string boardToShow = buttonName.Substring(0, buttonName.Length - 6);
+
+		//boardToShow = char.ToLower(boardToShow[0]) + boardToShow.Substring(1);
+
+		//Debug.Log(boardToShow);
+
+		GameObject currentBoard = levelsGroup.transform.Find(boardToShow).gameObject;
+		Debug.Log("Current Board: " + currentBoard);
+		currentBoard.SetActive(true);
+
+		boardToSlide = currentBoard.transform.Find("LevelSlider").gameObject;
+		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
+		currentSlidePosition = 0;
+
+		List<GameObject> levelButtons = new List<GameObject>();
+		foreach (Transform child in boardToSlide.transform)
+		{
+			levelButtons.Add(child.gameObject);
+		}
+
+		//GameObject[] levelButtons = GameObject.FindGameObjectsWithTag("LevelButton");
+		foreach (GameObject btn in levelButtons)
+		{
+			string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
+			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
+			//Debug.Log(prevLevel);
+
+			if (CampaignData.GetLevelStatus(lvlNum))
 			{
-				string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
-				int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
-				Debug.Log(prevLevel);
-
-				if (CampaignData.GetLevelStatus(lvlNum))
-				{
-					Debug.Log("Level Button Stuff:" + lvlNum);
-					btn.transform.Find("CheckMark").gameObject.SetActive(true);
-				}
-
-				if (prevLevel != 0 && !CampaignData.GetLevelStatus("1-" + prevLevel))
-				{
-					btn.GetComponent<Button>().enabled = false;
-					Color temp = btn.GetComponent<RawImage>().color;
-					temp.a = 0.5f;
-					btn.GetComponent<RawImage>().color = temp;
-
-					Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
-					textTemp.a = 0.5f;
-					btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
-				}
-				else if (prevLevel != 0 && CampaignData.GetLevelStatus("1-" + prevLevel))
-				{
-					btn.GetComponent<Button>().enabled = true;
-					Color temp = btn.GetComponent<RawImage>().color;
-					temp.a = 1f;
-					btn.GetComponent<RawImage>().color = temp;
-
-					Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
-					textTemp.a = 1f;
-					btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
-				}
+				//Debug.Log("Level Button Stuff:" + lvlNum);
+				btn.transform.Find("CheckMark").gameObject.SetActive(true);
 			}
+
+			if (prevLevel != 0 && !CampaignData.GetLevelStatus("1-" + prevLevel))
+			{
+				btn.GetComponent<Button>().enabled = false;
+				Color temp = btn.GetComponent<RawImage>().color;
+				temp.a = 0.5f;
+				btn.GetComponent<RawImage>().color = temp;
+
+				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
+				textTemp.a = 0.5f;
+				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
+			}
+			else if (prevLevel != 0 && CampaignData.GetLevelStatus("1-" + prevLevel))
+			{
+				btn.GetComponent<Button>().enabled = true;
+				Color temp = btn.GetComponent<RawImage>().color;
+				temp.a = 1f;
+				btn.GetComponent<RawImage>().color = temp;
+
+				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
+				textTemp.a = 1f;
+				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
+			}
+		}
+
+
+		boardSelectMenu.SetActive(false);
+	}
+
+	void MoveLevelSlider (float slideDirection)
+	{
+		float boardXPosition = boardToSlide.transform.localPosition.x;
+		if( (boardXPosition == -375 && slideDirection > 0) || ( (boardXPosition == (-375 * totalSlidePositions)) && slideDirection < 0))
+		{
+			canSlideBoard = false;
+		}
+
+		if (boardToSlide && canSlideBoard)
+		{
+			
+			//Debug.Log("Board X Pos: " + boardXPosition);
+			//if((currentSlidePosition >= 0 && slideDirection < 0) || currentSlidePosition <= totalSlidePositions && slideDirection > 0)
+			float newPositionX = (slideDirection > 0) ? boardToSlide.transform.localPosition.x + 375f : boardToSlide.transform.localPosition.x - 375f;
+			boardToSlide.transform.localPosition = new Vector2(newPositionX, boardToSlide.transform.localPosition.y);
+
+			currentSlidePosition = (slideDirection > 0) ? currentSlidePosition + 1 : currentSlidePosition - 1;
 		}
 	}
 
@@ -235,7 +381,24 @@ public class Menu : MonoBehaviour
 	public void Back ()
 	{
 
-		if (versusMainMenu.activeSelf || campaignMainMenu.activeSelf || developerOptionsMenu.activeSelf)
+		if (campaignMainMenu.activeSelf)
+		{
+			if (boardSelectMenu.activeSelf)
+			{
+				HideMenus();
+				mainMenuButtons.SetActive(true);
+				devOptionTapCount = 0;
+			}
+			else
+			{
+				HideBoards();
+				boardToSlide = null;
+				totalSlidePositions = 0;
+				canSlideBoard = false;
+				boardSelectMenu.SetActive(true);
+			}
+		}
+		else if (versusMainMenu.activeSelf || developerOptionsMenu.activeSelf)
 		{
 			HideMenus();
 			mainMenuButtons.SetActive(true);
@@ -248,3 +411,12 @@ public class Menu : MonoBehaviour
 		}
 	}
 }
+
+
+
+
+
+
+
+
+
