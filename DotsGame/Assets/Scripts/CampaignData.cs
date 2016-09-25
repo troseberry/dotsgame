@@ -7,29 +7,73 @@ public class CampaignData : MonoBehaviour
 	private static bool finishedTutorial;
 	private static string lastScene;
 	
-	private static bool boardOneLevelOne;
+	//private static bool boardOneLevelOne;
 
 	
-	private static Dictionary<string, bool> boardOneLevels = new Dictionary<string, bool>();
+	//private static Dictionary<string, bool> boardOneLevels = new Dictionary<string, bool>();
+	private static Dictionary<string, bool> allBoardLevels = new Dictionary<string, bool>();
 
-	private List<string> boardOneLevelNames = new List<string>();
+
+	//private List<string> boardOneLevelNames = new List<string>();
+	private static List<string> allBoardLevelNames = new List<string>();
 	
 
 	void Start ()
 	{
-		boardOneLevelNames.Add("1-1");
-		boardOneLevelNames.Add("1-2");
-		boardOneLevelNames.Add("1-3");
-		boardOneLevelNames.Add("1-4");
-		boardOneLevelNames.Add("1-5");
-		boardOneLevelNames.Add("1-6");
-		boardOneLevelNames.Add("1-7");
-		boardOneLevelNames.Add("1-8");
-		boardOneLevelNames.Add("1-9");
-		boardOneLevelNames.Add("1-10");
-		boardOneLevelNames.Add("1-11");
-		boardOneLevelNames.Add("1-12");
+		//can also iterate through gameObjects tagged with LevelButton - this currently might only work for first group of board buttons
 
+		/*GameObject parent = levelsGroup;
+		while (parent.getChild[0].gameObject.tag != "LevelButton")
+		{
+			parent = parent.getChild[0].gameobject;
+		}*/
+
+		/*foreach (Transform child in parent)
+		{
+			if (child.gameObject.tag == "LevelButton")
+			{
+				add to dictionary
+			}
+		}*/
+
+
+		allBoardLevelNames.Add("1-1");
+		allBoardLevelNames.Add("1-2");
+		allBoardLevelNames.Add("1-3");
+		allBoardLevelNames.Add("1-4");
+		allBoardLevelNames.Add("1-5");
+		allBoardLevelNames.Add("1-6");
+		allBoardLevelNames.Add("1-7");
+		allBoardLevelNames.Add("1-8");
+		allBoardLevelNames.Add("1-9");
+
+
+		allBoardLevelNames.Add("2-1");
+		allBoardLevelNames.Add("2-2");
+		allBoardLevelNames.Add("2-3");
+		allBoardLevelNames.Add("2-4");
+		allBoardLevelNames.Add("2-5");
+		allBoardLevelNames.Add("2-6");
+		allBoardLevelNames.Add("2-7");
+		allBoardLevelNames.Add("2-8");
+		allBoardLevelNames.Add("2-9");
+		allBoardLevelNames.Add("2-10");
+		allBoardLevelNames.Add("2-11");
+		allBoardLevelNames.Add("2-12");
+
+
+		allBoardLevelNames.Add("3-1");
+		allBoardLevelNames.Add("3-2");
+		allBoardLevelNames.Add("3-3");
+		allBoardLevelNames.Add("3-4");
+		allBoardLevelNames.Add("3-5");
+		allBoardLevelNames.Add("3-6");
+		allBoardLevelNames.Add("3-7");
+		allBoardLevelNames.Add("3-8");
+		allBoardLevelNames.Add("3-9");
+		allBoardLevelNames.Add("3-10");
+		allBoardLevelNames.Add("3-11");
+		allBoardLevelNames.Add("3-12");
 
 		//Debug.Log("not attached");
 
@@ -45,9 +89,6 @@ public class CampaignData : MonoBehaviour
 			boardOneLevels.Add("1-7", false);
 			boardOneLevels.Add("1-8", false);
 			boardOneLevels.Add("1-9", false);
-			boardOneLevels.Add("1-10", false);
-			boardOneLevels.Add("1-11", false);
-			boardOneLevels.Add("1-12", false);
 		}
 		else
 		{
@@ -57,20 +98,21 @@ public class CampaignData : MonoBehaviour
 
 		SaveLoad.Load();
 
-		foreach(string lvlName in boardOneLevelNames)
+		//If for some reason the loaded dictionary doesn't have the level, add it and make its completion status false
+		foreach(string lvlName in allBoardLevelNames)
 		{
-			if (!boardOneLevels.ContainsKey(lvlName))
+			if (!allBoardLevels.ContainsKey(lvlName))
 			{
-				boardOneLevels.Add(lvlName, false);
+				allBoardLevels.Add(lvlName, false);
 			}
 		}
 		
 
 		//Debug.Log(boardOneLevels);
-		foreach (KeyValuePair<string, bool> pair in boardOneLevels)
+		/*foreach (KeyValuePair<string, bool> pair in allBoardLevels)
 		{
-		    //Debug.Log(pair.Key + pair.Value);
-		}
+		    Debug.Log(pair.Key + pair.Value);
+		}*/
 
 
 
@@ -79,20 +121,31 @@ public class CampaignData : MonoBehaviour
 
 
 
-	public static void ClearBoardOneDictionary ()
+	public static void ClearLevelsDictionary ()
 	{
-		boardOneLevels["1-1"] = false;
-		boardOneLevels["1-2"] = false;
-		boardOneLevels["1-3"] = false;
-		boardOneLevels["1-4"] = false;
-		boardOneLevels["1-5"] = false;
-		boardOneLevels["1-6"] = false;
-		boardOneLevels["1-7"] = false;
-		boardOneLevels["1-8"] = false;
-		boardOneLevels["1-9"] = false;
-		boardOneLevels["1-10"] = false;
-		boardOneLevels["1-11"] = false;
-		boardOneLevels["1-12"] = false;
+		/*allBoardLevels["1-1"] = false;
+		allBoardLevels["1-2"] = false;
+		allBoardLevels["1-3"] = false;
+		allBoardLevels["1-4"] = false;
+		allBoardLevels["1-5"] = false;
+		allBoardLevels["1-6"] = false;
+		allBoardLevels["1-7"] = false;
+		allBoardLevels["1-8"] = false;
+		allBoardLevels["1-9"] = false;*/
+
+
+		//Can't iterate over dictionary and change values at same time
+		/*foreach (KeyValuePair<string, bool> pair in allBoardLevels)
+		{
+			SetLevelStatus(pair.Key, false);
+		}*/
+
+		//Iterate thru names list. Should contain the same strings as dictionary keys
+		foreach (string levelName in allBoardLevelNames)
+		{
+			//Setting allBoardLevels values no allBoardLeveNames
+			SetLevelStatus(levelName, false);
+		}
 	}
 
 
@@ -118,7 +171,7 @@ public class CampaignData : MonoBehaviour
 			return false;
 		}*/
 
-		return boardOneLevels[levelName];
+		return allBoardLevels[levelName];
 	}
 
 	public static void SetLevelStatus (string levelName, bool status)
@@ -128,19 +181,19 @@ public class CampaignData : MonoBehaviour
 			boardOneLevelOne = status;
 		}*/
 
-		Debug.Log("Input Level Name: " + levelName);
+		//Debug.Log("Input Level Name: " + levelName);
 
-		boardOneLevels[levelName] = status;
+		allBoardLevels[levelName] = status;
 	}
 
-	public static Dictionary<string, bool> GetBoardOneDictionary ()
+	public static Dictionary<string, bool> GetAllLevelsDictionary ()
 	{
-		return boardOneLevels;
+		return allBoardLevels;
 	}
 
-	public static void SetBoardOneDictionary (Dictionary<string, bool> toSet)
+	public static void SetAllLevelsDictionary (Dictionary<string, bool> toSet)
 	{
-		boardOneLevels = toSet;
+		allBoardLevels = toSet;
 	}
 
 

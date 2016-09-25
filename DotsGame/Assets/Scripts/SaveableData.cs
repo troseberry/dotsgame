@@ -8,7 +8,7 @@ public class SaveableData
 	public bool finishedTutorial;
 
 	//List of campaign levels. True == finished
-	public bool boardOneLevelOne;
+	/*public bool boardOneLevelOne;
 	public bool boardOneLevelTwo;
 	public bool boardOneLevelThree;
 	public bool boardOneLevelFour;
@@ -19,7 +19,7 @@ public class SaveableData
 	public bool boardOneLevelNine;
 	public bool boardOneLevelTen;
 	public bool boardOneLevelEleven;
-	public bool boardOneLevelTwelve;
+	public bool boardOneLevelTwelve;*/
 
-	public Dictionary<string, bool> boardOneLevels;
+	public Dictionary<string, bool> allBoardLevels;
 }

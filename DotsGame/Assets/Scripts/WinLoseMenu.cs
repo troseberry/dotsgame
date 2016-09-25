@@ -61,9 +61,9 @@ public class WinLoseMenu : MonoBehaviour
 			star03.transform.GetChild(1).gameObject.SetActive(false);
 
 
-			Debug.Log(CampaignData.GetBoardOneDictionary());
+			Debug.Log(CampaignData.GetAllLevelsDictionary());
 			didSave = false;
-			/*foreach (KeyValuePair<string, bool> pair in CampaignData.GetBoardOneDictionary())
+			/*foreach (KeyValuePair<string, bool> pair in CampaignData.GetAllLevelsDictionary())
 			{
 			    Debug.Log(pair.Key + pair.Value);
 			}*/

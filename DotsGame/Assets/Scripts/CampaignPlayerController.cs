@@ -8,7 +8,7 @@ public class CampaignPlayerController : MonoBehaviour
 	private GameObject playerLine;
 	private Vector3 lineGridScale;
 
-	private GameObject placedLineGroup;
+	private GameObject _Dynamic;
 
 	private bool canDraw;
 	private GameObject lineToDraw;
@@ -33,15 +33,7 @@ public class CampaignPlayerController : MonoBehaviour
 		canDraw = false;
 		drawingTime = 0f;
 
-		if (!GameObject.Find("PlacedLineGroup"))
-		{
-			placedLineGroup = new GameObject();
-			placedLineGroup.name = "PlacedLineGroup";
-		}
-		else
-		{
-			placedLineGroup = GameObject.Find("PlacedLineGroup");
-		}
+		_Dynamic = GameObject.Find("_Dynamic");
 
 		//currentPowerUp = "";
 
@@ -107,7 +99,7 @@ public class CampaignPlayerController : MonoBehaviour
 				GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
 				newLine.name = "PlayerLine";
 				newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
-				newLine.transform.SetParent(placedLineGroup.transform, false);
+				newLine.transform.SetParent(_Dynamic.transform, false);
 				lineToDraw = newLine;
 				canDraw = true;
 

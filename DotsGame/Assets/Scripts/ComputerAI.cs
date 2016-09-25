@@ -10,7 +10,7 @@ public class ComputerAI : MonoBehaviour
 	private GameObject computerLine;
 	private Vector3 lineGridScale;
 
-	private GameObject placedLineGroup;
+	private GameObject _Dynamic;
 
 	private bool canDraw;
 	private GameObject lineToDraw;
@@ -66,15 +66,7 @@ public class ComputerAI : MonoBehaviour
 		}
 
 
-		if (!GameObject.Find("PlacedLineGroup"))
-		{
-			placedLineGroup = new GameObject();
-			placedLineGroup.name = "PlacedLineGroup";
-		}
-		else
-		{
-			placedLineGroup = GameObject.Find("PlacedLineGroup");
-		}
+		_Dynamic =  GameObject.Find("_Dynamic");
 		
 	}
 	
@@ -270,7 +262,7 @@ public class ComputerAI : MonoBehaviour
 
 		GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
 		newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
-		newLine.transform.SetParent(placedLineGroup.transform, false);
+		newLine.transform.SetParent(_Dynamic.transform, false);
 		newLine.name = "ComputerLine";
 		lineToDraw = newLine;
 		canDraw = true;

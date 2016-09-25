@@ -33,7 +33,7 @@ public class SaveLoad : MonoBehaviour
 		 dataToSave.Add("boardOneLevelEleven", CampaignData.GetLevelStatus("boardOneLevelEleven"));
 		 dataToSave.Add("boardOneLevelTwelve", CampaignData.GetLevelStatus("boardOneLevelTwelve"));*/
 
-		dataToSave.Add("boardOneLevels", CampaignData.GetBoardOneDictionary());
+		dataToSave.Add("allBoardLevels", CampaignData.GetAllLevelsDictionary());
 		 //-----------------------Done Saving---------------------------------------------
 		 data.Serialize(file, dataToSave);
 		 file.Close();
@@ -56,7 +56,7 @@ public class SaveLoad : MonoBehaviour
 
 			//CampaignData.SetLevelStatus("boardOneLevelOne", (bool) saveData["boardOneLevelOne"]);
 
-			CampaignData.SetBoardOneDictionary( (Dictionary<string, bool>) saveData["boardOneLevels"]);
+			CampaignData.SetAllLevelsDictionary( (Dictionary<string, bool>) saveData["allBoardLevels"]);
 			//-----------------------Done Loading----------------------------------
 		}
 		else {

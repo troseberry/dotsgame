@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,7 +14,9 @@ public class Menu : MonoBehaviour
 	public GameObject boardSelectMenu;
 
 	private GameObject levelsGroup;
-	public GameObject boardOne;
+	private GameObject boardOne;
+	private GameObject boardTwo;
+	private GameObject boardThree;
 
 	public GameObject versusMainMenu;
 	public GameObject versusClassicMenu;
@@ -44,6 +47,10 @@ public class Menu : MonoBehaviour
 	void Start () 
 	{
 		levelsGroup = GameObject.Find("Levels");
+		boardOne = levelsGroup.transform.Find("BoardOne").gameObject;
+		boardTwo = levelsGroup.transform.Find("BoardTwo").gameObject;
+		boardThree = levelsGroup.transform.Find("BoardThree").gameObject;
+
 
 		HideMenus();
 		mainMenuButtons.SetActive(true);
@@ -130,7 +137,7 @@ public class Menu : MonoBehaviour
 		if (devOptionTapCount < 5)
 		{
 			
-			Debug.Log("Tap Count: " + devOptionTapCount);
+			//Debug.Log("Tap Count: " + devOptionTapCount);
 		}
 		else
 		{
@@ -142,11 +149,12 @@ public class Menu : MonoBehaviour
 
 	public void DeleteSave ()
 	{
+		Debug.Log("Deleting Save...");
 		SaveLoad.Delete();
 
-		Debug.Log(CampaignData.GetFinishedTutorial());
+		Debug.Log("Finished Tutorial? " + CampaignData.GetFinishedTutorial());
 
-		CampaignData.ClearBoardOneDictionary();
+		CampaignData.ClearLevelsDictionary();
 
 		/*Debug.Log(CampaignData.GetBoardOneDictionary());
 		foreach (KeyValuePair<string, bool> pair in CampaignData.GetBoardOneDictionary())
@@ -160,6 +168,7 @@ public class Menu : MonoBehaviour
 
 	public void SkipTutorial ()
 	{
+		Debug.Log("Skipping Tutorial");
 		CampaignData.SetFinishedTutorial(true);
 		SaveLoad.Save();
 		SaveLoad.Load();
@@ -186,7 +195,10 @@ public class Menu : MonoBehaviour
 	void HideBoards ()
 	{
 		boardOne.SetActive(false);
+		boardTwo.SetActive(false);
+		boardThree.SetActive(false);
 	}
+
 
 	public void ShowCampaignMenu ()
 	{
@@ -233,7 +245,8 @@ public class Menu : MonoBehaviour
 		{
 			string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
 			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
-			//Debug.Log(prevLevel);
+			string prevLevelName = lvlNum[0] + "-" + prevLevel.ToString(); 
+			//Debug.Log(prevLevelName);
 
 			if (CampaignData.GetLevelStatus(lvlNum))
 			{
@@ -241,7 +254,7 @@ public class Menu : MonoBehaviour
 				btn.transform.Find("CheckMark").gameObject.SetActive(true);
 			}
 
-			if (prevLevel != 0 && !CampaignData.GetLevelStatus("1-" + prevLevel))
+			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))/*!CampaignData.GetLevelStatus("1-" + prevLevel))*/
 			{
 				btn.GetComponent<Button>().enabled = false;
 				Color temp = btn.GetComponent<RawImage>().color;
@@ -252,7 +265,7 @@ public class Menu : MonoBehaviour
 				textTemp.a = 0.5f;
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
-			else if (prevLevel != 0 && CampaignData.GetLevelStatus("1-" + prevLevel))
+			else if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))/*!CampaignData.GetLevelStatus("1-" + prevLevel))*/
 			{
 				btn.GetComponent<Button>().enabled = true;
 				Color temp = btn.GetComponent<RawImage>().color;
@@ -319,8 +332,26 @@ public class Menu : MonoBehaviour
 		
 		string buttonName = EventSystem.current.currentSelectedGameObject.name;
 		string levelToLoad = buttonName.Substring(6, buttonName.Length - 6);
+		string boardName = EventSystem.current.currentSelectedGameObject.transform.parent.transform.parent.name;
 
-		SceneManager.LoadScene("Campaign5x5_" + levelToLoad);
+		//Debug.Log("Board Name: " + boardName);
+		//Debug.Log("Level Number: " + levelToLoad);
+
+		if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/" + boardName + "/Campaign3x3_" + levelToLoad))
+		{
+			Debug.Log("Found 3x3 Scene");
+			SceneManager.LoadScene("Levels/Campaign/" + boardName + "/Campaign3x3_" + levelToLoad);
+		}
+		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/" + boardName + "/Campaign4x4_" + levelToLoad))
+		{
+			Debug.Log("Found 4x4 Scene");
+			SceneManager.LoadScene("Levels/Campaign/" + boardName + "/Campaign4x4_" + levelToLoad);
+		}
+		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/" + boardName + "/Campaign5x5_" + levelToLoad))
+		{
+			Debug.Log("Found 5x5 Scene");
+			SceneManager.LoadScene("Levels/Campaign/" + boardName + "/Campaign5x5_" + levelToLoad);
+		}
 	}
 
 	public void LoadClassicVersus ()

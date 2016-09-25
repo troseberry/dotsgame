@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -24,6 +25,8 @@ public class CampaignGameManager : MonoBehaviour
 	
 	void Start () 
 	{
+		//Debug.Log(SceneManager.GetActiveScene().path);
+
 		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
 		foreach (GameObject child in holder)
 		{

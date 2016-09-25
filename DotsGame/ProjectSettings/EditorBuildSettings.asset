@@ -32,26 +32,68 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Levels/Campaign/Campaign3x3_Tutorial03.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-1.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-1.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-2.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-2.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-3.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-3.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-4.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-4.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-5.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-5.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-6.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-6.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-7.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-7.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-8.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-8.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-9.unity
+    path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-9.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-10.unity
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-1.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-11.unity
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-2.unity
   - enabled: 1
-    path: Assets/Levels/Campaign/BoardOne/Campaign5x5_1-12.unity
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-3.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-4.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-5.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-6.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-7.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-8.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-9.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-10.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-11.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-12.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-1.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-2.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-3.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-4.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-5.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-6.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-7.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-8.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-9.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-10.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-11.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-12.unity
