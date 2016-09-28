@@ -8,7 +8,16 @@ public class WinLoseMenu : MonoBehaviour
 {
 
 	private Canvas winLoseMenuCanvas;
-	private Text winLoseText;
+	//private Text winLoseText;
+
+	public GameObject titleGroup;
+	private GameObject boardCompleteImage;
+	private GameObject boardFailedImage;
+	private GameObject gameWonImage;
+	private GameObject gameLostImage;
+	private GameObject drawImage;
+	private GameObject playerOneWinsImage;
+	private GameObject playerTwoWinsImage;
 
 	private GameObject gameManagerObj;
 	private GameManager gameManagerRef;
@@ -21,6 +30,8 @@ public class WinLoseMenu : MonoBehaviour
 	private GameObject star02;
 	private GameObject star03;
 
+	private Text scoreNumber;
+
 	private bool didSave;
 	
 	void Start () 
@@ -31,7 +42,31 @@ public class WinLoseMenu : MonoBehaviour
 			winLoseMenuCanvas = GameObject.Find("WinLoseMenuCanvas").GetComponent<Canvas>();
 			winLoseMenuCanvas.enabled = false;
 
-			winLoseText = GameObject.Find("WinLoseText").GetComponent<Text>();
+			//winLoseText = GameObject.Find("WinLoseText").GetComponent<Text>();
+			boardCompleteImage = titleGroup.transform.Find("BoardComplete").gameObject;
+			boardCompleteImage.SetActive(false);
+
+			boardFailedImage = titleGroup.transform.Find("BoardFailed").gameObject;
+			boardFailedImage.SetActive(false);
+
+			gameWonImage = titleGroup.transform.Find("GameWon").gameObject;
+			gameWonImage.SetActive(false);
+
+			gameLostImage = titleGroup.transform.Find("GameLost").gameObject;
+			gameLostImage.SetActive(false);
+
+			drawImage = titleGroup.transform.Find("Draw").gameObject;
+			drawImage.SetActive(false);
+
+			playerOneWinsImage = titleGroup.transform.Find("PlayerOneWins").gameObject;
+			playerOneWinsImage.SetActive(false);
+
+			playerTwoWinsImage = titleGroup.transform.Find("PlayerTwoWins").gameObject;
+			playerTwoWinsImage.SetActive(false);
+
+
+			scoreNumber =  transform.Find("ScoreNumber").GetComponent<Text>();
+			scoreNumber.text = "";
 
 
 			gameManagerObj = GameObject.Find("GameManager");
@@ -51,14 +86,20 @@ public class WinLoseMenu : MonoBehaviour
 				mode = "2player";
 			}
 
+
+
+
+			//2nd child is awarded star
 			star01 = transform.Find("Star_01").gameObject;
-			star01.transform.GetChild(1).gameObject.SetActive(false);
+			star01.transform.GetChild(2).gameObject.SetActive(false);
 
 			star02 = transform.Find("Star_02").gameObject;
-			star02.transform.GetChild(1).gameObject.SetActive(false);
+			star02.transform.GetChild(2).gameObject.SetActive(false);
 
 			star03 = transform.Find("Star_03").gameObject;
-			star03.transform.GetChild(1).gameObject.SetActive(false);
+			star03.transform.GetChild(2).gameObject.SetActive(false);
+
+
 
 
 			Debug.Log(CampaignData.GetAllLevelsDictionary());
@@ -86,6 +127,7 @@ public class WinLoseMenu : MonoBehaviour
 		}
 	}
 
+
 	public void LoadMainMenu ()
 	{
 		SceneManager.LoadScene(0);
@@ -102,58 +144,72 @@ public class WinLoseMenu : MonoBehaviour
 		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
 	}
 
+
 	void ShowOutcomeText (string mode)
 	{
 		if (mode != "campaign" && (GameManager.PlayerWon() == "D" || GameManagerTwoPlayer.PlayerWon() == "D"))
 		{
-			winLoseText.text = "Draw";
+			drawImage.SetActive(true);
+			//winLoseText.text = "Draw";
+			Debug.Log("Draw");
 		}
 
-		if (mode == "classic")
+		else if (mode == "classic")
 		{
 			if (GameManager.PlayerWon() == "W")
 			{
-				winLoseText.text = "Game Won";
+				gameWonImage.SetActive(true);
+				Debug.Log("Game Won");
+				//winLoseText.text = "Game Won";
 			}
 			else if (GameManager.PlayerWon() == "L")
 			{
-				winLoseText.text = "Game Lost";
+				gameLostImage.SetActive(true);
+				Debug.Log("Game Lost");
+				//winLoseText.text = "Game Lost";
 			}
 		}
 		else if (mode == "2player")
 		{
 			if (GameManagerTwoPlayer.PlayerWon() == "W1")
 			{
-				winLoseText.text = "Player One Wins";
+				playerOneWinsImage.SetActive(true);
+				//winLoseText.text = "Player One Wins";
 			}
 			else if (GameManagerTwoPlayer.PlayerWon() == "W2")
 			{
-				winLoseText.text = "Player Two Wins";
+				playerTwoWinsImage.SetActive(true);
+				//winLoseText.text = "Player Two Wins";
 			}
 		}
 		else if (mode == "campaign")
 		{
 			if (CampaignGameManager.PlayerWon() == "L")
 			{
-				winLoseText.text = "Board Failed";
+				//winLoseText.text = "Board Failed";
+				boardFailedImage.SetActive(true);
+				//Debug.Log("Lost");
 			}
 			else
 			{
-				winLoseText.text = "Board Complete";
+				//winLoseText.text = "Board Complete";
+				boardCompleteImage.SetActive(true);
+				//Debug.Log("Won");
+
 				if (CampaignGameManager.PlayerWon() == "S01")
 				{
-					star01.transform.GetChild(1).gameObject.SetActive(true);
+					star01.transform.GetChild(2).gameObject.SetActive(true);
 				}
 				else if (CampaignGameManager.PlayerWon() == "S02")
 				{
-					star01.transform.GetChild(1).gameObject.SetActive(true);	
-					star02.transform.GetChild(1).gameObject.SetActive(true);
+					star01.transform.GetChild(2).gameObject.SetActive(true);	
+					star02.transform.GetChild(2).gameObject.SetActive(true);
 				}
 				else if (CampaignGameManager.PlayerWon() == "S03")
 				{
-					star01.transform.GetChild(1).gameObject.SetActive(true);
-					star02.transform.GetChild(1).gameObject.SetActive(true);
-					star03.transform.GetChild(1).gameObject.SetActive(true);	
+					star01.transform.GetChild(2).gameObject.SetActive(true);
+					star02.transform.GetChild(2).gameObject.SetActive(true);
+					star03.transform.GetChild(2).gameObject.SetActive(true);	
 				}
 
 				string sceneName = SceneManager.GetActiveScene().name;
@@ -166,6 +222,7 @@ public class WinLoseMenu : MonoBehaviour
 					didSave = true;
 				}
 			}
+			scoreNumber.text = "" + CampaignGameManager.GetPlayerPoints();
 		}
 		
 	}

@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
 	private GameObject playerLine;
 	private Vector3 lineGridScale;
 
+	private GameObject _Dynamic;
+
 	private bool canDraw;
 	private GameObject lineToDraw;
 	private float drawingTime;
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 		canDraw = false;
 		drawingTime = 0f;
+
+		_Dynamic = GameObject.Find("_Dynamic");
 	}
 
 	void Update ()
@@ -91,6 +95,7 @@ public class PlayerController : MonoBehaviour
 		GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
 		newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
 		newLine.name = "PlayerLine";
+		newLine.transform.SetParent(_Dynamic.transform, false);
 		lineToDraw = newLine;
 		canDraw = true;
 	}

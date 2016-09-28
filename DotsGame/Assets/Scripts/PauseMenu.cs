@@ -14,6 +14,15 @@ public class PauseMenu : MonoBehaviour
 		pauseMenu.enabled = false;
 	}
 
+	void Update ()
+	{
+		//Android Soft Back Button Handling
+		if (pauseMenu.enabled && Input.GetKey(KeyCode.Escape))
+		{
+			TogglePauseMenu();
+		}
+	}
+
 	public void TogglePauseMenu ()
 	{
 		pauseMenu.enabled = !pauseMenu.enabled;
@@ -26,6 +35,7 @@ public class PauseMenu : MonoBehaviour
 
 	public void LoadMainMenu ()
 	{
+		CampaignData.SetLastScene(SceneManager.GetActiveScene().name);
 		SceneManager.LoadScene(0);
 	}
 }

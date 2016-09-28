@@ -35,6 +35,7 @@ public class CampaignData : MonoBehaviour
 				add to dictionary
 			}
 		}*/
+		//lastScene = "";
 
 
 		allBoardLevelNames.Add("1-1");

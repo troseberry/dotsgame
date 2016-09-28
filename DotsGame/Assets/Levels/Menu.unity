@@ -3531,6 +3531,7 @@ MonoBehaviour:
   mainMenuButtons: {fileID: 1177565560}
   campaignMainMenu: {fileID: 2020924735}
   boardSelectMenu: {fileID: 666855068}
+  levelsGroup: {fileID: 1598416259}
   versusMainMenu: {fileID: 203595616}
   versusClassicMenu: {fileID: 195939559}
   versusBattleMenu: {fileID: 1701607922}
@@ -9668,7 +9669,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1177565561
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17115,7 +17116,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2020924736
 RectTransform:
   m_ObjectHideFlags: 0

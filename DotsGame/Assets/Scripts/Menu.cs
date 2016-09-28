@@ -1,8 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,7 +12,7 @@ public class Menu : MonoBehaviour
 	public GameObject campaignMainMenu;
 	public GameObject boardSelectMenu;
 
-	private GameObject levelsGroup;
+	public GameObject levelsGroup;
 	private GameObject boardOne;
 	private GameObject boardTwo;
 	private GameObject boardThree;
@@ -46,11 +45,10 @@ public class Menu : MonoBehaviour
 
 	void Start () 
 	{
-		levelsGroup = GameObject.Find("Levels");
+		//levelsGroup = GameObject.Find("Levels");
 		boardOne = levelsGroup.transform.Find("BoardOne").gameObject;
 		boardTwo = levelsGroup.transform.Find("BoardTwo").gameObject;
 		boardThree = levelsGroup.transform.Find("BoardThree").gameObject;
-
 
 		HideMenus();
 		mainMenuButtons.SetActive(true);
@@ -58,10 +56,32 @@ public class Menu : MonoBehaviour
 		SaveLoad.Load();
 		Debug.Log(Application.persistentDataPath);
 
-		if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial03")
+		if (CampaignData.GetLastScene() == null)
 		{
-			//HideMenus();
-			ShowCampaignMenu();
+			CampaignData.SetLastScene("");
+		}
+		else
+		{
+			if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial03")
+			{
+				//HideMenus();
+				ShowCampaignMenu();
+			}
+			else if (CampaignData.GetLastScene().Contains("Campaign3x3"))
+			{
+				//Set event system current selected object as BoardOne
+				ShowCampaignMenu();
+			}
+			else if (CampaignData.GetLastScene().Contains("Campaign4x4"))
+			{
+				//Set event system current selected object as BoardTwo
+				ShowCampaignMenu();
+			}
+			else if (CampaignData.GetLastScene().Contains("Campaign5x5"))
+			{
+				//Set event system current selected object as BoardThree
+				ShowCampaignMenu();
+			}
 		}
 
 		devOptionTapCount = 0;
@@ -75,8 +95,13 @@ public class Menu : MonoBehaviour
 
 	void Update ()
 	{
-		//Detect Swipe
+		//Android Soft Back Button Handling
+		if (Input.GetKey(KeyCode.Escape))
+		{
+			Back();
+		}
 
+		//Detect Swipe
 		//Only detect swipe if a board menu is active
 		if (campaignMainMenu.activeSelf && !boardSelectMenu.activeSelf)
 		{
@@ -149,10 +174,9 @@ public class Menu : MonoBehaviour
 
 	public void DeleteSave ()
 	{
-		Debug.Log("Deleting Save...");
 		SaveLoad.Delete();
 
-		Debug.Log("Finished Tutorial? " + CampaignData.GetFinishedTutorial());
+		Debug.Log(CampaignData.GetFinishedTutorial());
 
 		CampaignData.ClearLevelsDictionary();
 
@@ -168,7 +192,6 @@ public class Menu : MonoBehaviour
 
 	public void SkipTutorial ()
 	{
-		Debug.Log("Skipping Tutorial");
 		CampaignData.SetFinishedTutorial(true);
 		SaveLoad.Save();
 		SaveLoad.Load();
@@ -198,7 +221,6 @@ public class Menu : MonoBehaviour
 		boardTwo.SetActive(false);
 		boardThree.SetActive(false);
 	}
-
 
 	public void ShowCampaignMenu ()
 	{
@@ -245,8 +267,8 @@ public class Menu : MonoBehaviour
 		{
 			string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
 			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
-			string prevLevelName = lvlNum[0] + "-" + prevLevel.ToString(); 
-			//Debug.Log(prevLevelName);
+			string prevLevelName = lvlNum.Substring(0, 1) + "-" + prevLevel;
+			//Debug.Log(prevLevel);
 
 			if (CampaignData.GetLevelStatus(lvlNum))
 			{
@@ -254,7 +276,7 @@ public class Menu : MonoBehaviour
 				btn.transform.Find("CheckMark").gameObject.SetActive(true);
 			}
 
-			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))/*!CampaignData.GetLevelStatus("1-" + prevLevel))*/
+			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))
 			{
 				btn.GetComponent<Button>().enabled = false;
 				Color temp = btn.GetComponent<RawImage>().color;
@@ -265,7 +287,7 @@ public class Menu : MonoBehaviour
 				textTemp.a = 0.5f;
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
-			else if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))/*!CampaignData.GetLevelStatus("1-" + prevLevel))*/
+			else if (prevLevel != 0 && CampaignData.GetLevelStatus(prevLevelName))
 			{
 				btn.GetComponent<Button>().enabled = true;
 				Color temp = btn.GetComponent<RawImage>().color;
@@ -332,25 +354,23 @@ public class Menu : MonoBehaviour
 		
 		string buttonName = EventSystem.current.currentSelectedGameObject.name;
 		string levelToLoad = buttonName.Substring(6, buttonName.Length - 6);
-		string boardName = EventSystem.current.currentSelectedGameObject.transform.parent.transform.parent.name;
 
-		//Debug.Log("Board Name: " + boardName);
-		//Debug.Log("Level Number: " + levelToLoad);
+		//SceneManager.LoadScene("Campaign5x5_" + levelToLoad);
 
-		if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/" + boardName + "/Campaign3x3_" + levelToLoad))
+		if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/BoardOne/Campaign3x3_" + levelToLoad))
 		{
-			Debug.Log("Found 3x3 Scene");
-			SceneManager.LoadScene("Levels/Campaign/" + boardName + "/Campaign3x3_" + levelToLoad);
+			Debug.Log("Found 3x3 scene with that name");
+			SceneManager.LoadScene("Levels/Campaign/BoardOne/Campaign3x3_" + levelToLoad);
 		}
-		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/" + boardName + "/Campaign4x4_" + levelToLoad))
+		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/BoardTwo/Campaign4x4_" + levelToLoad))
 		{
-			Debug.Log("Found 4x4 Scene");
-			SceneManager.LoadScene("Levels/Campaign/" + boardName + "/Campaign4x4_" + levelToLoad);
+			Debug.Log("Found 4x4 scene with that name");
+			SceneManager.LoadScene("Levels/Campaign/BoardTwo/Campaign4x4_" + levelToLoad);
 		}
-		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/" + boardName + "/Campaign5x5_" + levelToLoad))
+		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/BoardThree/Campaign5x5_" + levelToLoad))
 		{
-			Debug.Log("Found 5x5 Scene");
-			SceneManager.LoadScene("Levels/Campaign/" + boardName + "/Campaign5x5_" + levelToLoad);
+			Debug.Log("Found 5x5 scene with that name");
+			SceneManager.LoadScene("Levels/Campaign/BoardThree/Campaign5x5_" + levelToLoad);
 		}
 	}
 
@@ -412,7 +432,11 @@ public class Menu : MonoBehaviour
 	public void Back ()
 	{
 
-		if (campaignMainMenu.activeSelf)
+		if (mainMenuButtons.activeSelf)
+		{
+			Application.Quit();
+		}
+		else if (campaignMainMenu.activeSelf)
 		{
 			if (boardSelectMenu.activeSelf)
 			{
@@ -442,12 +466,3 @@ public class Menu : MonoBehaviour
 		}
 	}
 }
-
-
-
-
-
-
-
-
-

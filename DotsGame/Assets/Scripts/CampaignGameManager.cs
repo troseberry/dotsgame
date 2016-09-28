@@ -60,6 +60,11 @@ public class CampaignGameManager : MonoBehaviour
 		playerPointsText.text = "" + playerPoints;
 
 		UpdateNeededPointsText();
+
+		if (Input.GetKey(KeyCode.Escape))
+		{
+			//go back to campaign menu
+		}
 	}
 
 	public static bool RoundOver ()
@@ -76,7 +81,7 @@ public class CampaignGameManager : MonoBehaviour
 		playerPoints += amount;
 	}
 
-	public int GetPlayerPoints ()
+	public static int GetPlayerPoints ()
 	{
 		return playerPoints;
 	}
