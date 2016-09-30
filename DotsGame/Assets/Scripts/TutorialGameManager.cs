@@ -13,6 +13,8 @@ public class TutorialGameManager : MonoBehaviour
 	private GameObject computerLine;
 	private Vector3 lineGridScale;
 
+	private GameObject _Dynamic;
+
 	private bool canDraw;
 	private GameObject lineToDraw;
 	private float drawingTime;
@@ -57,6 +59,8 @@ public class TutorialGameManager : MonoBehaviour
 		{
 			lineObjects.Add(child.GetComponent<Line>());
 		}
+
+		_Dynamic = GameObject.Find("_Dynamic");
 
 		playerLine = (GameObject) Resources.Load("PlayerLine");
 		computerLine = (GameObject) Resources.Load("ComputerLine");
@@ -545,7 +549,7 @@ public class TutorialGameManager : MonoBehaviour
 			GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
 			newLine.name = "PlayerLine";
 			newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
-			//newLine.transform.SetParent(placedLineGroup.transform, false);
+			newLine.transform.SetParent(_Dynamic.transform, false);
 			lineToDraw = newLine;
 			canDraw = true;
 
@@ -628,7 +632,7 @@ public class TutorialGameManager : MonoBehaviour
 
 			GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
 			newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
-			//newLine.transform.SetParent(placedLineGroup.transform, false);
+			newLine.transform.SetParent(_Dynamic.transform, false);
 			newLine.name = "ComputerLine";
 			lineToDraw = newLine;
 			canDraw = true;

@@ -4,6 +4,8 @@ using System.Collections;
 
 public class PlayerControllerTwoPlayer : MonoBehaviour 
 {
+	private GameObject _Dynamic;
+
 	private GameObject playerOneLine;
 	private GameObject playerTwoLine;
 	private Vector3 lineGridScale;
@@ -20,6 +22,8 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 	
 	void Start () 
 	{
+		_Dynamic = GameObject.Find("_Dynamic");
+		
 		playerOneLine = (GameObject) Resources.Load("PlayerLine");
 		playerTwoLine = (GameObject) Resources.Load("ComputerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
@@ -90,6 +94,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 				}
 
 				newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
+				newLine.transform.SetParent(_Dynamic.transform, false);
 				lineToDraw = newLine;
 				canDraw = true;
 

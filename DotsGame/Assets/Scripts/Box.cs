@@ -21,7 +21,7 @@ public class Box : MonoBehaviour
 	private string owner;
 	private bool claimed;
 
-	private GameObject chipGroup;
+	//private GameObject chipGroup;
 
 	private GameObject chip;
 
@@ -30,6 +30,8 @@ public class Box : MonoBehaviour
 	private GameObject computerChip;
 	private GameObject playerOneChip;
 	private GameObject playerTwoChip;
+
+	private GameObject _Dynamic;
 
 	private Vector3 ownerChipScale;
 
@@ -54,6 +56,8 @@ public class Box : MonoBehaviour
 		computerChip = (GameObject) Resources.Load("ComputerChip");
 		playerOneChip = (GameObject) Resources.Load("PlayerOneChip");
 		playerTwoChip = (GameObject) Resources.Load("PlayerTwoChip");
+
+		_Dynamic = GameObject.Find("_Dynamic");
 
 		//chipPlacement = transform.position;
 		ownerChipScale = GameObject.Find("BoxGroup").transform.localScale;
@@ -129,11 +133,11 @@ public class Box : MonoBehaviour
 
 		
 
-		if (!GameObject.Find("ChipGroup"))
+		/*if (!GameObject.Find("ChipGroup"))
 		{
 			chipGroup = new GameObject();
 			chipGroup.name = "ChipGroup";
-		}
+		}*/
 
 		if (owner == "CampaignPlayer")
 		{
@@ -216,7 +220,7 @@ public class Box : MonoBehaviour
 		{
 			chip = new GameObject();
 		}
-		chip.transform.SetParent(GameObject.Find("ChipGroup").transform, false);	
+		chip.transform.SetParent(_Dynamic.transform, false);	
 		claimed = true;
 	}
 
