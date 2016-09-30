@@ -122,7 +122,7 @@ public class WinLoseMenu : MonoBehaviour
 
 		if ((gameManagerRef && GameManager.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.RoundOver()) )
 		{
-			ShowWinLoseMenu();
+			Invoke("ShowWinLoseMenu", 1.25f);
 			ShowOutcomeText(mode);
 		}
 	}
@@ -212,9 +212,11 @@ public class WinLoseMenu : MonoBehaviour
 					star03.transform.GetChild(2).gameObject.SetActive(true);	
 				}
 
+				//if playing from main menu, substring should start at 37. If directly from level, 12
 				string sceneName = SceneManager.GetActiveScene().name;
-				Debug.Log(sceneName.Substring(12, sceneName.Length - 12));
-				CampaignData.SetLevelStatus(sceneName.Substring(12, sceneName.Length - 12), true);
+				//Debug.Log("Current Scene Name: "+ SceneManager.GetActiveScene().name);
+				//Debug.Log("Completed Level #: " + sceneName.Substring(37, sceneName.Length - 37));
+				CampaignData.SetLevelStatus(sceneName.Substring(37, sceneName.Length - 37), true);
 				
 				if(!didSave)
 				{

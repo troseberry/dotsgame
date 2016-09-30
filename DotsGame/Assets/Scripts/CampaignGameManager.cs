@@ -27,10 +27,16 @@ public class CampaignGameManager : MonoBehaviour
 	{
 		//Debug.Log(SceneManager.GetActiveScene().path);
 
-		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
-		foreach (GameObject child in holder)
+		GameObject[] linePlacementholder = GameObject.FindGameObjectsWithTag("LinePlacement");
+		int staticLineCount = 0;
+		foreach (GameObject linePlacement in linePlacementholder)
 		{
-			lineObjects.Add(child.GetComponent<Line>());
+			lineObjects.Add(linePlacement.GetComponent<Line>());
+
+			if(linePlacement.GetComponent<Line>().isStatic)
+			{
+				staticLineCount++;
+			}
 		}
 
 		isPlayerTurn = true;
@@ -40,8 +46,28 @@ public class CampaignGameManager : MonoBehaviour
 		playerPointsText.text = "" + playerPoints;
 
 
-		//minWinPoints = int.Parse(GameObject.Find("TotalBoxesText").GetComponent<Text>().text);
-		totalPossiblePoints = GameObject.Find("LineGrid").transform.childCount;
+		GameObject[] powerUpHolder = GameObject.FindGameObjectsWithTag("PowerUp");
+		int x2Count = 0;
+		int bombCount = 0;
+		int thiefCount = 0;
+		foreach (GameObject powerUp in powerUpHolder)
+		{
+			if (powerUp.name.Contains("x2"))
+			{
+				x2Count++;
+			}
+			else if (powerUp.name.Contains("Bomb"))
+			{
+				bombCount++;
+			}
+			else if (powerUp.name.Contains("Thief"))
+			{
+				thiefCount++;
+			}
+		}
+
+		int totalLinesCount = GameObject.Find("LineGrid").transform.childCount;
+		totalPossiblePoints =  totalLinesCount - staticLineCount + bombCount + (2 * x2Count) + (3 * thiefCount);
 
 		oneStarScore = (int) Mathf.Ceil(totalPossiblePoints * 0.3f);
 		twoStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.6f);

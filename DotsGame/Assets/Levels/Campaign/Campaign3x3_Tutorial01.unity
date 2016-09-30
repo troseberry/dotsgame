@@ -1490,9 +1490,19 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010060636780, guid: 308fd89b0870741668c318cf99d08e7e, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 308fd89b0870741668c318cf99d08e7e, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &270348810 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000012345953826, guid: 308fd89b0870741668c318cf99d08e7e,
+    type: 2}
+  m_PrefabInternal: {fileID: 270348809}
+  m_Script: {fileID: 11500000, guid: 1726c39df8c294be2b9f91ffba3409b9, type: 3}
 --- !u!1 &286409482
 GameObject:
   m_ObjectHideFlags: 0
@@ -3221,7 +3231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &611730515
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3984,7 +3994,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 730371626}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3995,7 +4005,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!224 &730371630
 RectTransform:
@@ -5192,7 +5202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1003401166
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6778,7 +6788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1430069172
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7244,7 +7254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1510746282
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7325,6 +7335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58838c9e4f4214b5ea08230c87e0502c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  titleGroup: {fileID: 0}
 --- !u!114 &1530251119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8560,7 +8571,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 270348810}
         m_MethodName: TogglePauseMenu
         m_Mode: 1
         m_Arguments:

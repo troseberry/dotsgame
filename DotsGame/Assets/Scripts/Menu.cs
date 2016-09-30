@@ -38,9 +38,13 @@ public class Menu : MonoBehaviour
 	private float maxSwipeTime;
 
 	private GameObject boardToSlide;
+	private List<Transform> currentBoardPages = new List<Transform>();
+	private GameObject currentPageIndicator;
 	private int totalSlidePositions;
 	private int currentSlidePosition;
 	private bool canSlideBoard;
+
+	private bool canUseSoftBack;
 	
 
 	void Start () 
@@ -89,6 +93,8 @@ public class Menu : MonoBehaviour
 		comfortZone = 5.0f;
 		minSwipeDist = 90.0f;
 		maxSwipeTime = 2.0f;
+
+		canUseSoftBack = true;
 	}
 
 
@@ -96,8 +102,10 @@ public class Menu : MonoBehaviour
 	void Update ()
 	{
 		//Android Soft Back Button Handling
-		if (Input.GetKey(KeyCode.Escape))
+		if (Input.GetKey(KeyCode.Escape) && canUseSoftBack)
 		{
+			//Need to stop this from executing twice in a row
+			canUseSoftBack = false;
 			Back();
 		}
 
@@ -106,52 +114,65 @@ public class Menu : MonoBehaviour
 		if (campaignMainMenu.activeSelf && !boardSelectMenu.activeSelf)
 		{
 			//Debug.Log("Can Swipe");
+			/*if (Input.GetMouseButtonDown(0))
+			{
+				Debug.Log("Mouse Position: " + Input.mousePosition);
+			}*/
+
+			
 
 			if (Input.touchCount > 0) {
 		        Touch touch = Input.touches[0];
-		       
-		        switch (touch.phase) {
-		            case TouchPhase.Began:
-		            	//Debug.Log("Began Touch");
-		                couldBeSwipe = true;
-		                startPos = touch.position;
-		                startTime = Time.time;
-		                break;
-		           
-		            case TouchPhase.Moved:
-		            	//Debug.Log("Change From Horizontal: " + Mathf.Abs(touch.position.x - startPos.x));
+		        
+		    	//bool topSection = touch.position.y <= 1150.0f && touch.position.y >= 885.0f;
+				//bool bottomSection = touch.position.y <= 500.0f && touch.position.y >= 230.0f;
+		    	//if swipe is near levelslider 
 
-		                if (Mathf.Abs(touch.position.x - startPos.x) > comfortZone) {
-		                    couldBeSwipe = false;
-		                }
-		                break;
-		           
-		            case TouchPhase.Stationary:
-		                couldBeSwipe = false;
-		                break;
-		           
-		            case TouchPhase.Ended:
+		    	if (touch.position.y <= 885.0f && touch.position.y >= 500.0f)
+		    	{
+			        switch (touch.phase) 
+			        {
+			            case TouchPhase.Began:
+			            	//Debug.Log("Began Touch");
+			                couldBeSwipe = true;
+			                startPos = touch.position;
+			                startTime = Time.time;
+			                break;
+			           
+			            case TouchPhase.Moved:
+			            	//Debug.Log("Change From Horizontal: " + Mathf.Abs(touch.position.x - startPos.x));
 
-		                float swipeTime = Time.time - startTime;
-		                float swipeDist = (touch.position - startPos).magnitude;
+			                if (Mathf.Abs(touch.position.x - startPos.x) > comfortZone) {
+			                    couldBeSwipe = false;
+			                }
+			                break;
+			           
+			            case TouchPhase.Stationary:
+			                couldBeSwipe = false;
+			                break;
+			           
+			            case TouchPhase.Ended:
 
-		               // Debug.Log("End Swipe Time: " + swipeTime);
-		                //Debug.Log("End Swipe Distance: " + swipeDist);
-		               
-		                if (couldBeSwipe || (swipeTime < maxSwipeTime) || (swipeDist > minSwipeDist)) {
-		                    // It's a swiiiiiiiiiiiipe!
-		                    float swipeDirection = Mathf.Sign(touch.position.x - startPos.x);
-		                   
-		                    // Do something here in reaction to the swipe.
-		                    MoveLevelSlider(swipeDirection);
-		                }
+			                float swipeTime = Time.time - startTime;
+			                float swipeDist = (touch.position - startPos).magnitude;
 
-		                //after first swipe, set canSlideBoard true
-		                //doing this because a swipe is detected when pressing board select button. maybe change comfortZone val
-		            	if(!canSlideBoard) canSlideBoard = true;
+			               // Debug.Log("End Swipe Time: " + swipeTime);
+			                //Debug.Log("End Swipe Distance: " + swipeDist);
+			               
+			                if (couldBeSwipe || (swipeTime < maxSwipeTime) || (swipeDist > minSwipeDist)) {
+			                    // Acceptable Swipe Detected
+			                    float swipeDirection = Mathf.Sign(touch.position.x - startPos.x);
+			                   
+			                    MoveLevelSlider(swipeDirection);
+			                  	ChangePageIndicator();
+			                }
 
-		                break;
-		        }
+			                //after first swipe, set canSlideBoard true
+			                //doing this because a swipe is detected when pressing board select button. maybe change comfortZone val
+			            	if(!canSlideBoard) canSlideBoard = true;
+			                break;
+			        }
+			    }
 		    }
 		}
 	}
@@ -256,6 +277,14 @@ public class Menu : MonoBehaviour
 		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
 		currentSlidePosition = 0;
 
+		currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
+		Transform pages = currentBoard.transform.Find("Pages");
+		foreach (Transform page in pages)
+		{
+			currentBoardPages.Add(page);
+		}
+
+
 		List<GameObject> levelButtons = new List<GameObject>();
 		foreach (Transform child in boardToSlide.transform)
 		{
@@ -307,6 +336,8 @@ public class Menu : MonoBehaviour
 	void MoveLevelSlider (float slideDirection)
 	{
 		float boardXPosition = boardToSlide.transform.localPosition.x;
+
+		//If at either left or right end, can't slide
 		if( (boardXPosition == -375 && slideDirection > 0) || ( (boardXPosition == (-375 * totalSlidePositions)) && slideDirection < 0))
 		{
 			canSlideBoard = false;
@@ -314,14 +345,20 @@ public class Menu : MonoBehaviour
 
 		if (boardToSlide && canSlideBoard)
 		{
-			
-			//Debug.Log("Board X Pos: " + boardXPosition);
-			//if((currentSlidePosition >= 0 && slideDirection < 0) || currentSlidePosition <= totalSlidePositions && slideDirection > 0)
-			float newPositionX = (slideDirection > 0) ? boardToSlide.transform.localPosition.x + 375f : boardToSlide.transform.localPosition.x - 375f;
+			float newPositionX = (slideDirection > 0) ? boardToSlide.transform.localPosition.x + (375f*3) : boardToSlide.transform.localPosition.x - (375f*3);
 			boardToSlide.transform.localPosition = new Vector2(newPositionX, boardToSlide.transform.localPosition.y);
 
 			currentSlidePosition = (slideDirection > 0) ? currentSlidePosition + 1 : currentSlidePosition - 1;
 		}
+
+		//ChangePageIndicator();
+		Debug.Log("Current Slide Position: " + currentSlidePosition);
+	}
+
+	void ChangePageIndicator () 
+	{
+		Vector3 newPagePosition = currentBoardPages[(int)Mathf.Abs(currentSlidePosition)].position;
+		currentPageIndicator.transform.position = newPagePosition;
 	}
 
 	public void ShowVersusMenu ()
@@ -448,6 +485,7 @@ public class Menu : MonoBehaviour
 			{
 				HideBoards();
 				boardToSlide = null;
+				currentBoardPages.Clear();
 				totalSlidePositions = 0;
 				canSlideBoard = false;
 				boardSelectMenu.SetActive(true);
@@ -464,5 +502,7 @@ public class Menu : MonoBehaviour
 			HideMenus();
 			versusMainMenu.SetActive(true);
 		}
+
+		canUseSoftBack = true;
 	}
 }
