@@ -64,13 +64,21 @@ public class GameManager : MonoBehaviour
 		playerPoints += amount;
 	}
 
-	public int GetPlayerPoints ()
+	public static int GetPlayerPoints ()
 	{
 		return playerPoints;
 	}
 
+	public static int GetTotalPoints()
+	{
+		return totalPoints;
+	}
+
 	public static string PlayerWon ()
 	{
+		//Debug.Log("Half Total Points: " + Mathf.Ceil(totalPoints / 2));
+		//Debug.Log("Player Points: " + playerPoints);
+
 		if (playerPoints > Mathf.Ceil(totalPoints / 2))
 		{
 			return "W";

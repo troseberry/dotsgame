@@ -70,7 +70,7 @@ public class GameManagerTwoPlayer : MonoBehaviour
 		}
 	}
 
-	public int GetPlayerPoints (string player)
+	public static int GetPlayerPoints (string player)
 	{
 		if(player == "One")
 		{
@@ -87,8 +87,17 @@ public class GameManagerTwoPlayer : MonoBehaviour
 		
 	}
 
+	public static int GetTotalPoints ()
+	{
+		return totalPoints;
+	}
+
 	public static string PlayerWon ()
 	{
+		//Debug.Log("Half Total Points: " + Mathf.Ceil(totalPoints / 2));
+		//Debug.Log("Player One Points: " + playerOnePoints);
+		//Debug.Log("Player Two Points: " + playerTwoPoints);
+
 		if (playerOnePoints > Mathf.Ceil(totalPoints / 2))
 		{
 			return "W1";

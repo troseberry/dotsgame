@@ -75,13 +75,13 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 		rightBomb.SetActive(false);
 
 		star01 = step13.transform.Find("Star_01").gameObject;
-		star01.transform.GetChild(1).gameObject.SetActive(false);
+		star01.transform.GetChild(2).gameObject.SetActive(false);
 
 		star02 = step13.transform.Find("Star_02").gameObject;
-		star02.transform.GetChild(1).gameObject.SetActive(false);
+		star02.transform.GetChild(2).gameObject.SetActive(false);
 
 		star03 = step13.transform.Find("Star_03").gameObject;
-		star03.transform.GetChild(1).gameObject.SetActive(false);
+		star03.transform.GetChild(2).gameObject.SetActive(false);
 	}
 	
 	
@@ -225,18 +225,18 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 	{
 		if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.oneStarScore && TutorialGameManager.GetPlayerPoints() < TutorialGameManager.twoStarScore)
 		{
-			star01.transform.GetChild(1).gameObject.SetActive(true);
+			star01.transform.GetChild(2).gameObject.SetActive(true);
 		}
 		else if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.twoStarScore && TutorialGameManager.GetPlayerPoints() < TutorialGameManager.threeStarScore)
 		{
-			star01.transform.GetChild(1).gameObject.SetActive(true);
-			star02.transform.GetChild(1).gameObject.SetActive(true);
+			star01.transform.GetChild(2).gameObject.SetActive(true);
+			star02.transform.GetChild(2).gameObject.SetActive(true);
 		}
 		else if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.threeStarScore)
 		{
-			star01.transform.GetChild(1).gameObject.SetActive(true);
-			star02.transform.GetChild(1).gameObject.SetActive(true);
-			star03.transform.GetChild(1).gameObject.SetActive(true);
+			star01.transform.GetChild(2).gameObject.SetActive(true);
+			star02.transform.GetChild(2).gameObject.SetActive(true);
+			star03.transform.GetChild(2).gameObject.SetActive(true);
 		}
 	}
 }
