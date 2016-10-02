@@ -241,29 +241,53 @@ public class WinLoseMenu : MonoBehaviour
 				//winLoseText.text = "Board Complete";
 				boardCompleteImage.SetActive(true);
 				//Debug.Log("Won");
+				int newStarRating = 0;
 
 				if (CampaignGameManager.PlayerWon() == "S01")
 				{
 					star01.transform.GetChild(2).gameObject.SetActive(true);
+					
+					newStarRating = 1;
 				}
 				else if (CampaignGameManager.PlayerWon() == "S02")
 				{
 					star01.transform.GetChild(2).gameObject.SetActive(true);	
 					star02.transform.GetChild(2).gameObject.SetActive(true);
+					
+					newStarRating = 2;
 				}
 				else if (CampaignGameManager.PlayerWon() == "S03")
 				{
 					star01.transform.GetChild(2).gameObject.SetActive(true);
 					star02.transform.GetChild(2).gameObject.SetActive(true);
 					star03.transform.GetChild(2).gameObject.SetActive(true);	
+
+					newStarRating = 3;
 				}
 
 				//if playing from main menu, substring should start at 37. If directly from level, 12
 				string sceneName = SceneManager.GetActiveScene().name;
-				//Debug.Log("Current Scene Name: "+ SceneManager.GetActiveScene().name);
-				//Debug.Log("Completed Level #: " + sceneName.Substring(37, sceneName.Length - 37));
-				CampaignData.SetLevelStatus(sceneName.Substring(37, sceneName.Length - 37), true);
-				
+				string levelName = sceneName.Substring(37, sceneName.Length - 37);
+
+				//if level has never been completed before, update all stats
+				if (!CampaignData.GetLevelStatus(levelName))
+				{
+					CampaignData.UpdateLevelStatus(levelName, true, newStarRating, CampaignGameManager.GetPlayerPoints());
+				}
+				else
+				{
+					LevelStats currentLevelStats = CampaignData.GetFullLevelStatus(levelName);
+					if (currentLevelStats.starRating < newStarRating)
+					{
+						CampaignData.UpdateLevelStatus(levelName, currentLevelStats.isComplete, newStarRating, currentLevelStats.bestScore);
+					}
+
+					if (currentLevelStats.bestScore < CampaignGameManager.GetPlayerPoints())
+					{
+						CampaignData.UpdateLevelStatus(levelName, currentLevelStats.isComplete, currentLevelStats.starRating, CampaignGameManager.GetPlayerPoints());
+					}
+				}
+
 				if(!didSave)
 				{
 					SaveLoad.Save();

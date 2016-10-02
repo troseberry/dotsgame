@@ -294,15 +294,44 @@ public class Menu : MonoBehaviour
 		//GameObject[] levelButtons = GameObject.FindGameObjectsWithTag("LevelButton");
 		foreach (GameObject btn in levelButtons)
 		{
+			//Handle Transparency
 			string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
 			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
 			string prevLevelName = lvlNum.Substring(0, 1) + "-" + prevLevel;
 			//Debug.Log(prevLevel);
 
+			int levelStarRating = CampaignData.GetFullLevelStatus(lvlNum).starRating;
+
+
+			//If level completed
 			if (CampaignData.GetLevelStatus(lvlNum))
 			{
 				//Debug.Log("Level Button Stuff:" + lvlNum);
 				btn.transform.Find("CheckMark").gameObject.SetActive(true);
+
+				if(levelStarRating == 1)
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("1Star").gameObject.SetActive(true);
+				}
+				else if(levelStarRating == 2)
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("2Stars").gameObject.SetActive(true);
+				}
+				else if(levelStarRating == 3)
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("3Stars").gameObject.SetActive(true);
+				}
+				else
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("1Star").gameObject.SetActive(false);
+					btn.transform.Find("2Stars").gameObject.SetActive(false);
+					btn.transform.Find("3Stars").gameObject.SetActive(false);
+				}
+
 			}
 
 			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))
@@ -327,6 +356,10 @@ public class Menu : MonoBehaviour
 				textTemp.a = 1f;
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
+
+
+
+
 		}
 
 

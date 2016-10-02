@@ -11,7 +11,9 @@ public class CampaignData : MonoBehaviour
 
 	
 	//private static Dictionary<string, bool> boardOneLevels = new Dictionary<string, bool>();
-	private static Dictionary<string, bool> allBoardLevels = new Dictionary<string, bool>();
+	//private static Dictionary<string, bool> allBoardLevels = new Dictionary<string, bool>();
+
+	private static Dictionary<string, LevelStats> allBoardLevels = new Dictionary<string, LevelStats>();
 
 
 	//private List<string> boardOneLevelNames = new List<string>();
@@ -20,24 +22,6 @@ public class CampaignData : MonoBehaviour
 
 	void Start ()
 	{
-		//can also iterate through gameObjects tagged with LevelButton - this currently might only work for first group of board buttons
-
-		/*GameObject parent = levelsGroup;
-		while (parent.getChild[0].gameObject.tag != "LevelButton")
-		{
-			parent = parent.getChild[0].gameobject;
-		}*/
-
-		/*foreach (Transform child in parent)
-		{
-			if (child.gameObject.tag == "LevelButton")
-			{
-				add to dictionary
-			}
-		}*/
-		//lastScene = "";
-
-
 		allBoardLevelNames.Add("1-1");
 		allBoardLevelNames.Add("1-2");
 		allBoardLevelNames.Add("1-3");
@@ -104,7 +88,8 @@ public class CampaignData : MonoBehaviour
 		{
 			if (!allBoardLevels.ContainsKey(lvlName))
 			{
-				allBoardLevels.Add(lvlName, false);
+				//allBoardLevels.Add(lvlName, false);
+				allBoardLevels.Add(lvlName, new LevelStats(false, 0, 0));
 			}
 		}
 		
@@ -161,41 +146,60 @@ public class CampaignData : MonoBehaviour
 		finishedTutorial = status;
 	}
 
+
+
 	public static bool GetLevelStatus (string levelName)
 	{
-		/*if (levelName == "boardOneLevelOne") 
-		{
-			return boardOneLevelOne;
-		}
-		else
-		{
-			return false;
-		}*/
+		//return allBoardLevels[levelName];
+		return allBoardLevels[levelName].isComplete;
+	}
 
+	public static LevelStats GetFullLevelStatus (string levelName)
+	{
 		return allBoardLevels[levelName];
 	}
 
+
 	public static void SetLevelStatus (string levelName, bool status)
 	{
-		/*if (levelName == "boardOneLevelOne")
-		{
-			boardOneLevelOne = status;
-		}*/
-
 		//Debug.Log("Input Level Name: " + levelName);
 
-		allBoardLevels[levelName] = status;
+		allBoardLevels[levelName].isComplete = status;
 	}
 
-	public static Dictionary<string, bool> GetAllLevelsDictionary ()
+	public static void UpdateLevelStatus (string levelName, bool status, int rating, int score)
+	{
+		allBoardLevels[levelName].UpdateStats(status, rating, score);
+	}
+
+
+
+	/*public static Dictionary<string, bool> GetAllLevelsDictionary ()
+	{
+		return allBoardLevels;
+	}*/
+
+	public static Dictionary<string, LevelStats> GetAllLevelsDictionary ()
 	{
 		return allBoardLevels;
 	}
 
-	public static void SetAllLevelsDictionary (Dictionary<string, bool> toSet)
+
+
+
+
+	/*public static void SetAllLevelsDictionary (Dictionary<string, bool> toSet)
+	{
+		allBoardLevels = toSet;
+	}*/
+
+	public static void SetAllLevelsDictionary (Dictionary<string, LevelStats> toSet)
 	{
 		allBoardLevels = toSet;
 	}
+
+
+
 
 
 	public static void SetLastScene (string name)
