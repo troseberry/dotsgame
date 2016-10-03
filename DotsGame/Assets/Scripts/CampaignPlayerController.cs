@@ -17,7 +17,7 @@ public class CampaignPlayerController : MonoBehaviour
 
 	private Vector3 endDrawPosition;
 
-	private static string currentPowerUp;
+	//private static string currentPowerUp;
 
 	private static GameObject bombButton;
 	private bool canUseBomb;
@@ -64,7 +64,7 @@ public class CampaignPlayerController : MonoBehaviour
 			if (lineToDraw) lineToDraw = null;
 		}
 
-		if(!CampaignGameManager.isPlayerTurn) 
+		if(!CampaignGameManager.Instance.isPlayerTurn) 
 		{
 			canUseBomb = false;
 			canUseThiefToken = false;
@@ -74,7 +74,7 @@ public class CampaignPlayerController : MonoBehaviour
 
 	public void PlayerDrawLine () 
 	{
-		if(CampaignGameManager.isPlayerTurn && !CampaignGameManager.RoundOver())
+		if(CampaignGameManager.Instance.isPlayerTurn && !CampaignGameManager.Instance.RoundOver())
 		{
 			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
@@ -122,10 +122,11 @@ public class CampaignPlayerController : MonoBehaviour
 				}
 				if (playerChoice.boxParentTwo.IsComplete()) playerChoice.boxParentTwo.SetOwner("CampaignPlayer");
 
-				
+				playerChoice.isOpen = false;
+
 				//Determine whose turn is next
-				CampaignGameManager.isPlayerTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
-				playerChoice.isOpen = false;		
+				CampaignGameManager.Instance.isPlayerTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
+						
 			}
 		}		
 	}
@@ -144,13 +145,13 @@ public class CampaignPlayerController : MonoBehaviour
 
 	public void ToggleBomb ()			//attach to powerup button
 	{
-		if (CampaignGameManager.isPlayerTurn) canUseBomb = !canUseBomb;
+		if (CampaignGameManager.Instance.isPlayerTurn) canUseBomb = !canUseBomb;
 	}
 
 	//Bomb PowerUp
 	public void DestroyStaticLine ()			//attach to static line buttons
 	{
-		if(canUseBomb && !CampaignGameManager.RoundOver())
+		if(canUseBomb && !CampaignGameManager.Instance.RoundOver())
 		{
 			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
@@ -191,7 +192,7 @@ public class CampaignPlayerController : MonoBehaviour
 	//Thief Token PowerUp	
 	public void ToggleThiefToken ()			//attach to powerup button
 	{
-		if (CampaignGameManager.isPlayerTurn) canUseThiefToken = !canUseThiefToken;
+		if (CampaignGameManager.Instance.isPlayerTurn) canUseThiefToken = !canUseThiefToken;
 	}
 	public void UseThiefToken ()				//attach to boxObject. (give box objects button components)
 	{

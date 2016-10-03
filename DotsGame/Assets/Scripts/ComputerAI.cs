@@ -45,10 +45,8 @@ public class ComputerAI : MonoBehaviour
 			boxObjects.Add(child.GetComponent<Box>());
 		}
 
-
 		//mode = SceneManager.GetActiveScene().name.Contains("Campaign") ? "campaign" : "versus";
 
-		
 		if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
 		{
 			mode = "tutorial";
@@ -65,16 +63,55 @@ public class ComputerAI : MonoBehaviour
 			}
 		}
 
+		_Dynamic = GameObject.Find("_Dynamic");
+		
+	}
+
+	/*
+	void OnLevelWasLoaded () 
+	{
+		computerLine = (GameObject) Resources.Load("ComputerLine");
+		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
+
+		canDraw = false;
+		drawingTime = 0f;
+
+		placing = false;
+
+		GameObject[] boxHolder = GameObject.FindGameObjectsWithTag("Box");
+		foreach (GameObject child in boxHolder)
+		{
+			boxObjects.Add(child.GetComponent<Box>());
+		}
+
+		//mode = SceneManager.GetActiveScene().name.Contains("Campaign") ? "campaign" : "versus";
+
+		if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+		{
+			mode = "tutorial";
+		}
+		else
+		{
+			if (SceneManager.GetActiveScene().name.Contains("Campaign"))
+			{
+				mode = "campaign";
+			}
+			else
+			{
+				mode = "versus";
+			}
+		}
 
 		_Dynamic =  GameObject.Find("_Dynamic");
 		
 	}
+	*/
 	
 	
 	void Update () 
 	{
 		bool versusConditions = !GameManager.isPlayerTurn && !placing && !GameManager.RoundOver();
-		bool campaignConditions = !CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver();
+		bool campaignConditions = !CampaignGameManager.Instance.isPlayerTurn && !placing && !CampaignGameManager.Instance.RoundOver();
 		bool tutorialConditions = !TutorialGameManager.isPlayerTurn && !placing && !TutorialGameManager.RoundOver();
 
 		//if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
@@ -135,6 +172,7 @@ public class ComputerAI : MonoBehaviour
 					if (line.isOpen) 
 					{
 						toPlace = line;
+						//Debug.Log("Computer Placing Last Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
 						return toPlace;
 					}
 				}
@@ -159,6 +197,7 @@ public class ComputerAI : MonoBehaviour
 						if (parentOne.SidesLeftOpen() >= 3 && parentTwo.SidesLeftOpen() >= 3)
 						{
 							toPlace = line;
+							//Debug.Log("Computer Placing 1st or 2nd Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
 							return toPlace;
 						}
 					}
@@ -176,8 +215,8 @@ public class ComputerAI : MonoBehaviour
 		}
 		else if (mode == "campaign")
 		{
-			int randomPlace = UnityEngine.Random.Range(0, CampaignGameManager.lineObjects.Count);
-			toPlace = CampaignGameManager.lineObjects.ElementAt(randomPlace);
+			int randomPlace = UnityEngine.Random.Range(0, CampaignGameManager.Instance.lineObjects.Count);
+			toPlace = CampaignGameManager.Instance.lineObjects.ElementAt(randomPlace);
 		}
 		else if (mode == "tutorial")
 		{
@@ -188,6 +227,7 @@ public class ComputerAI : MonoBehaviour
 
 		if (toPlace.isOpen)
 		{
+			//Debug.Log("Computer Placing 3rd Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
 			return toPlace;
 		}
 		else
@@ -239,7 +279,7 @@ public class ComputerAI : MonoBehaviour
 		}
 		else if (mode == "campaign")
 		{
-			CampaignGameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+			CampaignGameManager.Instance.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
 		}
 		else if (mode == "tutorial")
 		{

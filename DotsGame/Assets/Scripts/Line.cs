@@ -19,9 +19,13 @@ public class Line : MonoBehaviour
 
 	public bool isStatic;
 	private bool calledAdd;
+
+	public string lineName;
 	
 	void Start () 
 	{
+		lineName = transform.parent.transform.parent.name;
+
 
 		isOpen = isStatic ? false : true;
 		calledAdd = false;
@@ -118,10 +122,11 @@ public class Line : MonoBehaviour
 			boxParentTwo = GameObject.Find("Box_" + secondBoxNumber).GetComponent<Box>();
 		}
 	}
-	
+		
 	
 	void Update () 
 	{
+		//DebugPanel.Log(transform.parent.transform.parent.name + " is Open: ", isOpen);
 		if(!calledAdd)
 		{
 			boxParentOne.AddLineToBox(this);

@@ -14,6 +14,12 @@ public class PauseMenu : MonoBehaviour
 		pauseMenu.enabled = false;
 	}
 
+	void OnLevelWasLoaded () 
+	{
+		pauseMenu = GameObject.Find("PauseMenuCanvas").GetComponent<Canvas>();
+		pauseMenu.enabled = false;
+	}
+
 	void Update ()
 	{
 		//Android Soft Back Button Handling
@@ -30,7 +36,8 @@ public class PauseMenu : MonoBehaviour
 
 	public void ResetLevel ()
 	{
-		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex);
+		//single means the previous (i.e. current) scene is completely unloaded before reloading
+		SceneManager.LoadScene (SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
 	}
 
 	public void LoadMainMenu ()

@@ -137,7 +137,7 @@ public class WinLoseMenu : MonoBehaviour
 			ShowOutcomeText(mode);
 		}*/
 
-		if ((gameManagerRef && GameManager.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.RoundOver()) )
+		if ((gameManagerRef && GameManager.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.Instance.RoundOver()) )
 		{
 			Invoke("ShowWinLoseMenu", 1.25f);
 			ShowOutcomeText(mode);
@@ -230,7 +230,7 @@ public class WinLoseMenu : MonoBehaviour
 		}
 		else if (mode == "campaign")
 		{
-			if (CampaignGameManager.PlayerWon() == "L")
+			if (CampaignGameManager.Instance.PlayerWon() == "L")
 			{
 				//winLoseText.text = "Board Failed";
 				boardFailedImage.SetActive(true);
@@ -243,20 +243,20 @@ public class WinLoseMenu : MonoBehaviour
 				//Debug.Log("Won");
 				int newStarRating = 0;
 
-				if (CampaignGameManager.PlayerWon() == "S01")
+				if (CampaignGameManager.Instance.PlayerWon() == "S01")
 				{
 					star01.transform.GetChild(2).gameObject.SetActive(true);
 					
 					newStarRating = 1;
 				}
-				else if (CampaignGameManager.PlayerWon() == "S02")
+				else if (CampaignGameManager.Instance.PlayerWon() == "S02")
 				{
 					star01.transform.GetChild(2).gameObject.SetActive(true);	
 					star02.transform.GetChild(2).gameObject.SetActive(true);
 					
 					newStarRating = 2;
 				}
-				else if (CampaignGameManager.PlayerWon() == "S03")
+				else if (CampaignGameManager.Instance.PlayerWon() == "S03")
 				{
 					star01.transform.GetChild(2).gameObject.SetActive(true);
 					star02.transform.GetChild(2).gameObject.SetActive(true);
@@ -274,7 +274,7 @@ public class WinLoseMenu : MonoBehaviour
 				//if level has never been completed before, update all stats
 				if (!CampaignData.GetLevelStatus(levelName))
 				{
-					CampaignData.UpdateLevelStatus(levelName, true, newStarRating, CampaignGameManager.GetPlayerPoints());
+					CampaignData.UpdateLevelStatus(levelName, true, newStarRating, CampaignGameManager.Instance.GetPlayerPoints());
 				}
 				else
 				{
@@ -284,9 +284,9 @@ public class WinLoseMenu : MonoBehaviour
 						CampaignData.UpdateLevelStatus(levelName, currentLevelStats.isComplete, newStarRating, currentLevelStats.bestScore);
 					}
 
-					if (currentLevelStats.bestScore < CampaignGameManager.GetPlayerPoints())
+					if (currentLevelStats.bestScore < CampaignGameManager.Instance.GetPlayerPoints())
 					{
-						CampaignData.UpdateLevelStatus(levelName, currentLevelStats.isComplete, currentLevelStats.starRating, CampaignGameManager.GetPlayerPoints());
+						CampaignData.UpdateLevelStatus(levelName, currentLevelStats.isComplete, currentLevelStats.starRating, CampaignGameManager.Instance.GetPlayerPoints());
 					}
 				}
 
@@ -296,7 +296,7 @@ public class WinLoseMenu : MonoBehaviour
 					didSave = true;
 				}
 			}
-			scoreNumber.text = "" + CampaignGameManager.GetPlayerPoints();
+			scoreNumber.text = "" + CampaignGameManager.Instance.GetPlayerPoints();
 		}
 		
 	}

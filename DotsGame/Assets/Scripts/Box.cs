@@ -71,11 +71,14 @@ public class Box : MonoBehaviour
 			heldPowerUp = null;
 		}
 	}
-	
-	
+		
 	void Update () 
 	{
-		DebugPanel.Log(name + " Side Count: ", sideCount);
+		//DebugPanel.Log(name + " Sides Left Open: ", SidesLeftOpen());
+
+		//DebugPanel.Log(name + " Is Claimed: ", claimed);
+		//DebugPanel.Log(name + " Owner: ", owner);
+		//DebugPanel.Log(name + " Is Complete: ", IsComplete());
 
 		if (IsComplete() && owner != "" && !claimed)
 		{
@@ -178,7 +181,7 @@ public class Box : MonoBehaviour
 			}
 			else
 			{
-				CampaignGameManager.UpdatePlayerPoints(pointsAwarded);
+				CampaignGameManager.Instance.UpdatePlayerPoints(pointsAwarded);
 			}
 
 			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
@@ -243,7 +246,7 @@ public class Box : MonoBehaviour
 				if (line.owner == "Player") pointsAwarded++;
 
 			}
-			CampaignGameManager.UpdatePlayerPoints(pointsAwarded);
+			CampaignGameManager.Instance.UpdatePlayerPoints(pointsAwarded);
 			//AwardPoint();
 		}
 		else if (owner == "CampaginPlayer" || owner == "Player")
@@ -254,7 +257,7 @@ public class Box : MonoBehaviour
 			{
 				if (line.owner == "Player") pointsSubtracted--;
 			}
-			CampaignGameManager.UpdatePlayerPoints(pointsSubtracted);
+			CampaignGameManager.Instance.UpdatePlayerPoints(pointsSubtracted);
 		}
 	}
 
