@@ -1015,6 +1015,11 @@ Prefab:
       propertyPath: isStatic
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114000012064788276, guid: d396ade33f4a94f939a429fb4383a7cd,
+        type: 2}
+      propertyPath: isStatic
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d396ade33f4a94f939a429fb4383a7cd, type: 2}
   m_IsPrefabParent: 0

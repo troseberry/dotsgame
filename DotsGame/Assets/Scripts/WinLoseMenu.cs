@@ -265,9 +265,11 @@ public class WinLoseMenu : MonoBehaviour
 					newStarRating = 3;
 				}
 
-				//if playing from main menu, substring should start at 37. If directly from level, 12
 				string sceneName = SceneManager.GetActiveScene().name;
-				string levelName = sceneName.Substring(37, sceneName.Length - 37);
+				string levelName = sceneName.Split('_')[1];
+
+				//Debug.Log("Scene Name: " + sceneName);
+				//Debug.Log("Level Name: " + levelName);
 
 				//if level has never been completed before, update all stats
 				if (!CampaignData.GetLevelStatus(levelName))

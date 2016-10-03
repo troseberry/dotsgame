@@ -90,7 +90,7 @@ public class Menu : MonoBehaviour
 
 		devOptionTapCount = 0;
 
-		comfortZone = 5.0f;
+		comfortZone = 50.0f;
 		minSwipeDist = 90.0f;
 		maxSwipeTime = 2.0f;
 
@@ -119,15 +119,10 @@ public class Menu : MonoBehaviour
 				Debug.Log("Mouse Position: " + Input.mousePosition);
 			}*/
 
-			
-
 			if (Input.touchCount > 0) {
 		        Touch touch = Input.touches[0];
 		        
-		    	//bool topSection = touch.position.y <= 1150.0f && touch.position.y >= 885.0f;
-				//bool bottomSection = touch.position.y <= 500.0f && touch.position.y >= 230.0f;
 		    	//if swipe is near levelslider 
-
 		    	if (touch.position.y <= 885.0f && touch.position.y >= 500.0f)
 		    	{
 			        switch (touch.phase) 
