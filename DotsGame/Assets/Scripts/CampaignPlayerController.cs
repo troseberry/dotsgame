@@ -55,14 +55,24 @@ public class CampaignPlayerController : MonoBehaviour
 			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
+		
+			
+			if (lineToDraw.transform.localScale.x >= 0.9f/*drawingTime >= 0.5f*/)
+			{
+				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				drawingTime = 0f;
+				canDraw = false;
+				if (lineToDraw) lineToDraw = null;
+			}
 		}
 
-		if (drawingTime >= 0.5f)
+		/*if (drawingTime >= 0.5f)
 		{
+			lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
 			drawingTime = 0f;
 			canDraw = false;
 			if (lineToDraw) lineToDraw = null;
-		}
+		}*/
 
 		if(!CampaignGameManager.Instance.isPlayerTurn) 
 		{

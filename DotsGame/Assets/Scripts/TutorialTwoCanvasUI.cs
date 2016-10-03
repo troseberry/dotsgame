@@ -32,6 +32,8 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 	private GameObject star02;
 	private GameObject star03;
 
+	private Text scoreNumber;
+
 	void Start () 
 	{
 		Instance = this;
@@ -65,6 +67,8 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 
 		star03 = step9.transform.Find("Star_03").gameObject;
 		star03.transform.GetChild(2).gameObject.SetActive(false);
+
+		scoreNumber = step9.transform.Find("ScoreNumber").GetComponent<Text>();
 	}
 	
 	
@@ -182,5 +186,10 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 			star02.transform.GetChild(2).gameObject.SetActive(true);
 			star03.transform.GetChild(2).gameObject.SetActive(true);
 		}
+		else
+		{
+			//If player fails tutorial board, can reset and make the current step 7
+		}
+		scoreNumber.text = "" + TutorialGameManager.GetPlayerPoints();
 	}
 }

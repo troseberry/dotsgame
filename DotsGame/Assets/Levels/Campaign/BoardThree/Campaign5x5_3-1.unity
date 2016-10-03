@@ -1008,6 +1008,61 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: -56.6
       objectReference: {fileID: 0}
+    - target: {fileID: 212000011033573920, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000012385006408, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000013415107020, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000011405345074, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000010558410804, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000013145020724, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000012292868388, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000014280744322, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000012639279548, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000010934050942, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212000011859738380, guid: e3e975d23dd7d47aaa5b860358722010,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e3e975d23dd7d47aaa5b860358722010, type: 2}
   m_IsPrefabParent: 0
@@ -1193,6 +1248,11 @@ Prefab:
         type: 2}
       propertyPath: m_SortingOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010119918644, guid: 7418c3022ab114963a6d32c1caf5558f,
+        type: 2}
+      propertyPath: m_Text
+      value: Board 3-1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7418c3022ab114963a6d32c1caf5558f, type: 2}
@@ -1556,7 +1616,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ef4bb9b4db4479c81bd6cc908e8e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineObjects: []
   gameSpaceCanvas: {fileID: 0}
+  isPlayerTurn: 0
 --- !u!1 &1645144506
 GameObject:
   m_ObjectHideFlags: 0

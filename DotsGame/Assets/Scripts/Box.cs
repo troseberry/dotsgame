@@ -193,7 +193,7 @@ public class Box : MonoBehaviour
 		}
 		else if (owner == "Player")
 		{
-			GameManager.UpdatePlayerPoints(1);
+			GameManager.Instance.UpdatePlayerPoints(1);
 			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerChip";
 			chip.transform.localScale = ownerChipScale;
@@ -207,14 +207,14 @@ public class Box : MonoBehaviour
 		}
 		else if (owner == "PlayerOne")
 		{
-			GameManagerTwoPlayer.UpdatePlayerPoints("One", 1);
+			GameManagerTwoPlayer.Instance.UpdatePlayerPoints("One", 1);
 			chip = (GameObject) Instantiate(playerOneChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerOneChip";
 			chip.transform.localScale = ownerChipScale;
 		}
 		else if (owner == "PlayerTwo")
 		{
-			GameManagerTwoPlayer.UpdatePlayerPoints("Two", 1);
+			GameManagerTwoPlayer.Instance.UpdatePlayerPoints("Two", 1);
 			chip = (GameObject) Instantiate(playerTwoChip, transform.position, playerChip.transform.rotation);
 			chip.name = "PlayerTwoChip";
 			chip.transform.localScale = ownerChipScale;

@@ -10,7 +10,7 @@ using System.Collections;
 public class LevelSetupWindow : EditorWindow
 {
     private static string inputedLineList;
-    private bool updatedStaticLinesList;
+    private static string inputedBoardTitle;
 
 	[MenuItem("Tools/LevelSetup")]
     public static void ShowWindow ()
@@ -20,10 +20,6 @@ public class LevelSetupWindow : EditorWindow
 
     void OnGUI ()
     {
-        updatedStaticLinesList = false;
-        //LevelSetup.LineIsStatic = EditorGUILayout.Toggle("Line Is Static", LevelSetup.LineIsStatic);
-        //EditorGUILayout.IntField("Player Lives", 3);
-        //EditorGUILayout.TextField("Player Two Name", "John");
         EditorGUILayout.Space();
         
         GUILayout.BeginHorizontal();
@@ -58,6 +54,23 @@ public class LevelSetupWindow : EditorWindow
         }
         //GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
+
+
+        EditorGUILayout.Space();
+
+
+        /*GUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Board Title:", GUILayout.Width(50));
+        inputedBoardTitle = EditorGUILayout.TextField(inputedBoardTitle);
+        GUILayout.EndHorizontal();*/
+
+        /*GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Set Board Title", GUILayout.Width(150), GUILayout.Height(15)))
+        {
+            SetBoardTitle();
+        }
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();*/
 
 
     }
@@ -113,6 +126,7 @@ public class LevelSetupWindow : EditorWindow
                 current.transform.GetComponentInChildren<Line>().isStatic = true;
             }
         }
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
     }
 
     public static void UnmarkLinesAsStatic ()
@@ -134,5 +148,33 @@ public class LevelSetupWindow : EditorWindow
                 current.transform.GetComponentInChildren<Line>().isStatic = false;
             }
         }
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
     }
+
+
+   /* public static void SetBoardTitle ()
+    {
+        Text boardTitleText = GameObject.Find("LevelTitle").GetComponentInChildren<Text>();
+
+        string sceneName = EditorSceneManager.GetActiveScene().name;
+        string toNameBoard = sceneName.Split('_')[1];
+
+        Debug.Log(toNameBoard);
+
+        //boardTitleText.text = "Board " + toNameBoard;
+
+        //EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+
+
+        SerializedObject serialzedBoardTitleText = new UnityEditor.SerializedObject(boardTitleText);
+        SerializedProperty serialzedToNameBoard = serialzedBoardTitleText.FindProperty("text");
+
+        Debug.Log("Serialized Property Exists: " + serialzedToNameBoard);
+
+        serialzedToNameBoard.stringValue = toNameBoard;
+
+        //serialzedBoardTitleText.Update();
+        serialzedBoardTitleText.ApplyModifiedProperties();
+        
+    }*/
 }

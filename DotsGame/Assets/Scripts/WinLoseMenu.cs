@@ -36,6 +36,8 @@ public class WinLoseMenu : MonoBehaviour
 	//private Text timeNumber;
 
 	private bool didSave;
+
+	private GameObject nextLevelButton;
 	
 	void Start () 
 	{
@@ -90,6 +92,8 @@ public class WinLoseMenu : MonoBehaviour
 			scoreNumber = transform.Find("ScoreNumber").GetComponent<Text>();
 			scoreNumber.text = "";
 
+			nextLevelButton =  transform.Find("NextLevelButton").gameObject;
+
 		}
 		if(gameManagerObj.GetComponent<GameManager>())
 		{
@@ -110,15 +114,7 @@ public class WinLoseMenu : MonoBehaviour
 			p2ScoreNumber = transform.Find("P2ScoreNumber").GetComponent<Text>();
 			p2ScoreNumber.text = "";
 		}
-
-
-
 		
-
-
-		
-
-
 
 		Debug.Log(CampaignData.GetAllLevelsDictionary());
 		didSave = false;
@@ -137,7 +133,7 @@ public class WinLoseMenu : MonoBehaviour
 			ShowOutcomeText(mode);
 		}*/
 
-		if ((gameManagerRef && GameManager.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.Instance.RoundOver()) )
+		if ((gameManagerRef && GameManager.Instance.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.Instance.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.Instance.RoundOver()) )
 		{
 			Invoke("ShowWinLoseMenu", 1.25f);
 			ShowOutcomeText(mode);
@@ -171,9 +167,9 @@ public class WinLoseMenu : MonoBehaviour
 	{
 		if (mode == "classic")
 		{
-			scoreNumber.text = GameManager.GetPlayerPoints() + " / " + GameManager.GetTotalPoints();
+			scoreNumber.text = GameManager.Instance.GetPlayerPoints() + " / " + GameManager.Instance.GetTotalPoints();
 
-			if (GameManager.PlayerWon() == "W")
+			if (GameManager.Instance.PlayerWon() == "W")
 			{
 				//Debug.Log("Game Won");
 				gameWonImage.SetActive(true);
@@ -181,7 +177,7 @@ public class WinLoseMenu : MonoBehaviour
 				gameLostImage.SetActive(false);
 				drawImage.SetActive(false);	
 			}
-			else if (GameManager.PlayerWon() == "L")
+			else if (GameManager.Instance.PlayerWon() == "L")
 			{
 				//Debug.Log("Game Lost");
 				gameLostImage.SetActive(true);
@@ -200,7 +196,7 @@ public class WinLoseMenu : MonoBehaviour
 		}
 		else if (mode == "2player")
 		{
-			if (GameManagerTwoPlayer.PlayerWon() == "W1")
+			if (GameManagerTwoPlayer.Instance.PlayerWon() == "W1")
 			{
 				//Debug.Log("P1 Wins");
 				playerOneWinsImage.SetActive(true);
@@ -208,7 +204,7 @@ public class WinLoseMenu : MonoBehaviour
 				playerTwoWinsImage.SetActive(false);
 				drawImage.SetActive(false);
 			}
-			else if (GameManagerTwoPlayer.PlayerWon() == "W2")
+			else if (GameManagerTwoPlayer.Instance.PlayerWon() == "W2")
 			{
 				//Debug.Log("P2 Wins");
 				playerTwoWinsImage.SetActive(true);
@@ -225,8 +221,8 @@ public class WinLoseMenu : MonoBehaviour
 				playerTwoWinsImage.SetActive(false);
 			}
 
-			p1ScoreNumber.text = GameManagerTwoPlayer.GetPlayerPoints("One") + " / " + GameManagerTwoPlayer.GetTotalPoints();
-			p2ScoreNumber.text = GameManagerTwoPlayer.GetPlayerPoints("Two") + " / " + GameManagerTwoPlayer.GetTotalPoints();
+			p1ScoreNumber.text = GameManagerTwoPlayer.Instance.GetPlayerPoints("One") + " / " + GameManagerTwoPlayer.Instance.GetTotalPoints();
+			p2ScoreNumber.text = GameManagerTwoPlayer.Instance.GetPlayerPoints("Two") + " / " + GameManagerTwoPlayer.Instance.GetTotalPoints();
 		}
 		else if (mode == "campaign")
 		{
@@ -234,13 +230,29 @@ public class WinLoseMenu : MonoBehaviour
 			{
 				//winLoseText.text = "Board Failed";
 				boardFailedImage.SetActive(true);
+				boardCompleteImage.SetActive(false);
 				//Debug.Log("Lost");
+
+				Color temp = nextLevelButton.GetComponent<RawImage>().color;
+				temp.a = 0.5f;
+				nextLevelButton.GetComponent<RawImage>().color = temp;
+
+				nextLevelButton.GetComponent<Button>().enabled = false;
 			}
 			else
 			{
 				//winLoseText.text = "Board Complete";
 				boardCompleteImage.SetActive(true);
+				boardFailedImage.SetActive(false);
 				//Debug.Log("Won");
+
+				Color temp = nextLevelButton.GetComponent<RawImage>().color;
+				temp.a = 1f;
+				nextLevelButton.GetComponent<RawImage>().color = temp;
+
+				nextLevelButton.GetComponent<Button>().enabled = true;
+
+
 				int newStarRating = 0;
 
 				if (CampaignGameManager.Instance.PlayerWon() == "S01")

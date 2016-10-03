@@ -383,6 +383,21 @@ public class Menu : MonoBehaviour
 		Debug.Log("Current Slide Position: " + currentSlidePosition);
 	}
 
+	public void ButtonLeftSlide ()
+	{
+		canSlideBoard = true;
+		MoveLevelSlider(1f);
+	}
+
+	public void ButtonRightSlide ()
+	{
+		canSlideBoard = true;
+		MoveLevelSlider(-1f);
+	}
+
+
+
+
 	void ChangePageIndicator () 
 	{
 		Vector3 newPagePosition = currentBoardPages[(int)Mathf.Abs(currentSlidePosition)].position;

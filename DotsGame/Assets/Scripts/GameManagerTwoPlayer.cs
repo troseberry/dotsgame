@@ -5,21 +5,25 @@ using System.Collections.Generic;
 
 public class GameManagerTwoPlayer : MonoBehaviour 
 {
-	public static List<Line> lineObjects = new List<Line>();
+	public static GameManagerTwoPlayer Instance;
+
+	public List<Line> lineObjects = new List<Line>();
 
 	public Canvas gameSpaceCanvas;
 
-	public static bool isPlayerOneTurn;
-	public static bool isPlayerTwoTurn;
+	public bool isPlayerOneTurn;
+	public bool isPlayerTwoTurn;
 
-	private static int playerOnePoints;
-	private static int playerTwoPoints;
+	private int playerOnePoints;
+	private int playerTwoPoints;
 	//private Text playerPointsText;
 
-	private static int totalPoints;
+	private int totalPoints;
 	
 	void Start () 
 	{
+		Instance = this;
+
 		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
 		foreach (GameObject child in holder)
 		{
@@ -49,7 +53,7 @@ public class GameManagerTwoPlayer : MonoBehaviour
 		DebugPanel.Log("Player Two's Points: ", GetPlayerPoints("Two"));
 	}
 
-	public static bool RoundOver ()
+	public bool RoundOver ()
 	{
 		foreach (Line obj in lineObjects)
 		{
@@ -58,7 +62,7 @@ public class GameManagerTwoPlayer : MonoBehaviour
 		return true;
 	}
 
-	public static void UpdatePlayerPoints (string player, int amount)
+	public void UpdatePlayerPoints (string player, int amount)
 	{
 		if(player == "One")
 		{
@@ -70,7 +74,7 @@ public class GameManagerTwoPlayer : MonoBehaviour
 		}
 	}
 
-	public static int GetPlayerPoints (string player)
+	public int GetPlayerPoints (string player)
 	{
 		if(player == "One")
 		{
@@ -87,12 +91,12 @@ public class GameManagerTwoPlayer : MonoBehaviour
 		
 	}
 
-	public static int GetTotalPoints ()
+	public int GetTotalPoints ()
 	{
 		return totalPoints;
 	}
 
-	public static string PlayerWon ()
+	public string PlayerWon ()
 	{
 		//Debug.Log("Half Total Points: " + Mathf.Ceil(totalPoints / 2));
 		//Debug.Log("Player One Points: " + playerOnePoints);

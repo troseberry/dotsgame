@@ -312,6 +312,11 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114000010119918644, guid: 7418c3022ab114963a6d32c1caf5558f,
+        type: 2}
+      propertyPath: m_Text
+      value: Board 3-10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7418c3022ab114963a6d32c1caf5558f, type: 2}
   m_IsPrefabParent: 0
@@ -786,7 +791,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ef4bb9b4db4479c81bd6cc908e8e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lineObjects: []
   gameSpaceCanvas: {fileID: 0}
+  isPlayerTurn: 0
 --- !u!1 &1638856241
 GameObject:
   m_ObjectHideFlags: 0

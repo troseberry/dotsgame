@@ -27,6 +27,11 @@ public class ComputerAI : MonoBehaviour
 
 	private string mode;
 
+
+	private bool versusConditions;
+	private bool campaignConditions;
+	private bool tutorialConditions;
+
 	//private PowerUp currentPowerUp;
 	
 	void Start () 
@@ -64,6 +69,10 @@ public class ComputerAI : MonoBehaviour
 		}
 
 		_Dynamic = GameObject.Find("_Dynamic");
+
+		versusConditions = false;
+		campaignConditions = false;
+		tutorialConditions = false;
 		
 	}
 
@@ -110,9 +119,9 @@ public class ComputerAI : MonoBehaviour
 	
 	void Update () 
 	{
-		bool versusConditions = !GameManager.isPlayerTurn && !placing && !GameManager.RoundOver();
-		bool campaignConditions = !CampaignGameManager.Instance.isPlayerTurn && !placing && !CampaignGameManager.Instance.RoundOver();
-		bool tutorialConditions = !TutorialGameManager.isPlayerTurn && !placing && !TutorialGameManager.RoundOver();
+		if (mode == "versus") versusConditions = !GameManager.Instance.isPlayerTurn && !placing && !GameManager.Instance.RoundOver();
+		if (mode == "campaign") campaignConditions = !CampaignGameManager.Instance.isPlayerTurn && !placing && !CampaignGameManager.Instance.RoundOver();
+		if (mode== "tutorial") tutorialConditions = !TutorialGameManager.isPlayerTurn && !placing && !TutorialGameManager.RoundOver();
 
 		//if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
 		if (versusConditions || campaignConditions/* || tutorialConditions*/)
@@ -146,14 +155,22 @@ public class ComputerAI : MonoBehaviour
 			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
+		
+			if (lineToDraw.transform.localScale.x >= 0.9f)
+			{
+				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				drawingTime = 0f;
+				canDraw = false;
+				if (lineToDraw) lineToDraw = null;
+			}
 		}
 
-		if (drawingTime >= 0.5f)
+		/*if (drawingTime >= 0.5f)
 		{
 			drawingTime = 0f;
 			canDraw = false;
 			if (lineToDraw) lineToDraw = null;
-		}
+		}*/
 	}
 
 	private Line DetermineLineToPlace ()
@@ -210,8 +227,8 @@ public class ComputerAI : MonoBehaviour
 
 		if (mode == "versus")
 		{
-			int randomPlace = UnityEngine.Random.Range(0, GameManager.lineObjects.Count);
-			toPlace = GameManager.lineObjects.ElementAt(randomPlace);
+			int randomPlace = UnityEngine.Random.Range(0, GameManager.Instance.lineObjects.Count);
+			toPlace = GameManager.Instance.lineObjects.ElementAt(randomPlace);
 		}
 		else if (mode == "campaign")
 		{
@@ -275,7 +292,7 @@ public class ComputerAI : MonoBehaviour
 		//Debug.Log("Computer Placed Line");
 		if(mode == "versus")
 		{
-			GameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+			GameManager.Instance.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
 		}
 		else if (mode == "campaign")
 		{

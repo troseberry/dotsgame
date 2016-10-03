@@ -5,19 +5,23 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour 
 {
-	public static List<Line> lineObjects = new List<Line>();
+	public static GameManager Instance;
+
+	public List<Line> lineObjects = new List<Line>();
 
 	public Canvas gameSpaceCanvas;
 
-	public static bool isPlayerTurn;
+	public bool isPlayerTurn;
 
-	private static int playerPoints;
+	private int playerPoints;
 	private Text playerPointsText;
 
-	private static int totalPoints;
+	private int totalPoints;
 	
 	void Start () 
 	{
+		Instance = this;
+
 		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
 		foreach (GameObject child in holder)
 		{
@@ -50,7 +54,7 @@ public class GameManager : MonoBehaviour
 		playerPointsText.text = "" + playerPoints;
 	}
 
-	public static bool RoundOver ()
+	public bool RoundOver ()
 	{
 		foreach (Line obj in lineObjects)
 		{
@@ -59,22 +63,22 @@ public class GameManager : MonoBehaviour
 		return true;
 	}
 
-	public static void UpdatePlayerPoints (int amount)
+	public void UpdatePlayerPoints (int amount)
 	{
 		playerPoints += amount;
 	}
 
-	public static int GetPlayerPoints ()
+	public int GetPlayerPoints ()
 	{
 		return playerPoints;
 	}
 
-	public static int GetTotalPoints()
+	public int GetTotalPoints()
 	{
 		return totalPoints;
 	}
 
-	public static string PlayerWon ()
+	public string PlayerWon ()
 	{
 		//Debug.Log("Half Total Points: " + Mathf.Ceil(totalPoints / 2));
 		//Debug.Log("Player Points: " + playerPoints);

@@ -43,14 +43,22 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
+		
+			if (lineToDraw.transform.localScale.x >= 0.9f)
+			{
+				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				drawingTime = 0f;
+				canDraw = false;
+				if (lineToDraw) lineToDraw = null;
+			}
 		}
 
-		if (drawingTime >= 0.5f)
+		/*if (drawingTime >= 0.5f)
 		{
 			drawingTime = 0f;
 			canDraw = false;
 			if (lineToDraw) lineToDraw = null;
-		}
+		}*/
 
 		
 	}
@@ -58,7 +66,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 
 	public void PlayerDrawLine () 
 	{
-		if(!GameManagerTwoPlayer.RoundOver())
+		if(!GameManagerTwoPlayer.Instance.RoundOver())
 		{
 			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
@@ -82,12 +90,12 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 
 
 				GameObject newLine = null;
-				if (GameManagerTwoPlayer.isPlayerOneTurn) 
+				if (GameManagerTwoPlayer.Instance.isPlayerOneTurn) 
 				{
 					newLine = (GameObject) Instantiate(playerOneLine, startPosition, playerChoice.lineRotation);
 					newLine.name = "PlayerOneLine";
 				}
-				else if (GameManagerTwoPlayer.isPlayerTwoTurn) 
+				else if (GameManagerTwoPlayer.Instance.isPlayerTwoTurn) 
 				{
 					newLine = (GameObject) Instantiate(playerTwoLine, startPosition, playerChoice.lineRotation);
 					newLine.name = "PlayerTwoLine";
@@ -101,7 +109,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 
 				
 				//Update side counts and dole out points if need be
-				string boxOwner = GameManagerTwoPlayer.isPlayerOneTurn ? "PlayerOne" : "PlayerTwo";
+				string boxOwner = GameManagerTwoPlayer.Instance.isPlayerOneTurn ? "PlayerOne" : "PlayerTwo";
 				playerChoice.isOpen = false;
 
 				playerChoice.boxParentOne.UpdateSideCount(1);
@@ -113,15 +121,15 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 
 				
 				//Determine whose turn is next
-				if (GameManagerTwoPlayer.isPlayerOneTurn)
+				if (GameManagerTwoPlayer.Instance.isPlayerOneTurn)
 				{
-					GameManagerTwoPlayer.isPlayerOneTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
-					GameManagerTwoPlayer.isPlayerTwoTurn = !GameManagerTwoPlayer.isPlayerOneTurn;
+					GameManagerTwoPlayer.Instance.isPlayerOneTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
+					GameManagerTwoPlayer.Instance.isPlayerTwoTurn = !GameManagerTwoPlayer.Instance.isPlayerOneTurn;
 				}
-				else if (GameManagerTwoPlayer.isPlayerTwoTurn)
+				else if (GameManagerTwoPlayer.Instance.isPlayerTwoTurn)
 				{
-					GameManagerTwoPlayer.isPlayerTwoTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
-					GameManagerTwoPlayer.isPlayerOneTurn = !GameManagerTwoPlayer.isPlayerTwoTurn;
+					GameManagerTwoPlayer.Instance.isPlayerTwoTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
+					GameManagerTwoPlayer.Instance.isPlayerOneTurn = !GameManagerTwoPlayer.Instance.isPlayerTwoTurn;
 				}
 			}
 		}		
