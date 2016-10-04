@@ -175,9 +175,9 @@ public class Box : MonoBehaviour
 			}
 
 			//Debug.Log("Points Awarded");
-			if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+			if (SceneManager.GetActiveScene().name.Contains("Tutorial") && !SceneManager.GetActiveScene().name.Contains("01"))
 			{
-				if (!SceneManager.GetActiveScene().name.Contains("01")) TutorialGameManager.UpdatePlayerPoints(pointsAwarded);
+				TutorialGameManager.UpdatePlayerPoints(pointsAwarded);
 			}
 			else
 			{
