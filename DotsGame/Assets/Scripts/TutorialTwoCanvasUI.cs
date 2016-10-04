@@ -115,35 +115,35 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 			step1.SetActive(false);
 			step2.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 3)
 		{
 			step2.SetActive(false);
 			step3.SetActive(true);
 			
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 4)
 		{
 			step3.SetActive(false);
 			step4.SetActive(true);
 			
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 5)
 		{
 			step4.SetActive(false);
 			step5.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 6)
 		{
 			step5.SetActive(false);
 			step6.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 
 		else if (tutorialStep == 7)
@@ -155,9 +155,9 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 		else if (tutorialStep == 8)
 		{
 			step7.SetActive(false);
-			TutorialGameManager.isPassiveInstruction = false;
-			TutorialGameManager.passiveDismissDelay = 0f;
-			TutorialGameManager.isPlayerTurn = true;
+			TutorialGameManager.Instance.isPassiveInstruction = false;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPlayerTurn = true;
 
 			left_x2.SetActive(true);
 			right_x2.SetActive(true);
@@ -171,16 +171,16 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 
 	void PlayerWon ()
 	{
-		if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.oneStarScore && TutorialGameManager.GetPlayerPoints() < TutorialGameManager.twoStarScore)
+		if (TutorialGameManager.Instance.GetPlayerPoints() >= TutorialGameManager.Instance.oneStarScore && TutorialGameManager.Instance.GetPlayerPoints() < TutorialGameManager.Instance.twoStarScore)
 		{
 			star01.transform.GetChild(2).gameObject.SetActive(true);
 		}
-		else if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.twoStarScore && TutorialGameManager.GetPlayerPoints() < TutorialGameManager.threeStarScore)
+		else if (TutorialGameManager.Instance.GetPlayerPoints() >= TutorialGameManager.Instance.twoStarScore && TutorialGameManager.Instance.GetPlayerPoints() < TutorialGameManager.Instance.threeStarScore)
 		{
 			star01.transform.GetChild(2).gameObject.SetActive(true);
 			star02.transform.GetChild(2).gameObject.SetActive(true);
 		}
-		else if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.threeStarScore)
+		else if (TutorialGameManager.Instance.GetPlayerPoints() >= TutorialGameManager.Instance.threeStarScore)
 		{
 			star01.transform.GetChild(2).gameObject.SetActive(true);
 			star02.transform.GetChild(2).gameObject.SetActive(true);
@@ -190,6 +190,6 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 		{
 			//If player fails tutorial board, can reset and make the current step 7
 		}
-		scoreNumber.text = "" + TutorialGameManager.GetPlayerPoints();
+		scoreNumber.text = "" + TutorialGameManager.Instance.GetPlayerPoints();
 	}
 }

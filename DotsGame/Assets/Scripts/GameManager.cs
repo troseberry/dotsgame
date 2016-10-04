@@ -9,7 +9,10 @@ public class GameManager : MonoBehaviour
 
 	public List<Line> lineObjects = new List<Line>();
 
-	public Canvas gameSpaceCanvas;
+	//public Canvas gameSpaceCanvas;
+
+	public GameObject possiblePlayerChips;
+	public GameObject possibleComputerChips;
 
 	public bool isPlayerTurn;
 
@@ -44,8 +47,8 @@ public class GameManager : MonoBehaviour
 	
 	void Update () 
 	{
-		DebugPanel.Log("Is Player's Turn? ", isPlayerTurn);
-		DebugPanel.Log("Player Points: ", playerPoints);
+		//DebugPanel.Log("Is Player's Turn? ", isPlayerTurn);
+		//DebugPanel.Log("Player Points: ", playerPoints);
 
 
 		/*if (RoundOver()) 

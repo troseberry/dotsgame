@@ -6,6 +6,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour 
 {
 	private GameObject playerLine;
+	public GameObject possiblePlayerLines;
+
 	private Vector3 lineGridScale;
 
 	private GameObject _Dynamic;
@@ -19,7 +21,8 @@ public class PlayerController : MonoBehaviour
 	
 	void Start () 
 	{
-		playerLine = (GameObject) Resources.Load("PlayerLine");
+		//playerLine = (GameObject) Resources.Load("PlayerLine");
+		
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 		canDraw = false;
 		drawingTime = 0f;
@@ -29,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
 	void Update ()
 	{
-		DebugPanel.Log("Drawing Time: ", drawingTime);
+		//DebugPanel.Log("Drawing Time: ", drawingTime);
 		if (canDraw)
 		{
 			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
@@ -101,10 +104,18 @@ public class PlayerController : MonoBehaviour
 			startPosition.y = playerChoice.linePosition.y + (120f * lineGridScale.y);
 		}
 
-		GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
+		//GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
+		//newLine.name = "PlayerLine";
+
+
+		GameObject newLine = possiblePlayerLines.transform.GetChild(0).gameObject;
+
+		newLine.transform.position = startPosition;
+		newLine.transform.rotation = playerChoice.lineRotation;
 		newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
-		newLine.name = "PlayerLine";
 		newLine.transform.SetParent(_Dynamic.transform, false);
+
+		newLine.SetActive(true);
 		lineToDraw = newLine;
 		canDraw = true;
 	}

@@ -7,7 +7,11 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 	private GameObject _Dynamic;
 
 	private GameObject playerOneLine;
+	public GameObject possiblePlayerOneLines;
+
 	private GameObject playerTwoLine;
+	public GameObject possiblePlayerTwoLines;
+
 	private Vector3 lineGridScale;
 
 	private bool canDraw;
@@ -24,8 +28,8 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 	{
 		_Dynamic = GameObject.Find("_Dynamic");
 		
-		playerOneLine = (GameObject) Resources.Load("PlayerLine");
-		playerTwoLine = (GameObject) Resources.Load("ComputerLine");
+		//playerOneLine = (GameObject) Resources.Load("PlayerLine");
+		//playerTwoLine = (GameObject) Resources.Load("ComputerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 
 		canDraw = false;
@@ -37,7 +41,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 	
 	void Update () 
 	{
-		DebugPanel.Log("Drawing Time: ", drawingTime);
+		//DebugPanel.Log("Drawing Time: ", drawingTime);
 		if (canDraw)
 		{
 			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
@@ -93,17 +97,25 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 				GameObject newLine = null;
 				if (GameManagerTwoPlayer.Instance.isPlayerOneTurn) 
 				{
-					newLine = (GameObject) Instantiate(playerOneLine, startPosition, playerChoice.lineRotation);
-					newLine.name = "PlayerOneLine";
+					//newLine = (GameObject) Instantiate(playerOneLine, startPosition, playerChoice.lineRotation);
+					//newLine.name = "PlayerOneLine";
+
+					newLine = possiblePlayerOneLines.transform.GetChild(0).gameObject;
 				}
 				else if (GameManagerTwoPlayer.Instance.isPlayerTwoTurn) 
 				{
-					newLine = (GameObject) Instantiate(playerTwoLine, startPosition, playerChoice.lineRotation);
-					newLine.name = "PlayerTwoLine";
+					//newLine = (GameObject) Instantiate(playerTwoLine, startPosition, playerChoice.lineRotation);
+					//newLine.name = "PlayerTwoLine";
+
+					newLine = possiblePlayerTwoLines.transform.GetChild(0).gameObject;
 				}
 
+				newLine.transform.position = startPosition;
+				newLine.transform.rotation = playerChoice.lineRotation;
 				newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
 				newLine.transform.SetParent(_Dynamic.transform, false);
+
+				newLine.SetActive(true);
 				lineToDraw = newLine;
 				canDraw = true;
 

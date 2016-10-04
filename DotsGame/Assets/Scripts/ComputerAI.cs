@@ -8,6 +8,8 @@ using System.Linq;
 public class ComputerAI : MonoBehaviour 
 {
 	private GameObject computerLine;
+	public GameObject possibleComputerLines;
+
 	private Vector3 lineGridScale;
 
 	private GameObject _Dynamic;
@@ -36,7 +38,7 @@ public class ComputerAI : MonoBehaviour
 	
 	void Start () 
 	{
-		computerLine = (GameObject) Resources.Load("ComputerLine");
+		//computerLine = (GameObject) Resources.Load("ComputerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 
 		canDraw = false;
@@ -81,7 +83,7 @@ public class ComputerAI : MonoBehaviour
 	{
 		if (mode == "versus") versusConditions = !GameManager.Instance.isPlayerTurn && !placing && !GameManager.Instance.RoundOver();
 		if (mode == "campaign") campaignConditions = !CampaignGameManager.Instance.isPlayerTurn && !placing && !CampaignGameManager.Instance.RoundOver();
-		if (mode== "tutorial") tutorialConditions = !TutorialGameManager.isPlayerTurn && !placing && !TutorialGameManager.RoundOver();
+		if (mode== "tutorial") tutorialConditions = !TutorialGameManager.Instance.isPlayerTurn && !placing && !TutorialGameManager.Instance.RoundOver();
 
 		//if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
 		if (versusConditions || campaignConditions/* || tutorialConditions*/)
@@ -101,7 +103,7 @@ public class ComputerAI : MonoBehaviour
 			}
 			else
 			{
-				if (TutorialGameManager.GetTutorialStep() >= 12)
+				if (TutorialGameManager.Instance.GetTutorialStep() >= 12)
 				{
 					StartCoroutine( ComputerDrawLine( DetermineLineToPlace() ));
 					placing = true;
@@ -198,8 +200,8 @@ public class ComputerAI : MonoBehaviour
 		}
 		else if (mode == "tutorial")
 		{
-			int randomPlace = UnityEngine.Random.Range(0, TutorialGameManager.lineObjects.Count);
-			toPlace = TutorialGameManager.lineObjects.ElementAt(randomPlace);
+			int randomPlace = UnityEngine.Random.Range(0, TutorialGameManager.Instance.lineObjects.Count);
+			toPlace = TutorialGameManager.Instance.lineObjects.ElementAt(randomPlace);
 		}
 
 
@@ -244,11 +246,15 @@ public class ComputerAI : MonoBehaviour
 		computerChoice.SetOpen(false);
 		computerChoice.owner = "Computer";
 
+		string boxOwner = (mode == "campaign") ? "CampaignComputer" : "Computer";
+
+
+
 		computerChoice.boxParentOne.UpdateSideCount(1);
 		if (computerChoice.boxParentOne != computerChoice.boxParentTwo) computerChoice.boxParentTwo.UpdateSideCount(1);
 
-		if (computerChoice.boxParentOne.IsComplete()) computerChoice.boxParentOne.SetOwner("Computer");
-		if (computerChoice.boxParentTwo.IsComplete()) computerChoice.boxParentTwo.SetOwner("Computer");
+		if (computerChoice.boxParentOne.IsComplete()) computerChoice.boxParentOne.SetOwner(boxOwner);
+		if (computerChoice.boxParentTwo.IsComplete()) computerChoice.boxParentTwo.SetOwner(boxOwner);
 
 		//Debug.Log("Computer Placed Line");
 		if(mode == "versus")
@@ -261,7 +267,7 @@ public class ComputerAI : MonoBehaviour
 		}
 		else if (mode == "tutorial")
 		{
-			TutorialGameManager.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
+			TutorialGameManager.Instance.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
 		}
 		placing = false;
 
@@ -278,10 +284,18 @@ public class ComputerAI : MonoBehaviour
 			startPosition.y = computerChoice.linePosition.y + (120f * lineGridScale.y);
 		}
 
-		GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
+		//GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
+		//newLine.name = "ComputerLine";
+
+
+		GameObject newLine = possibleComputerLines.transform.GetChild(0).gameObject;
+		
+		newLine.transform.position = startPosition;
+		newLine.transform.rotation = computerChoice.lineRotation;
 		newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
 		newLine.transform.SetParent(_Dynamic.transform, false);
-		newLine.name = "ComputerLine";
+
+		newLine.SetActive(true);
 		lineToDraw = newLine;
 		canDraw = true;
 	}

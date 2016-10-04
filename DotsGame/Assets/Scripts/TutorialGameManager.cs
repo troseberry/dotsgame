@@ -7,10 +7,19 @@ using System.Collections.Generic;
 
 public class TutorialGameManager : MonoBehaviour 
 {
-	public static List<Line> lineObjects = new List<Line>();
+	public static TutorialGameManager Instance;
+
+	public List<Line> lineObjects = new List<Line>();
 
 	private GameObject playerLine;
+	public GameObject possiblePlayerLines;
+
 	private GameObject computerLine;
+	public GameObject possibleComputerLines;
+
+	public GameObject possiblePlayerChips;
+	public GameObject possibleComputerChips;
+
 	private Vector3 lineGridScale;
 
 	private GameObject _Dynamic;
@@ -21,7 +30,7 @@ public class TutorialGameManager : MonoBehaviour
 	private float drawDuration = 2.0f;
 	private Vector3 endDrawPosition;
 
-	public static bool isPlayerTurn;
+	public bool isPlayerTurn;
 	private bool placing;
 
 	private bool isTutorial01;
@@ -29,11 +38,11 @@ public class TutorialGameManager : MonoBehaviour
 	private bool isTutorial03;
 
 
-	private static int tutorialStep;
-	private static int tutorialPath;
-	public static bool isPassiveInstruction;
+	private int tutorialStep;
+	private int tutorialPath;
+	public bool isPassiveInstruction;
 
-	public static float passiveDismissDelay;
+	public float passiveDismissDelay;
 
 
 	private static GameObject bombButton;
@@ -41,19 +50,21 @@ public class TutorialGameManager : MonoBehaviour
 
 
 
-	private static int playerPoints;
+	private int playerPoints;
 	private Text playerPointsText;
 
-	private static int minWinPoints;
-	private static int totalPossiblePoints;
-	public static int oneStarScore;
-	public static int twoStarScore;
-	public static int threeStarScore;
+	private int minWinPoints;
+	private int totalPossiblePoints;
+	public int oneStarScore;
+	public int twoStarScore;
+	public int threeStarScore;
 
 	private Text neededPointsText;
 	
 	void Start () 
 	{
+		Instance = this;
+
 		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
 		foreach (GameObject line in holder)
 		{
@@ -77,8 +88,8 @@ public class TutorialGameManager : MonoBehaviour
 
 		_Dynamic = GameObject.Find("_Dynamic");
 
-		playerLine = (GameObject) Resources.Load("PlayerLine");
-		computerLine = (GameObject) Resources.Load("ComputerLine");
+		//playerLine = (GameObject) Resources.Load("PlayerLine");
+		//computerLine = (GameObject) Resources.Load("ComputerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 		canDraw = false;
 		drawingTime = 0f;
@@ -245,22 +256,22 @@ public class TutorialGameManager : MonoBehaviour
 
 
 
-	public static int GetTutorialStep ()
+	public int GetTutorialStep ()
 	{
 		return tutorialStep;
 	}
 
-	public static void SetTutorialStep (int step)
+	public void SetTutorialStep (int step)
 	{
 		tutorialStep = step;
 	}
 
-	public static int GetTutorialPath ()
+	public int GetTutorialPath ()
 	{
 		return tutorialPath;
 	}
 
-	public static void SetTutorialPath (int path)
+	public void SetTutorialPath (int path)
 	{
 		tutorialPath = path;
 	}
@@ -542,7 +553,7 @@ public class TutorialGameManager : MonoBehaviour
 
 
 
-	public static bool RoundOver ()
+	public bool RoundOver ()
 	{
 		foreach (Line obj in lineObjects)
 		{
@@ -570,10 +581,17 @@ public class TutorialGameManager : MonoBehaviour
 			}
 
 
-			GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
-			newLine.name = "PlayerLine";
+			//GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
+			//newLine.name = "PlayerLine";
+
+			GameObject newLine = possiblePlayerLines.transform.GetChild(0).gameObject;
+
+			newLine.transform.position = startPosition;
+			newLine.transform.rotation = playerChoice.lineRotation;
 			newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
 			newLine.transform.SetParent(_Dynamic.transform, false);
+
+			newLine.SetActive(true);
 			lineToDraw = newLine;
 			canDraw = true;
 
@@ -654,10 +672,17 @@ public class TutorialGameManager : MonoBehaviour
 				startPosition.y = computerChoice.linePosition.y + (120f * lineGridScale.y);
 			}
 
-			GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
+			//GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
+			//newLine.name = "ComputerLine";
+
+			GameObject newLine = possibleComputerLines.transform.GetChild(0).gameObject;
+
+			newLine.transform.position = startPosition;
+			newLine.transform.rotation = computerChoice.lineRotation;
 			newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
 			newLine.transform.SetParent(_Dynamic.transform, false);
-			newLine.name = "ComputerLine";
+			
+			newLine.SetActive(true);
 			lineToDraw = newLine;
 			canDraw = true;
 
@@ -672,12 +697,12 @@ public class TutorialGameManager : MonoBehaviour
 
 
 
-	public static void UpdatePlayerPoints (int amount)
+	public void UpdatePlayerPoints (int amount)
 	{
 		playerPoints += amount;
 	}
 
-	public static int GetPlayerPoints ()
+	public int GetPlayerPoints ()
 	{
 		return playerPoints;
 	}
@@ -697,7 +722,7 @@ public class TutorialGameManager : MonoBehaviour
 
 
 
-	public static void PickedUpBomb ()
+	public void PickedUpBomb ()
 	{
 		bombButton.SetActive(true);
 	}

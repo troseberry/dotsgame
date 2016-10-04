@@ -57,7 +57,7 @@ public class TutorialOneCanvasUI : MonoBehaviour
 		}
 		else if (step3.activeSelf)
 		{
-			if (TutorialGameManager.GetTutorialPath() == 1)
+			if (TutorialGameManager.Instance.GetTutorialPath() == 1)
 			{
 				step3LeftArrow.transform.localPosition = new Vector3 (step3LeftArrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) - 515, step3LeftArrow.transform.localPosition.z);
 			}
@@ -102,8 +102,8 @@ public class TutorialOneCanvasUI : MonoBehaviour
 				step3.transform.Find("IndicatorArrow_L").gameObject.SetActive(false);
 				step3.transform.Find("IndicatorArrow_R").gameObject.SetActive(true);
 			}
-			TutorialGameManager.isPassiveInstruction = false;
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPassiveInstruction = false;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 4)
 		{
@@ -124,20 +124,20 @@ public class TutorialOneCanvasUI : MonoBehaviour
 		{
 			step4.SetActive(false);
 			step5.SetActive(true);
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 6)
 		{
 			step5.SetActive(false);
 			step6.SetActive(true);
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 7)
 		{
 			step6.SetActive(false);
-			TutorialGameManager.isPassiveInstruction = false;
-			TutorialGameManager.passiveDismissDelay = 0f;
-			TutorialGameManager.isPlayerTurn = true;
+			TutorialGameManager.Instance.isPassiveInstruction = false;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPlayerTurn = true;
 		}
 		else if (tutorialStep == 8)
 		{

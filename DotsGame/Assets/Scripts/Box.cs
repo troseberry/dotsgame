@@ -52,8 +52,8 @@ public class Box : MonoBehaviour
 		//lowerRight = GameObject.Find("Dot_" + (boxNumber + 11)).GetComponent<Dot>();
 
 
-		playerChip = (GameObject) Resources.Load("PlayerChip");
-		computerChip = (GameObject) Resources.Load("ComputerChip");
+		//playerChip = (GameObject) Resources.Load("PlayerChip");
+		//computerChip = (GameObject) Resources.Load("ComputerChip");
 		playerOneChip = (GameObject) Resources.Load("PlayerOneChip");
 		playerTwoChip = (GameObject) Resources.Load("PlayerTwoChip");
 
@@ -74,11 +74,11 @@ public class Box : MonoBehaviour
 		
 	void Update () 
 	{
-		DebugPanel.Log(name + " Sides Left Open: ", SidesLeftOpen());
+		//DebugPanel.Log(name + " Sides Left Open: ", SidesLeftOpen());
 
-		DebugPanel.Log(name + " Is Claimed: ", claimed);
-		DebugPanel.Log(name + " Owner: ", owner);
-		DebugPanel.Log(name + " Is Complete: ", IsComplete());
+		//DebugPanel.Log(name + " Is Claimed: ", claimed);
+		//DebugPanel.Log(name + " Owner: ", owner);
+		//DebugPanel.Log(name + " Is Complete: ", IsComplete());
 
 		if (IsComplete() && owner != "" && !claimed)
 		{
@@ -161,7 +161,7 @@ public class Box : MonoBehaviour
 				{
 					if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
 					{
-						TutorialGameManager.PickedUpBomb();
+						TutorialGameManager.Instance.PickedUpBomb();
 					}
 					else
 					{	
@@ -177,47 +177,81 @@ public class Box : MonoBehaviour
 			//Debug.Log("Points Awarded");
 			if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
 			{
-				if (!SceneManager.GetActiveScene().name.Contains("01")) TutorialGameManager.UpdatePlayerPoints(pointsAwarded);
+				if (!SceneManager.GetActiveScene().name.Contains("01")) TutorialGameManager.Instance.UpdatePlayerPoints(pointsAwarded);
+
+				chip = TutorialGameManager.Instance.possiblePlayerChips.transform.GetChild(0).gameObject;
+				chip.transform.position = transform.position;
+				chip.transform.localScale = ownerChipScale;
+				chip.SetActive(true);
 			}
 			else
 			{
 				CampaignGameManager.Instance.UpdatePlayerPoints(pointsAwarded);
+
+				chip = CampaignGameManager.Instance.possiblePlayerChips.transform.GetChild(0).gameObject;
+				chip.transform.position = transform.position;
+				chip.transform.localScale = ownerChipScale;
+				chip.SetActive(true);
 			}
 
-			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
-			chip.name = "PlayerChip";
-			chip.transform.localScale = ownerChipScale;
+			//chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
+			//chip.name = "PlayerChip";
+
+			
 
 			//determine if box had a power up
 			//if so, handle next step
 		}
+		//Can get rid of distinc campaign computer block when all scenes no longer instantiate. Will still need to get specific gameManager type
+		else if (owner == "CampaignComputer")
+		{
+			chip = CampaignGameManager.Instance.possibleComputerChips.transform.GetChild(0).gameObject;
+			chip.transform.position = transform.position;
+			chip.transform.localScale = ownerChipScale;
+			chip.SetActive(true);
+		}
+
 		else if (owner == "Player")
 		{
 			GameManager.Instance.UpdatePlayerPoints(1);
-			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
-			chip.name = "PlayerChip";
+			
+			chip = GameManager.Instance.possiblePlayerChips.transform.GetChild(0).gameObject;
+			chip.transform.position = transform.position;
 			chip.transform.localScale = ownerChipScale;
+			chip.SetActive(true);
 		}
 		else if (owner == "Computer")
 		{
+			if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
+			{
+				chip = TutorialGameManager.Instance.possibleComputerChips.transform.GetChild(0).gameObject;
+			}
+			else
+			{
+				chip = GameManager.Instance.possibleComputerChips.transform.GetChild(0).gameObject;
+			}
 
-			chip = (GameObject) Instantiate(computerChip, transform.position, computerChip.transform.rotation);
-			chip.name = "ComputerChip";
+			chip.transform.position = transform.position;
 			chip.transform.localScale = ownerChipScale;
+			chip.SetActive(true);
 		}
 		else if (owner == "PlayerOne")
 		{
 			GameManagerTwoPlayer.Instance.UpdatePlayerPoints("One", 1);
-			chip = (GameObject) Instantiate(playerOneChip, transform.position, playerChip.transform.rotation);
-			chip.name = "PlayerOneChip";
+
+			chip = GameManagerTwoPlayer.Instance.possiblePlayerOneChips.transform.GetChild(0).gameObject;
+			chip.transform.position = transform.position;
 			chip.transform.localScale = ownerChipScale;
+			chip.SetActive(true);
 		}
 		else if (owner == "PlayerTwo")
 		{
 			GameManagerTwoPlayer.Instance.UpdatePlayerPoints("Two", 1);
-			chip = (GameObject) Instantiate(playerTwoChip, transform.position, playerChip.transform.rotation);
-			chip.name = "PlayerTwoChip";
+			
+			chip = GameManagerTwoPlayer.Instance.possiblePlayerTwoChips.transform.GetChild(0).gameObject;
+			chip.transform.position = transform.position;
 			chip.transform.localScale = ownerChipScale;
+			chip.SetActive(true);
 		}
 		else 
 		{
@@ -229,6 +263,7 @@ public class Box : MonoBehaviour
 
 	public void ChangeOwnership ()
 	{
+		//get mode from whichever GameManager, and make check either CampaignComputer or Computer
 		if (owner == "Computer")
 		{
 			//should check gameManagerObj, get mode from whichever GameManager, and make either CampaignPlayer or Player

@@ -10,7 +10,10 @@ public class CampaignGameManager : MonoBehaviour
 
 	public List<Line> lineObjects = new List<Line>();
 
-	public Canvas gameSpaceCanvas;
+	//public Canvas gameSpaceCanvas;
+
+	public GameObject possiblePlayerChips;
+	public GameObject possibleComputerChips;
 
 	public bool isPlayerTurn;
 
@@ -42,7 +45,7 @@ public class CampaignGameManager : MonoBehaviour
 			if (lineSprite.enabled)
 			{
 				currentLine.SetLineStatic(true);
-				Debug.Log(currentLine.lineName + " is Static: " + currentLine.GetLineStatic());
+				//Debug.Log(currentLine.lineName + " is Static: " + currentLine.GetLineStatic());
 				staticLineCount++;
 
 				currentLine.SetOpen(false);
@@ -97,66 +100,12 @@ public class CampaignGameManager : MonoBehaviour
 		neededPointsText.text = "" + oneStarScore;
 	}
 
-	/*
-	void OnLevelWasLoaded () 
-	{
-		//Debug.Log(SceneManager.GetActiveScene().path);
-
-		GameObject[] linePlacementholder = GameObject.FindGameObjectsWithTag("LinePlacement");
-		int staticLineCount = 0;
-		foreach (GameObject linePlacement in linePlacementholder)
-		{
-			lineObjects.Add(linePlacement.GetComponent<Line>());
-
-			if(linePlacement.GetComponent<Line>().isStatic)
-			{
-				staticLineCount++;
-			}
-		}
-
-		isPlayerTurn = true;
-
-		playerPoints = 0;
-		playerPointsText = GameObject.Find("CurrentBoxesText").GetComponent<Text>();
-		playerPointsText.text = "" + playerPoints;
-
-
-		GameObject[] powerUpHolder = GameObject.FindGameObjectsWithTag("PowerUp");
-		int x2Count = 0;
-		int bombCount = 0;
-		int thiefCount = 0;
-		foreach (GameObject powerUp in powerUpHolder)
-		{
-			if (powerUp.name.Contains("x2"))
-			{
-				x2Count++;
-			}
-			else if (powerUp.name.Contains("Bomb"))
-			{
-				bombCount++;
-			}
-			else if (powerUp.name.Contains("Thief"))
-			{
-				thiefCount++;
-			}
-		}
-
-		int totalLinesCount = GameObject.Find("LineGrid").transform.childCount;
-		totalPossiblePoints =  totalLinesCount - staticLineCount + bombCount + (2 * x2Count) + (3 * thiefCount);
-
-		oneStarScore = (int) Mathf.Ceil(totalPossiblePoints * 0.3f);
-		twoStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.6f);
-		threeStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.85f);
-
-		neededPointsText = GameObject.Find("TotalBoxesText").GetComponent<Text>();
-		neededPointsText.text = "" + oneStarScore;
-	}
-	*/
+	
 	
 	void Update () 
 	{
-		DebugPanel.Log("Is Player's Turn? ", isPlayerTurn);
-		DebugPanel.Log("Player Points: ", playerPoints);
+		//DebugPanel.Log("Is Player's Turn? ", isPlayerTurn);
+		//DebugPanel.Log("Player Points: ", playerPoints);
 
 		playerPointsText.text = "" + playerPoints;
 
@@ -169,7 +118,7 @@ public class CampaignGameManager : MonoBehaviour
 
 		foreach(Line line in lineObjects)
 		{
-			DebugPanel.Log(line.lineName + "is Open: ", GameObject.Find(line.lineName).GetComponentInChildren<Line>().GetOpen());
+			//DebugPanel.Log(line.lineName + "is Open: ", GameObject.Find(line.lineName).GetComponentInChildren<Line>().GetOpen());
 		}
 	}
 

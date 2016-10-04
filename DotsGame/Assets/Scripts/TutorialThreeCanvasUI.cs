@@ -130,7 +130,7 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 			step1.SetActive(false);
 			step2.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 3)
 		{
@@ -140,16 +140,16 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 			leftBomb.SetActive(true);
 			rightBomb.SetActive(true);
 			
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 4)
 		{
 			step3.SetActive(false);
 			step4.SetActive(true);
 			
-			TutorialGameManager.isPassiveInstruction = false;
-			TutorialGameManager.passiveDismissDelay = 0f;
-			TutorialGameManager.isPlayerTurn = true;
+			TutorialGameManager.Instance.isPassiveInstruction = false;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPlayerTurn = true;
 
 		}
 		else if (tutorialStep == 5)
@@ -157,14 +157,14 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 			step4.SetActive(false);
 			step5.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 6)
 		{
 			step5.SetActive(false);
 			step6.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 
 		else if (tutorialStep == 7)
@@ -172,46 +172,46 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 			step6.SetActive(false);
 			step7.SetActive(true);
 
-			TutorialGameManager.isPassiveInstruction = true;
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPassiveInstruction = true;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 			
 		}
 		else if (tutorialStep == 8)
 		{
 			step7.SetActive(false);
-			TutorialGameManager.isPassiveInstruction = false;
-			TutorialGameManager.passiveDismissDelay = 0f;
-			TutorialGameManager.isPlayerTurn = true;
+			TutorialGameManager.Instance.isPassiveInstruction = false;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPlayerTurn = true;
 		}
 		else if (tutorialStep == 9)
 		{
 			step9.SetActive(true);
 
-			TutorialGameManager.isPassiveInstruction = true;
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPassiveInstruction = true;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 10)
 		{
 			step9.SetActive(false);
 			step10.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 11)
 		{
 			step10.SetActive(false);
 			step11.SetActive(true);
 
-			TutorialGameManager.passiveDismissDelay = 0f;
-			TutorialGameManager.isPlayerTurn = true;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPlayerTurn = true;
 		}
 		else if (tutorialStep == 12)
 		{
 			step11.SetActive(false);
 
-			TutorialGameManager.isPassiveInstruction = false;
-			TutorialGameManager.passiveDismissDelay = 0f;
-			TutorialGameManager.isPlayerTurn = true;
+			TutorialGameManager.Instance.isPassiveInstruction = false;
+			TutorialGameManager.Instance.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.isPlayerTurn = true;
 		}
 		else if (tutorialStep == 13)
 		{
@@ -223,16 +223,16 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 
 	void PlayerWon ()
 	{
-		if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.oneStarScore && TutorialGameManager.GetPlayerPoints() < TutorialGameManager.twoStarScore)
+		if (TutorialGameManager.Instance.GetPlayerPoints() >= TutorialGameManager.Instance.oneStarScore && TutorialGameManager.Instance.GetPlayerPoints() < TutorialGameManager.Instance.twoStarScore)
 		{
 			star01.transform.GetChild(2).gameObject.SetActive(true);
 		}
-		else if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.twoStarScore && TutorialGameManager.GetPlayerPoints() < TutorialGameManager.threeStarScore)
+		else if (TutorialGameManager.Instance.GetPlayerPoints() >= TutorialGameManager.Instance.twoStarScore && TutorialGameManager.Instance.GetPlayerPoints() < TutorialGameManager.Instance.threeStarScore)
 		{
 			star01.transform.GetChild(2).gameObject.SetActive(true);
 			star02.transform.GetChild(2).gameObject.SetActive(true);
 		}
-		else if (TutorialGameManager.GetPlayerPoints() >= TutorialGameManager.threeStarScore)
+		else if (TutorialGameManager.Instance.GetPlayerPoints() >= TutorialGameManager.Instance.threeStarScore)
 		{
 			star01.transform.GetChild(2).gameObject.SetActive(true);
 			star02.transform.GetChild(2).gameObject.SetActive(true);

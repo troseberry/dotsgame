@@ -6,6 +6,8 @@ using System.Collections;
 public class CampaignPlayerController : MonoBehaviour 
 {
 	private GameObject playerLine;
+	public GameObject possiblePlayerLines;
+
 	private Vector3 lineGridScale;
 
 	private GameObject _Dynamic;
@@ -28,7 +30,7 @@ public class CampaignPlayerController : MonoBehaviour
 	
 	void Start () 
 	{
-		playerLine = (GameObject) Resources.Load("PlayerLine");
+		//playerLine = (GameObject) Resources.Load("PlayerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 		canDraw = false;
 		drawingTime = 0f;
@@ -49,7 +51,7 @@ public class CampaignPlayerController : MonoBehaviour
 	
 	void Update () 
 	{
-		DebugPanel.Log("Drawing Time: ", drawingTime);
+		//DebugPanel.Log("Drawing Time: ", drawingTime);
 		if (canDraw)
 		{
 			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
@@ -67,14 +69,6 @@ public class CampaignPlayerController : MonoBehaviour
 			}
 		}
 
-		/*if (drawingTime >= 0.5f)
-		{
-			lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
-			drawingTime = 0f;
-			canDraw = false;
-			if (lineToDraw) lineToDraw = null;
-		}*/
-
 		if(!CampaignGameManager.Instance.isPlayerTurn) 
 		{
 			canUseBomb = false;
@@ -87,13 +81,11 @@ public class CampaignPlayerController : MonoBehaviour
 	{
 		if(CampaignGameManager.Instance.isPlayerTurn && !CampaignGameManager.Instance.RoundOver())
 		{
-			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 
 			if (playerChoice.GetOpen())
 			{
-				//DrawLine(playerChoice);
 				Vector3 startPosition = playerChoice.linePosition;
 				endDrawPosition = playerChoice.linePosition;
 
@@ -107,10 +99,17 @@ public class CampaignPlayerController : MonoBehaviour
 				}
 
 
-				GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
-				newLine.name = "PlayerLine";
+				//GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
+				//newLine.name = "PlayerLine";
+
+				GameObject newLine = possiblePlayerLines.transform.GetChild(0).gameObject;
+
+				newLine.transform.position = startPosition;
+				newLine.transform.rotation = playerChoice.lineRotation;
 				newLine.transform.localScale = new Vector3(0, lineGridScale.y, lineGridScale.z);
 				newLine.transform.SetParent(_Dynamic.transform, false);
+
+				newLine.SetActive(true);
 				lineToDraw = newLine;
 				canDraw = true;
 
@@ -126,10 +125,6 @@ public class CampaignPlayerController : MonoBehaviour
 				if (playerChoice.boxParentOne.IsComplete()) 
 				{
 					playerChoice.boxParentOne.SetOwner("CampaignPlayer");
-					//if box had a power up determine the type:
-					// 1) Immediate use, passive (player doesn't need to do anything).
-					// 2) Immediate use, active (player will automatically use on their next line place).
-					// 3) Delayed Use, can be used on any turn.
 				}
 				if (playerChoice.boxParentTwo.IsComplete()) playerChoice.boxParentTwo.SetOwner("CampaignPlayer");
 

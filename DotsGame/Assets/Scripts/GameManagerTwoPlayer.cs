@@ -9,7 +9,10 @@ public class GameManagerTwoPlayer : MonoBehaviour
 
 	public List<Line> lineObjects = new List<Line>();
 
-	public Canvas gameSpaceCanvas;
+	//public Canvas gameSpaceCanvas;
+
+	public GameObject possiblePlayerOneChips;
+	public GameObject possiblePlayerTwoChips;
 
 	public bool isPlayerOneTurn;
 	public bool isPlayerTwoTurn;
@@ -47,11 +50,11 @@ public class GameManagerTwoPlayer : MonoBehaviour
 	
 	void Update () 
 	{
-		DebugPanel.Log("Player One's Turn: ", isPlayerOneTurn);
-		DebugPanel.Log("Player Two's Turn: ", isPlayerTwoTurn);
+		//DebugPanel.Log("Player One's Turn: ", isPlayerOneTurn);
+		//DebugPanel.Log("Player Two's Turn: ", isPlayerTwoTurn);
 
-		DebugPanel.Log("Player One's Points: ", GetPlayerPoints("One"));
-		DebugPanel.Log("Player Two's Points: ", GetPlayerPoints("Two"));
+		//DebugPanel.Log("Player One's Points: ", GetPlayerPoints("One"));
+		//DebugPanel.Log("Player Two's Points: ", GetPlayerPoints("Two"));
 	}
 
 	public bool RoundOver ()
