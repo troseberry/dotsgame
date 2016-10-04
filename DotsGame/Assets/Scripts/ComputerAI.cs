@@ -75,46 +75,6 @@ public class ComputerAI : MonoBehaviour
 		tutorialConditions = false;
 		
 	}
-
-	/*
-	void OnLevelWasLoaded () 
-	{
-		computerLine = (GameObject) Resources.Load("ComputerLine");
-		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
-
-		canDraw = false;
-		drawingTime = 0f;
-
-		placing = false;
-
-		GameObject[] boxHolder = GameObject.FindGameObjectsWithTag("Box");
-		foreach (GameObject child in boxHolder)
-		{
-			boxObjects.Add(child.GetComponent<Box>());
-		}
-
-		//mode = SceneManager.GetActiveScene().name.Contains("Campaign") ? "campaign" : "versus";
-
-		if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
-		{
-			mode = "tutorial";
-		}
-		else
-		{
-			if (SceneManager.GetActiveScene().name.Contains("Campaign"))
-			{
-				mode = "campaign";
-			}
-			else
-			{
-				mode = "versus";
-			}
-		}
-
-		_Dynamic =  GameObject.Find("_Dynamic");
-		
-	}
-	*/
 	
 	
 	void Update () 
@@ -156,9 +116,10 @@ public class ComputerAI : MonoBehaviour
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		
-			if (lineToDraw.transform.localScale.x >= 0.9f)
+			if (lineToDraw.transform.localScale.x >= (0.9f * lineGridScale.x))
 			{
-				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.localScale = new Vector3(lineGridScale.x, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.position = endDrawPosition;
 				drawingTime = 0f;
 				canDraw = false;
 				if (lineToDraw) lineToDraw = null;
@@ -186,7 +147,7 @@ public class ComputerAI : MonoBehaviour
 			{
 				foreach (Line line in box.boxLineObjects)
 				{
-					if (line.isOpen) 
+					if (line.GetOpen()) 
 					{
 						toPlace = line;
 						//Debug.Log("Computer Placing Last Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
@@ -204,7 +165,7 @@ public class ComputerAI : MonoBehaviour
 				//foreach open line
 				foreach (Line line in box.boxLineObjects)
 				{
-					if (line.isOpen)
+					if (line.GetOpen())
 					{
 						//look at that line's box parents. 
 						Box parentOne = line.boxParentOne;
@@ -242,7 +203,7 @@ public class ComputerAI : MonoBehaviour
 		}
 
 
-		if (toPlace.isOpen)
+		if (toPlace.GetOpen())
 		{
 			//Debug.Log("Computer Placing 3rd Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
 			return toPlace;
@@ -280,7 +241,7 @@ public class ComputerAI : MonoBehaviour
 	IEnumerator ComputerDrawLine (Line computerChoice) 
 	{
 		yield return new WaitForSeconds(1.5f);
-		computerChoice.isOpen = false;
+		computerChoice.SetOpen(false);
 		computerChoice.owner = "Computer";
 
 		computerChoice.boxParentOne.UpdateSideCount(1);

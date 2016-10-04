@@ -34,12 +34,29 @@ public class CampaignGameManager : MonoBehaviour
 		int staticLineCount = 0;
 		foreach (GameObject linePlacement in linePlacementholder)
 		{
-			lineObjects.Add(linePlacement.GetComponent<Line>());
+			Line currentLine = linePlacement.GetComponent<Line>();
 
-			if(linePlacement.GetComponent<Line>().isStatic)
+			lineObjects.Add(currentLine);
+
+			SpriteRenderer lineSprite = linePlacement.transform.parent.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+			if (lineSprite.enabled)
+			{
+				currentLine.SetLineStatic(true);
+				Debug.Log(currentLine.lineName + " is Static: " + currentLine.GetLineStatic());
+				staticLineCount++;
+
+				currentLine.SetOpen(false);
+			}
+			else 
+			{
+				currentLine.SetLineStatic(false);
+				currentLine.SetOpen(true);
+			}
+
+			/*if(linePlacement.GetComponent<Line>().isStatic)
 			{
 				staticLineCount++;
-			}
+			}*/
 		}
 
 		isPlayerTurn = true;
@@ -152,7 +169,7 @@ public class CampaignGameManager : MonoBehaviour
 
 		foreach(Line line in lineObjects)
 		{
-			DebugPanel.Log(line.lineName + "is Open: ", GameObject.Find(line.lineName).GetComponentInChildren<Line>().isOpen);
+			DebugPanel.Log(line.lineName + "is Open: ", GameObject.Find(line.lineName).GetComponentInChildren<Line>().GetOpen());
 		}
 	}
 
@@ -163,7 +180,7 @@ public class CampaignGameManager : MonoBehaviour
 	{
 		foreach (Line obj in lineObjects)
 		{
-			if (obj.isOpen) return false;
+			if (obj.GetOpen()) return false;
 		}
 		return true;
 	}

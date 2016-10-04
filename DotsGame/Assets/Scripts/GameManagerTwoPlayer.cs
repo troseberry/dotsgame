@@ -25,9 +25,10 @@ public class GameManagerTwoPlayer : MonoBehaviour
 		Instance = this;
 
 		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
-		foreach (GameObject child in holder)
+		foreach (GameObject line in holder)
 		{
-			lineObjects.Add(child.GetComponent<Line>());
+			lineObjects.Add(line.GetComponent<Line>());
+			line.GetComponent<Line>().SetOpen(true);
 		}
 
 
@@ -57,7 +58,7 @@ public class GameManagerTwoPlayer : MonoBehaviour
 	{
 		foreach (Line obj in lineObjects)
 		{
-			if (obj.isOpen) return false;
+			if (obj.GetOpen()) return false;
 		}
 		return true;
 	}

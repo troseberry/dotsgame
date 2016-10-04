@@ -23,9 +23,12 @@ public class GameManager : MonoBehaviour
 		Instance = this;
 
 		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
-		foreach (GameObject child in holder)
+		foreach (GameObject line in holder)
 		{
-			lineObjects.Add(child.GetComponent<Line>());
+			lineObjects.Add(line.GetComponent<Line>());
+
+			//since classic would never have static lines, set all lines open
+			line.GetComponent<Line>().SetOpen(true);
 		}
 
 
@@ -58,7 +61,7 @@ public class GameManager : MonoBehaviour
 	{
 		foreach (Line obj in lineObjects)
 		{
-			if (obj.isOpen) return false;
+			if (obj.GetOpen()) return false;
 		}
 		return true;
 	}

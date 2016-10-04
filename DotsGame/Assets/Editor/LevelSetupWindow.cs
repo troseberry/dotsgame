@@ -64,13 +64,13 @@ public class LevelSetupWindow : EditorWindow
         inputedBoardTitle = EditorGUILayout.TextField(inputedBoardTitle);
         GUILayout.EndHorizontal();*/
 
-        /*GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Set Board Title", GUILayout.Width(150), GUILayout.Height(15)))
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Connect PowerUp Buttons", GUILayout.Width(150), GUILayout.Height(15)))
         {
-            SetBoardTitle();
+            ConnectPowerUps();
         }
         GUILayout.FlexibleSpace();
-        GUILayout.EndHorizontal();*/
+        GUILayout.EndHorizontal();
 
 
     }
@@ -107,6 +107,8 @@ public class LevelSetupWindow : EditorWindow
 
 
 
+    //Can use these to turn on and off sprite renderers. But Line.isStatic must be set in script
+
     public static void MarkLinesAsStatic ()
     {
         inputedLineList = inputedLineList.Replace(" ", string.Empty);
@@ -123,7 +125,7 @@ public class LevelSetupWindow : EditorWindow
             if(current)
             {
                 current.GetComponent<SpriteRenderer>().enabled = true;
-                current.transform.GetComponentInChildren<Line>().isStatic = true;
+                //current.transform.GetComponentInChildren<Line>().SetStatic(true);
             }
         }
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
@@ -138,43 +140,39 @@ public class LevelSetupWindow : EditorWindow
 
         foreach (string line in staticLinesArray)
         {
-            Debug.Log("Line to Make Static: " + line);
+            Debug.Log("Line to UnMake Static: " + line);
             GameObject current = GameObject.Find("Line_" + line);
 
             //If that line exists in the scene
             if(current)
             {
                 current.GetComponent<SpriteRenderer>().enabled = false;
-                current.transform.GetComponentInChildren<Line>().isStatic = false;
+                //current.transform.GetComponentInChildren<Line>().SetStatic(false);
             }
         }
         EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
     }
 
 
-   /* public static void SetBoardTitle ()
+   public static void ConnectPowerUps ()
     {
-        Text boardTitleText = GameObject.Find("LevelTitle").GetComponentInChildren<Text>();
+        CampaignPlayerController playerController = GameObject.Find("GameManager").GetComponent<CampaignPlayerController>();
 
-        string sceneName = EditorSceneManager.GetActiveScene().name;
-        string toNameBoard = sceneName.Split('_')[1];
+        Button bombButton = GameObject.Find("BombButton").GetComponent<Button>();
+        Button thiefButton = GameObject.Find("ThiefTokenButton").GetComponent<Button>();
 
-        Debug.Log(toNameBoard);
+        //Remove 2 empty listeners that are part of the prefab
+        UnityEventTools.RemovePersistentListener(bombButton.onClick, 0);
+        UnityEventTools.RemovePersistentListener(thiefButton.onClick, 0);
 
-        //boardTitleText.text = "Board " + toNameBoard;
+        UnityAction bombMethod = new UnityAction(playerController.ToggleBomb);
+        UnityAction thiefMethod = new UnityAction(playerController.ToggleThiefToken);
 
-        //EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        UnityEventTools.AddPersistentListener( bombButton.onClick, bombMethod );
+        UnityEventTools.AddPersistentListener( thiefButton.onClick, thiefMethod );
 
 
-        SerializedObject serialzedBoardTitleText = new UnityEditor.SerializedObject(boardTitleText);
-        SerializedProperty serialzedToNameBoard = serialzedBoardTitleText.FindProperty("text");
-
-        Debug.Log("Serialized Property Exists: " + serialzedToNameBoard);
-
-        serialzedToNameBoard.stringValue = toNameBoard;
-
-        //serialzedBoardTitleText.Update();
-        serialzedBoardTitleText.ApplyModifiedProperties();
-        
-    }*/
+        EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        Debug.Log("Added listeners to PowerUp buttons.");
+    }
 }

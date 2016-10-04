@@ -44,7 +44,7 @@ public class Menu : MonoBehaviour
 	private int currentSlidePosition;
 	private bool canSlideBoard;
 
-	private bool canUseSoftBack;
+	private float softBackDelay;
 	
 
 	void Start () 
@@ -66,25 +66,21 @@ public class Menu : MonoBehaviour
 		}
 		else
 		{
-			if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial03")
+			if (CampaignData.GetLastScene().Contains("Campaign"))
 			{
-				//HideMenus();
 				ShowCampaignMenu();
 			}
-			else if (CampaignData.GetLastScene().Contains("Campaign3x3"))
+			else if (CampaignData.GetLastScene().Contains("Classic"))
 			{
-				//Set event system current selected object as BoardOne
-				ShowCampaignMenu();
+				ShowVersusClassicMenu();
 			}
-			else if (CampaignData.GetLastScene().Contains("Campaign4x4"))
+			else if (CampaignData.GetLastScene().Contains("Battle"))
 			{
-				//Set event system current selected object as BoardTwo
-				ShowCampaignMenu();
+				ShowVersusBattleMenu();
 			}
-			else if (CampaignData.GetLastScene().Contains("Campaign5x5"))
+			else if (CampaignData.GetLastScene().Contains("2Player"))
 			{
-				//Set event system current selected object as BoardThree
-				ShowCampaignMenu();
+				ShowVersusTwoPlayerMenu();
 			}
 		}
 
@@ -94,19 +90,24 @@ public class Menu : MonoBehaviour
 		minSwipeDist = 90.0f;
 		maxSwipeTime = 2.0f;
 
-		canUseSoftBack = true;
+		//canUseSoftBack = true;
+		softBackDelay = 0f;
 	}
 
 
 
 	void Update ()
 	{
+		//Using delay so Back() won't be executed twice in rapid succession
+		softBackDelay = (softBackDelay > 0) ? (softBackDelay - Time.deltaTime) : 0;
+
+
 		//Android Soft Back Button Handling
-		if (Input.GetKey(KeyCode.Escape) && canUseSoftBack)
+		if (Input.GetKey(KeyCode.Escape) && softBackDelay == 0)
 		{
 			//Need to stop this from executing twice in a row
-			canUseSoftBack = false;
 			Back();
+			softBackDelay = 0.5f;
 		}
 
 		//Detect Swipe
@@ -249,8 +250,26 @@ public class Menu : MonoBehaviour
 		{
 			HideMenus();
 			campaignMainMenu.SetActive(true);
-			boardSelectMenu.SetActive(true);
 
+			if (CampaignData.GetLastScene() == "")
+			{
+				boardSelectMenu.SetActive(true);
+			}
+			else
+			{
+				if (CampaignData.GetLastScene().Contains("Campaign3x3"))
+				{
+					ShowCampaignBoard("BoardOne");
+				}
+				else if (CampaignData.GetLastScene().Contains("Campaign4x4"))
+				{
+					ShowCampaignBoard("BoardTwo");
+				}
+				else if (CampaignData.GetLastScene().Contains("Campaign5x5"))
+				{
+					ShowCampaignBoard("BoardThree");
+				}
+			}
 			
 		}
 	}
@@ -260,10 +279,7 @@ public class Menu : MonoBehaviour
 		string buttonName = EventSystem.current.currentSelectedGameObject.name;
 		string boardToShow = buttonName.Substring(0, buttonName.Length - 6);
 
-		//boardToShow = char.ToLower(boardToShow[0]) + boardToShow.Substring(1);
-
-		//Debug.Log(boardToShow);
-
+		
 		GameObject currentBoard = levelsGroup.transform.Find(boardToShow).gameObject;
 		Debug.Log("Current Board: " + currentBoard);
 		currentBoard.SetActive(true);
@@ -351,15 +367,105 @@ public class Menu : MonoBehaviour
 				textTemp.a = 1f;
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
+		}
+		boardSelectMenu.SetActive(false);
+	}
 
+	public void ShowCampaignBoard (string boardToShow)
+	{
+		GameObject currentBoard = levelsGroup.transform.Find(boardToShow).gameObject;
+		Debug.Log("Current Board: " + currentBoard);
+		currentBoard.SetActive(true);
 
+		boardToSlide = currentBoard.transform.Find("LevelSlider").gameObject;
+		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
+		currentSlidePosition = 0;
 
-
+		currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
+		Transform pages = currentBoard.transform.Find("Pages");
+		foreach (Transform page in pages)
+		{
+			currentBoardPages.Add(page);
 		}
 
 
+		List<GameObject> levelButtons = new List<GameObject>();
+		foreach (Transform child in boardToSlide.transform)
+		{
+			levelButtons.Add(child.gameObject);
+		}
+
+		//GameObject[] levelButtons = GameObject.FindGameObjectsWithTag("LevelButton");
+		foreach (GameObject btn in levelButtons)
+		{
+			//Handle Transparency
+			string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
+			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
+			string prevLevelName = lvlNum.Substring(0, 1) + "-" + prevLevel;
+			//Debug.Log(prevLevel);
+
+			int levelStarRating = CampaignData.GetFullLevelStatus(lvlNum).starRating;
+
+
+			//If level completed
+			if (CampaignData.GetLevelStatus(lvlNum))
+			{
+				//Debug.Log("Level Button Stuff:" + lvlNum);
+				btn.transform.Find("CheckMark").gameObject.SetActive(true);
+
+				if(levelStarRating == 1)
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("1Star").gameObject.SetActive(true);
+				}
+				else if(levelStarRating == 2)
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("2Stars").gameObject.SetActive(true);
+				}
+				else if(levelStarRating == 3)
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("3Stars").gameObject.SetActive(true);
+				}
+				else
+				{
+					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					btn.transform.Find("1Star").gameObject.SetActive(false);
+					btn.transform.Find("2Stars").gameObject.SetActive(false);
+					btn.transform.Find("3Stars").gameObject.SetActive(false);
+				}
+
+			}
+
+			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))
+			{
+				btn.GetComponent<Button>().enabled = false;
+				Color temp = btn.GetComponent<RawImage>().color;
+				temp.a = 0.5f;
+				btn.GetComponent<RawImage>().color = temp;
+
+				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
+				textTemp.a = 0.5f;
+				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
+			}
+			else if (prevLevel != 0 && CampaignData.GetLevelStatus(prevLevelName))
+			{
+				btn.GetComponent<Button>().enabled = true;
+				Color temp = btn.GetComponent<RawImage>().color;
+				temp.a = 1f;
+				btn.GetComponent<RawImage>().color = temp;
+
+				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
+				textTemp.a = 1f;
+				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
+			}
+		}
 		boardSelectMenu.SetActive(false);
 	}
+
+
+
 
 	void MoveLevelSlider (float slideDirection)
 	{
@@ -545,7 +651,5 @@ public class Menu : MonoBehaviour
 			HideMenus();
 			versusMainMenu.SetActive(true);
 		}
-
-		canUseSoftBack = true;
 	}
 }

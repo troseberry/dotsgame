@@ -55,9 +55,24 @@ public class TutorialGameManager : MonoBehaviour
 	void Start () 
 	{
 		GameObject[] holder = GameObject.FindGameObjectsWithTag("LinePlacement");
-		foreach (GameObject child in holder)
+		foreach (GameObject line in holder)
 		{
-			lineObjects.Add(child.GetComponent<Line>());
+			Line currentLine = line.GetComponent<Line>();
+			lineObjects.Add(currentLine);
+
+			SpriteRenderer lineSprite = line.transform.parent.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+
+			if(lineSprite.enabled)
+			{
+				currentLine.SetLineStatic(true);
+				currentLine.SetOpen(false);
+			}
+			else 
+			{
+				currentLine.SetLineStatic(false);
+				currentLine.SetOpen(true);
+			}
+
 		}
 
 		_Dynamic = GameObject.Find("_Dynamic");
@@ -123,9 +138,10 @@ public class TutorialGameManager : MonoBehaviour
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		
-			if (lineToDraw.transform.localScale.x >= 0.9f)
+			if (lineToDraw.transform.localScale.x >= (0.9f * lineGridScale.x))
 			{
-				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.localScale = new Vector3(lineGridScale.x, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.position = endDrawPosition;
 				drawingTime = 0f;
 				canDraw = false;
 				if (lineToDraw) lineToDraw = null;
@@ -303,7 +319,7 @@ public class TutorialGameManager : MonoBehaviour
 					Line computerDrawChoice = null;
 					foreach (Line line in lineObjects)
 					{
-						if (line.isOpen) computerDrawChoice = line;
+						if (line.GetOpen()) computerDrawChoice = line;
 					}
 					Debug.Log("Computer Drawing");
 					StartCoroutine(ComputerDrawLine(computerDrawChoice));
@@ -530,7 +546,7 @@ public class TutorialGameManager : MonoBehaviour
 	{
 		foreach (Line obj in lineObjects)
 		{
-			if (obj.isOpen) return false;
+			if (obj.GetOpen()) return false;
 		}
 		return true;
 	}
@@ -539,7 +555,7 @@ public class TutorialGameManager : MonoBehaviour
 	{
 		Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
-		if (playerChoice.isOpen)
+		if (playerChoice.GetOpen())
 		{
 			Vector3 startPosition = playerChoice.linePosition;
 			endDrawPosition = playerChoice.linePosition;
@@ -580,7 +596,7 @@ public class TutorialGameManager : MonoBehaviour
 			}
 
 			
-			playerChoice.isOpen = false;	
+			playerChoice.SetOpen(false);	
 
 			//!contains tutorial01
 			if (SceneManager.GetActiveScene().name.Contains("Tutorial02")) 
@@ -616,7 +632,7 @@ public class TutorialGameManager : MonoBehaviour
 		if (!RoundOver())
 		{
 			yield return new WaitForSeconds(1.5f);
-			computerChoice.isOpen = false;
+			computerChoice.SetOpen(false);
 			computerChoice.owner = "Computer";
 
 			computerChoice.boxParentOne.UpdateSideCount(1);
@@ -706,15 +722,15 @@ public class TutorialGameManager : MonoBehaviour
 			Debug.Log("Trying to use bomb");
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
-			if (playerChoice.isStatic)
+			if (playerChoice.GetLineStatic())
 			{
 				//Debug.Log("Destroy Line");
 				Color change = playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color;
 				change.a = 0f;
 				playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color = change;
 
-				playerChoice.isStatic = false;
-				playerChoice.isOpen = true;
+				playerChoice.SetLineStatic(false);
+				playerChoice.SetOpen(true);
 
 				playerChoice.boxParentOne.UpdateSideCount(-1);
 				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(-1);

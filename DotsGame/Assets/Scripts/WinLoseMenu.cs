@@ -226,18 +226,34 @@ public class WinLoseMenu : MonoBehaviour
 		}
 		else if (mode == "campaign")
 		{
+			string sceneName = SceneManager.GetActiveScene().name;
+			string levelName = sceneName.Split('_')[1];
+			
+			if (CampaignData.GetLevelStatus(levelName))
+			{
+				Color temp = nextLevelButton.GetComponent<RawImage>().color;
+				temp.a = 1f;
+				nextLevelButton.GetComponent<RawImage>().color = temp;
+
+				nextLevelButton.GetComponent<Button>().enabled = true;
+			}
+			else 
+			{
+				Color temp = nextLevelButton.GetComponent<RawImage>().color;
+				temp.a = 0.5f;
+				nextLevelButton.GetComponent<RawImage>().color = temp;
+
+				nextLevelButton.GetComponent<Button>().enabled = false;
+			}
+
+
 			if (CampaignGameManager.Instance.PlayerWon() == "L")
 			{
 				//winLoseText.text = "Board Failed";
 				boardFailedImage.SetActive(true);
 				boardCompleteImage.SetActive(false);
 				//Debug.Log("Lost");
-
-				Color temp = nextLevelButton.GetComponent<RawImage>().color;
-				temp.a = 0.5f;
-				nextLevelButton.GetComponent<RawImage>().color = temp;
-
-				nextLevelButton.GetComponent<Button>().enabled = false;
+				
 			}
 			else
 			{
@@ -245,13 +261,6 @@ public class WinLoseMenu : MonoBehaviour
 				boardCompleteImage.SetActive(true);
 				boardFailedImage.SetActive(false);
 				//Debug.Log("Won");
-
-				Color temp = nextLevelButton.GetComponent<RawImage>().color;
-				temp.a = 1f;
-				nextLevelButton.GetComponent<RawImage>().color = temp;
-
-				nextLevelButton.GetComponent<Button>().enabled = true;
-
 
 				int newStarRating = 0;
 
@@ -277,8 +286,8 @@ public class WinLoseMenu : MonoBehaviour
 					newStarRating = 3;
 				}
 
-				string sceneName = SceneManager.GetActiveScene().name;
-				string levelName = sceneName.Split('_')[1];
+				//string sceneName = SceneManager.GetActiveScene().name;
+				//string levelName = sceneName.Split('_')[1];
 
 				//Debug.Log("Scene Name: " + sceneName);
 				//Debug.Log("Level Name: " + levelName);

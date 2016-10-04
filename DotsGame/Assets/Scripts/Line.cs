@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
 
+//[Serializable]
 public class Line : MonoBehaviour 
 {
 	private int lineNumber;
@@ -10,14 +11,15 @@ public class Line : MonoBehaviour
 	private int bottomTensNumber;
 	private int lastDigit;
 
-	public bool isOpen;
+	private bool isOpen;
 	public Vector3 linePosition;
 	public Quaternion lineRotation;
 	public Box boxParentOne;
 	public Box boxParentTwo;
 	public string owner;
 
-	public bool isStatic;
+	private bool isStatic;
+
 	private bool calledAdd;
 
 	public string lineName;
@@ -26,8 +28,8 @@ public class Line : MonoBehaviour
 	{
 		lineName = transform.parent.transform.parent.name;
 
-
-		isOpen = isStatic ? false : true;
+		//isOpen = isStatic ? false : true;
+		
 		calledAdd = false;
 		//linePosition = new Vector3(transform.localPosition.x / 100, transform.localPosition.y / 100, transform.localPosition.z / 100);
 		linePosition = transform.position;// new Vector3(transform.localPosition.x / 100, transform.localPosition.y / 100, transform.localPosition.z / 100);
@@ -51,6 +53,7 @@ public class Line : MonoBehaviour
 			farRightDigit = 4;
 			bottomTensNumber = 90;
 		}
+		
 		
 
 		
@@ -135,8 +138,25 @@ public class Line : MonoBehaviour
 		}
 	}
 
-	/*public bool IsSpotOpen ()
+	public bool GetLineStatic ()
 	{
+		return isStatic;
+	}
+
+	public void SetLineStatic (bool state)
+	{
+		isStatic = state;
+	}
+
+	public bool GetOpen ()
+	{
+
 		return isOpen;
-	}*/
+	}
+
+	public void SetOpen (bool state)
+	{
+		isOpen = state;
+	}
+
 }

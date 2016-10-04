@@ -54,12 +54,13 @@ public class CampaignPlayerController : MonoBehaviour
 		{
 			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
-			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
+			lineToDraw.transform.position = Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		
 			
-			if (lineToDraw.transform.localScale.x >= 0.9f/*drawingTime >= 0.5f*/)
+			if (lineToDraw.transform.localScale.x >= (0.9f * lineGridScale.x))
 			{
-				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.localScale = new Vector3(lineGridScale.x, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.position = endDrawPosition;
 				drawingTime = 0f;
 				canDraw = false;
 				if (lineToDraw) lineToDraw = null;
@@ -90,7 +91,7 @@ public class CampaignPlayerController : MonoBehaviour
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 
-			if (playerChoice.isOpen)
+			if (playerChoice.GetOpen())
 			{
 				//DrawLine(playerChoice);
 				Vector3 startPosition = playerChoice.linePosition;
@@ -132,7 +133,7 @@ public class CampaignPlayerController : MonoBehaviour
 				}
 				if (playerChoice.boxParentTwo.IsComplete()) playerChoice.boxParentTwo.SetOwner("CampaignPlayer");
 
-				playerChoice.isOpen = false;
+				playerChoice.SetOpen(false);
 
 				//Determine whose turn is next
 				CampaignGameManager.Instance.isPlayerTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
@@ -166,15 +167,15 @@ public class CampaignPlayerController : MonoBehaviour
 			//Transform buttonLocation = EventSystem.current.currentSelectedGameObject.transform;
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
-			if (playerChoice.isStatic)
+			if (playerChoice.GetLineStatic())
 			{
 				//Debug.Log("Destroy Line");
 				Color change = playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color;
 				change.a = 0f;
 				playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color = change;
 
-				playerChoice.isStatic = false;
-				playerChoice.isOpen = true;
+				playerChoice.SetLineStatic(false);
+				playerChoice.SetOpen(true);
 
 				playerChoice.boxParentOne.UpdateSideCount(-1);
 				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(-1);

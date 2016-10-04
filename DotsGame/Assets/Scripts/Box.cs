@@ -74,11 +74,11 @@ public class Box : MonoBehaviour
 		
 	void Update () 
 	{
-		//DebugPanel.Log(name + " Sides Left Open: ", SidesLeftOpen());
+		DebugPanel.Log(name + " Sides Left Open: ", SidesLeftOpen());
 
-		//DebugPanel.Log(name + " Is Claimed: ", claimed);
-		//DebugPanel.Log(name + " Owner: ", owner);
-		//DebugPanel.Log(name + " Is Complete: ", IsComplete());
+		DebugPanel.Log(name + " Is Claimed: ", claimed);
+		DebugPanel.Log(name + " Owner: ", owner);
+		DebugPanel.Log(name + " Is Complete: ", IsComplete());
 
 		if (IsComplete() && owner != "" && !claimed)
 		{
@@ -112,7 +112,7 @@ public class Box : MonoBehaviour
 		if(!boxLineObjects.Contains(toAdd)) 
 		{
 			boxLineObjects.Add(toAdd);
-			if (toAdd.isStatic) UpdateSideCount(1);
+			if (toAdd.GetLineStatic()) UpdateSideCount(1);
 		}
 
 	}
@@ -175,9 +175,9 @@ public class Box : MonoBehaviour
 			}
 
 			//Debug.Log("Points Awarded");
-			if (SceneManager.GetActiveScene().name.Contains("Tutorial") && !SceneManager.GetActiveScene().name.Contains("01"))
+			if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
 			{
-				TutorialGameManager.UpdatePlayerPoints(pointsAwarded);
+				if (!SceneManager.GetActiveScene().name.Contains("01")) TutorialGameManager.UpdatePlayerPoints(pointsAwarded);
 			}
 			else
 			{

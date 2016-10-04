@@ -44,9 +44,10 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		
-			if (lineToDraw.transform.localScale.x >= 0.9f)
+			if (lineToDraw.transform.localScale.x >= (0.9f * lineGridScale.x))
 			{
-				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.localScale = new Vector3(lineGridScale.x, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.position = endDrawPosition;
 				drawingTime = 0f;
 				canDraw = false;
 				if (lineToDraw) lineToDraw = null;
@@ -72,7 +73,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 
-			if (playerChoice.isOpen)
+			if (playerChoice.GetOpen())
 			{
 				//DrawLine(playerChoice);
 				Vector3 startPosition = playerChoice.linePosition;
@@ -110,7 +111,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 				
 				//Update side counts and dole out points if need be
 				string boxOwner = GameManagerTwoPlayer.Instance.isPlayerOneTurn ? "PlayerOne" : "PlayerTwo";
-				playerChoice.isOpen = false;
+				playerChoice.SetOpen(false);
 
 				playerChoice.boxParentOne.UpdateSideCount(1);
 				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(1);

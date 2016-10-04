@@ -737,6 +737,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1000012805028080
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000011234839468}
+  - 114: {fileID: 114000012789201944}
+  - 114: {fileID: 114000013540045390}
+  - 114: {fileID: 114000011424926892}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1000012868745156
 GameObject:
   m_ObjectHideFlags: 1
@@ -1211,6 +1229,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4000011601771418}
   m_RootOrder: 6
+--- !u!4 &4000011234839468
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012805028080}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000012894571354}
+  m_RootOrder: 0
 --- !u!4 &4000011253804716
 Transform:
   m_ObjectHideFlags: 1
@@ -1290,7 +1321,7 @@ Transform:
   - {fileID: 4000010410112786}
   - {fileID: 4000011533392012}
   m_Father: {fileID: 4000012894571354}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &4000011533392012
 Transform:
   m_ObjectHideFlags: 1
@@ -1326,7 +1357,7 @@ Transform:
   - {fileID: 4000012280926790}
   - {fileID: 4000011407337454}
   m_Father: {fileID: 4000012894571354}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &4000011606827422
 Transform:
   m_ObjectHideFlags: 1
@@ -1353,7 +1384,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000012894571354}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!4 &4000011705013250
 Transform:
   m_ObjectHideFlags: 1
@@ -1392,7 +1423,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000012894571354}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!4 &4000012161305922
 Transform:
   m_ObjectHideFlags: 1
@@ -1459,6 +1490,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 4000011234839468}
   - {fileID: 4000011609662180}
   - {fileID: 4000012140055892}
   - {fileID: 4000011525783534}
@@ -1509,7 +1541,7 @@ Transform:
   - {fileID: 4000012161305922}
   - {fileID: 4000013765929734}
   m_Father: {fileID: 4000012894571354}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &4000013765929734
 Transform:
   m_ObjectHideFlags: 1
@@ -2105,7 +2137,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -2116,7 +2148,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -2260,7 +2292,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -2271,7 +2303,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -2302,6 +2334,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000010690262284
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2417,6 +2450,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000010933223338
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2456,7 +2490,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -2467,7 +2501,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -2551,6 +2585,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000011156206858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2632,7 +2667,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -2643,7 +2678,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -2759,7 +2794,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -2770,7 +2805,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -2783,6 +2818,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114000011424926892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012805028080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b948a90f555fe4b10a78912dc389b8a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000011685793666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2822,7 +2868,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -2833,7 +2879,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -3054,6 +3100,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000012117215496
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3093,7 +3140,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -3104,7 +3151,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -3162,6 +3209,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000012183055006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3180,6 +3228,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000012193855372
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3297,7 +3346,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -3308,7 +3357,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -3520,6 +3569,20 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &114000012789201944
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012805028080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75ef4bb9b4db4479c81bd6cc908e8e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineObjects: []
+  gameSpaceCanvas: {fileID: 0}
+  isPlayerTurn: 0
 --- !u!114 &114000012793429330
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3602,7 +3665,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -3613,7 +3676,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -3681,7 +3744,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -3692,7 +3755,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -3723,6 +3786,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000013194892890
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3762,7 +3826,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -3773,7 +3837,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:
@@ -3804,6 +3868,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000013216793908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3848,6 +3913,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000013249032804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4038,6 +4104,18 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
+--- !u!114 &114000013540045390
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012805028080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb2119535a5ef4cb194014dd91fae250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000013654848144
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4140,6 +4218,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000014054129430
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4179,6 +4258,7 @@ MonoBehaviour:
   boxParentTwo: {fileID: 0}
   owner: 
   isStatic: 0
+  lineName: 
 --- !u!114 &114000014115049070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4328,7 +4408,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: PlayerDrawLine
         m_Mode: 1
         m_Arguments:
@@ -4339,7 +4419,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 114000013540045390}
         m_MethodName: DestroyStaticLine
         m_Mode: 1
         m_Arguments:

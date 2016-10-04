@@ -36,9 +36,10 @@ public class PlayerController : MonoBehaviour
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		
-			if (lineToDraw.transform.localScale.x >= 0.9f)
+			if (lineToDraw.transform.localScale.x >= (0.9f * lineGridScale.x))
 			{
-				lineToDraw.transform.localScale = new Vector3(1.0f, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.localScale = new Vector3(lineGridScale.x, lineToDraw.transform.localScale.y, lineToDraw.transform.localScale.z);
+				lineToDraw.transform.position = endDrawPosition;
 				drawingTime = 0f;
 				canDraw = false;
 				if (lineToDraw) lineToDraw = null;
@@ -62,13 +63,13 @@ public class PlayerController : MonoBehaviour
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
 
-			if (playerChoice.isOpen)
+			if (playerChoice.GetOpen())
 			{
 				//GameObject newLine = (GameObject) Instantiate(playerLine, playerChoice.linePosition, playerChoice.lineRotation);
 				//newLine.transform.localScale = lineGridScale;
 				DrawLine(playerChoice);
 				
-				playerChoice.isOpen = false;
+				playerChoice.SetOpen(false);
 				playerChoice.owner = "Player";
 
 				//string newBoxOwner = SceneManager.GetActiveScene().name.Contains("Campaign") ? "CampaignPlayer" : "Player";

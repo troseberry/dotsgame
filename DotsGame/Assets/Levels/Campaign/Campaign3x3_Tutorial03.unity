@@ -138,13 +138,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 1
   lineName: 
 --- !u!114 &25513840
 MonoBehaviour:
@@ -500,13 +498,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &107925039
 MonoBehaviour:
@@ -1094,13 +1090,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 1
   lineName: 
 --- !u!114 &216479878
 MonoBehaviour:
@@ -1721,13 +1715,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &286409485
 MonoBehaviour:
@@ -2963,13 +2955,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &466092326
 MonoBehaviour:
@@ -3952,13 +3942,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &602201271
 MonoBehaviour:
@@ -5778,13 +5766,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &943351477
 MonoBehaviour:
@@ -6311,13 +6297,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &1049093076
 MonoBehaviour:
@@ -7053,13 +7037,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &1230317236
 MonoBehaviour:
@@ -7577,13 +7559,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &1345962000
 MonoBehaviour:
@@ -8346,13 +8326,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &1465759271
 MonoBehaviour:
@@ -9804,6 +9782,31 @@ Prefab:
       propertyPath: m_Text
       value: Tutorial 3/3
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013298561048, guid: 7418c3022ab114963a6d32c1caf5558f,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1597264070}
+    - target: {fileID: 114000013298561048, guid: 7418c3022ab114963a6d32c1caf5558f,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleBomb
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013298561048, guid: 7418c3022ab114963a6d32c1caf5558f,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.99264705
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013298561048, guid: 7418c3022ab114963a6d32c1caf5558f,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.48902464
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000013298561048, guid: 7418c3022ab114963a6d32c1caf5558f,
+        type: 2}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.48902464
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7418c3022ab114963a6d32c1caf5558f, type: 2}
   m_IsPrefabParent: 0
@@ -10058,13 +10061,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ecbc90d0c064222a7e68b1d78df8be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
   linePosition: {x: 0, y: 0, z: 0}
   lineRotation: {x: 0, y: 0, z: 0, w: 0}
   boxParentOne: {fileID: 0}
   boxParentTwo: {fileID: 0}
   owner: 
-  isStatic: 0
   lineName: 
 --- !u!114 &1803618764
 MonoBehaviour:
