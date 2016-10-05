@@ -85,6 +85,7 @@ public class ComputerAI : MonoBehaviour
 		if (mode == "campaign") campaignConditions = !CampaignGameManager.Instance.isPlayerTurn && !placing && !CampaignGameManager.Instance.RoundOver();
 		if (mode== "tutorial") tutorialConditions = !TutorialGameManager.Instance.isPlayerTurn && !placing && !TutorialGameManager.Instance.RoundOver();
 
+
 		//if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
 		if (versusConditions || campaignConditions/* || tutorialConditions*/)
 		{
@@ -242,7 +243,7 @@ public class ComputerAI : MonoBehaviour
 
 	IEnumerator ComputerDrawLine (Line computerChoice) 
 	{
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(0.75f);
 		computerChoice.SetOpen(false);
 		computerChoice.owner = "Computer";
 

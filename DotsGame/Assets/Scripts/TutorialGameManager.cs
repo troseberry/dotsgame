@@ -649,7 +649,7 @@ public class TutorialGameManager : MonoBehaviour
 	{
 		if (!RoundOver())
 		{
-			yield return new WaitForSeconds(1.5f);
+			yield return new WaitForSeconds(0.75f);
 			computerChoice.SetOpen(false);
 			computerChoice.owner = "Computer";
 
