@@ -39,6 +39,8 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 	private GameObject star02;
 	private GameObject star03;
 
+	private Text scoreNumber;
+
 	void Start () 
 	{
 		Instance = this;
@@ -82,6 +84,9 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 
 		star03 = step13.transform.Find("Star_03").gameObject;
 		star03.transform.GetChild(2).gameObject.SetActive(false);
+
+
+		scoreNumber = step13.transform.Find("ScoreNumber").GetComponent<Text>();
 	}
 	
 	
@@ -105,12 +110,12 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 		}
 		else if (step3.activeSelf)
 		{
-			//step3Arrow.transform.localPosition = new Vector3 (step3Arrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 400, step3Arrow.transform.localPosition.z);
+			step3LeftArrow.transform.localPosition = new Vector3 (step3LeftArrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) - 350, step3LeftArrow.transform.localPosition.z);
+			step3RightArrow.transform.localPosition = new Vector3 (step3RightArrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 50, step3RightArrow.transform.localPosition.z);
 		}
 		else if (step5.activeSelf)
 		{
-			//step5LeftArrow.transform.localPosition = new Vector3 (step5LeftArrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) - 350, step5LeftArrow.transform.localPosition.z);
-			//step5RightArrow.transform.localPosition = new Vector3 (step5RightArrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 50, step5RightArrow.transform.localPosition.z);
+			step5Arrow.transform.localPosition = new Vector3 ((Mathf.Sin(Time.time * 3f) * 30) - 125, step5Arrow.transform.localPosition.y, step5Arrow.transform.localPosition.z);
 		}
 		else if (step6.activeSelf)
 		{
@@ -238,5 +243,7 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 			star02.transform.GetChild(2).gameObject.SetActive(true);
 			star03.transform.GetChild(2).gameObject.SetActive(true);
 		}
+
+		scoreNumber.text = string.Empty + TutorialGameManager.Instance.GetPlayerPoints();
 	}
 }

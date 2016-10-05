@@ -22,7 +22,7 @@ public class PauseMenu : MonoBehaviour
 		softBackDelay = (softBackDelay > 0) ? (softBackDelay - Time.deltaTime) : 0;
 
 		//Android Soft Back Button Handling
-		if (Input.GetKey(KeyCode.Escape))
+		if (Input.GetKey(KeyCode.Escape) && softBackDelay == 0)
 		{
 			if(pauseMenu.enabled)
 			{

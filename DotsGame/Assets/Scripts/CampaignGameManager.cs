@@ -177,8 +177,8 @@ public class CampaignGameManager : MonoBehaviour
 	}
 
 
-	public void ClearStaticVars ()
+	public void PlayerGoesFirst ()
 	{
-		
+
 	}
 }

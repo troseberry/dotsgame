@@ -82,15 +82,15 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 	{
 		if(step1.activeSelf)
 		{	
-			step1Arrow.transform.localPosition = new Vector3 (step1Arrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 400, step1Arrow.transform.localPosition.z);
+			step1Arrow.transform.localPosition = new Vector3 (step1Arrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 500, step1Arrow.transform.localPosition.z);
 		}
 		else if (step2.activeSelf)
 		{
-			step2Arrow.transform.localPosition = new Vector3 (step2Arrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 400, step2Arrow.transform.localPosition.z);
+			step2Arrow.transform.localPosition = new Vector3 (step2Arrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 500, step2Arrow.transform.localPosition.z);
 		}
 		else if (step3.activeSelf)
 		{
-			step3Arrow.transform.localPosition = new Vector3 (step3Arrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 400, step3Arrow.transform.localPosition.z);
+			step3Arrow.transform.localPosition = new Vector3 (step3Arrow.transform.localPosition.x, (Mathf.Sin(Time.time * 3f) * 30) + 500, step3Arrow.transform.localPosition.z);
 		}
 		else if (step5.activeSelf)
 		{
@@ -190,6 +190,6 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 		{
 			//If player fails tutorial board, can reset and make the current step 7
 		}
-		scoreNumber.text = "" + TutorialGameManager.Instance.GetPlayerPoints();
+		scoreNumber.text = string.Empty + TutorialGameManager.Instance.GetPlayerPoints();
 	}
 }
