@@ -45,24 +45,11 @@ public class Box : MonoBehaviour
 		claimed = false;
 		chip = null;
 
-		//Don't think these are being used
-		//upperLeft = GameObject.Find("Dot_" + boxNumber).GetComponent<Dot>();
-		//upperRight = GameObject.Find("Dot_" + (boxNumber + 1)).GetComponent<Dot>();
-		//lowerLeft = GameObject.Find("Dot_" + (boxNumber + 10)).GetComponent<Dot>();
-		//lowerRight = GameObject.Find("Dot_" + (boxNumber + 11)).GetComponent<Dot>();
-
-
-		//playerChip = (GameObject) Resources.Load("PlayerChip");
-		//computerChip = (GameObject) Resources.Load("ComputerChip");
-		playerOneChip = (GameObject) Resources.Load("PlayerOneChip");
-		playerTwoChip = (GameObject) Resources.Load("PlayerTwoChip");
-
 		_Dynamic = GameObject.Find("_Dynamic");
 
-		//chipPlacement = transform.position;
 		ownerChipScale = GameObject.Find("BoxGroup").transform.localScale;
 
-		if (transform.childCount > 1/* && transform.GetChild(1).gameObject.activeSelf*/) //if there is a power up gameobject that is inactive, that can still trigger powerups
+		if (transform.childCount > 1 && transform.GetChild(1).gameObject.activeSelf)
 		{
 			heldPowerUp = transform.GetChild(1).gameObject;
 		}
@@ -127,6 +114,12 @@ public class Box : MonoBehaviour
 		return (sideCount >= 4 ? 0 : 4 - sideCount);
 	}
 
+	public void SetPowerUp (GameObject powerUp)
+	{
+		heldPowerUp = powerUp;
+	}
+
+
 	void AwardPoint()
 	{
 		if (heldPowerUp)
@@ -135,12 +128,6 @@ public class Box : MonoBehaviour
 		}
 
 		
-
-		/*if (!GameObject.Find("ChipGroup"))
-		{
-			chipGroup = new GameObject();
-			chipGroup.name = "ChipGroup";
-		}*/
 
 		if (owner == "CampaignPlayer")
 		{
@@ -157,6 +144,10 @@ public class Box : MonoBehaviour
 				{
 					pointsAwarded += pointsAwarded;
 				}
+				else if (heldPowerUp.name == "PowerUp_Minus")
+				{
+					pointsAwarded = -pointsAwarded;
+				}
 				else if (heldPowerUp.name == "PowerUp_Bomb")
 				{
 					if (SceneManager.GetActiveScene().name.Contains("Tutorial"))
@@ -165,12 +156,12 @@ public class Box : MonoBehaviour
 					}
 					else
 					{	
-						CampaignPlayerController.PickedUpBomb();
+						CampaignPlayerController.Instance.PickedUpBomb();
 					}
 				}
 				else if (heldPowerUp.name == "PowerUp_ThiefToken")
 				{
-					CampaignPlayerController.PickedUpThiefToken();
+					CampaignPlayerController.Instance.PickedUpThiefToken();
 				}
 			}
 

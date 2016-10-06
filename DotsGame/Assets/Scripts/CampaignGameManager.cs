@@ -98,6 +98,9 @@ public class CampaignGameManager : MonoBehaviour
 
 		neededPointsText = GameObject.Find("TotalBoxesText").GetComponent<Text>();
 		neededPointsText.text = "" + oneStarScore;
+
+
+		Debug.Log("Current Selected Hero: " + CampaignData.currentHero.ToString());
 	}
 
 	

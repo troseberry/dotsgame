@@ -7,18 +7,12 @@ public class CampaignData : MonoBehaviour
 	private static bool finishedTutorial;
 	private static string lastScene;
 	
-	//private static bool boardOneLevelOne;
-
 	
-	//private static Dictionary<string, bool> boardOneLevels = new Dictionary<string, bool>();
-	//private static Dictionary<string, bool> allBoardLevels = new Dictionary<string, bool>();
-
 	private static Dictionary<string, LevelStats> allBoardLevels = new Dictionary<string, LevelStats>();
-
-
-	//private List<string> boardOneLevelNames = new List<string>();
 	private static List<string> allBoardLevelNames = new List<string>();
 	
+	private static Dictionary<string, bool> heroesUnlocked = new Dictionary<string, bool>();
+	public static HeroManager.Hero currentHero;
 
 	void Start ()
 	{
@@ -92,15 +86,12 @@ public class CampaignData : MonoBehaviour
 				allBoardLevels.Add(lvlName, new LevelStats(false, 0, 0));
 			}
 		}
-		
 
 		//Debug.Log(boardOneLevels);
 		/*foreach (KeyValuePair<string, bool> pair in allBoardLevels)
 		{
 		    Debug.Log(pair.Key + pair.Value);
 		}*/
-
-
 
 		//SaveLoad.Save();
 	}
@@ -109,23 +100,7 @@ public class CampaignData : MonoBehaviour
 
 	public static void ClearLevelsDictionary ()
 	{
-		/*allBoardLevels["1-1"] = false;
-		allBoardLevels["1-2"] = false;
-		allBoardLevels["1-3"] = false;
-		allBoardLevels["1-4"] = false;
-		allBoardLevels["1-5"] = false;
-		allBoardLevels["1-6"] = false;
-		allBoardLevels["1-7"] = false;
-		allBoardLevels["1-8"] = false;
-		allBoardLevels["1-9"] = false;*/
-
-
 		//Can't iterate over dictionary and change values at same time
-		/*foreach (KeyValuePair<string, bool> pair in allBoardLevels)
-		{
-			SetLevelStatus(pair.Key, false);
-		}*/
-
 		//Iterate thru names list. Should contain the same strings as dictionary keys
 		foreach (string levelName in allBoardLevelNames)
 		{

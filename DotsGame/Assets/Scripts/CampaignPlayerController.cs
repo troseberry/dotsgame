@@ -5,6 +5,8 @@ using System.Collections;
 
 public class CampaignPlayerController : MonoBehaviour 
 {
+	public static CampaignPlayerController Instance;
+
 	private GameObject playerLine;
 	public GameObject possiblePlayerLines;
 
@@ -21,15 +23,17 @@ public class CampaignPlayerController : MonoBehaviour
 
 	//private static string currentPowerUp;
 
-	private static GameObject bombButton;
+	private GameObject bombButton;
 	private bool canUseBomb;
 
-	private static GameObject thiefTokenButton;
+	private GameObject thiefTokenButton;
 	private bool canUseThiefToken;
 
 	
 	void Start () 
 	{
+		Instance = this;
+
 		//playerLine = (GameObject) Resources.Load("PlayerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 		canDraw = false;
@@ -144,7 +148,7 @@ public class CampaignPlayerController : MonoBehaviour
 	}*/
 	//BEGINNING OF POWERUP METHODS (x2 powerup is in Box.cs)
 
-	public static void PickedUpBomb ()
+	public void PickedUpBomb ()
 	{
 		bombButton.SetActive(true);
 	}
@@ -190,7 +194,7 @@ public class CampaignPlayerController : MonoBehaviour
 		}
 	}
 
-	public static void PickedUpThiefToken ()
+	public void PickedUpThiefToken ()
 	{
 		thiefTokenButton.SetActive(true);
 	}
@@ -206,6 +210,7 @@ public class CampaignPlayerController : MonoBehaviour
 
 		if (canUseThiefToken && chosenBox.IsComplete())
 		{
+			//Debug.Log("Used thief token");
 			chosenBox.ChangeOwnership();
 			canUseThiefToken = false;
 			//hide thief token button, or gray it out
