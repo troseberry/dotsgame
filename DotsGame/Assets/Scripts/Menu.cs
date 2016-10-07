@@ -7,12 +7,15 @@ using System.Collections.Generic;
 
 public class Menu : MonoBehaviour 
 {
+	public GameObject titleGroup;
+
 	public GameObject mainMenuButtons;
 
 	public GameObject campaignMainMenu;
 	public GameObject boardSelectMenu;
 
 	public GameObject levelsGroup;
+	private GameObject levelsCommonAssets;
 	private GameObject boardOne;
 	private GameObject boardTwo;
 	private GameObject boardThree;
@@ -50,6 +53,7 @@ public class Menu : MonoBehaviour
 	void Start () 
 	{
 		//levelsGroup = GameObject.Find("Levels");
+		levelsCommonAssets = levelsGroup.transform.Find("_CommonAssets").gameObject;
 		boardOne = levelsGroup.transform.Find("BoardOne").gameObject;
 		boardTwo = levelsGroup.transform.Find("BoardTwo").gameObject;
 		boardThree = levelsGroup.transform.Find("BoardThree").gameObject;
@@ -120,7 +124,7 @@ public class Menu : MonoBehaviour
 				Debug.Log("Mouse Position: " + Input.mousePosition);
 			}*/
 
-			if (Input.touchCount > 0) {
+			/*if (Input.touchCount > 0) {
 		        Touch touch = Input.touches[0];
 		        
 		    	//if swipe is near levelslider 
@@ -169,7 +173,7 @@ public class Menu : MonoBehaviour
 			                break;
 			        }
 			    }
-		    }
+		    }*/
 		}
 	}
 	
@@ -234,6 +238,8 @@ public class Menu : MonoBehaviour
 
 	void HideBoards ()
 	{
+		levelsCommonAssets.SetActive(false);
+
 		boardOne.SetActive(false);
 		boardTwo.SetActive(false);
 		boardThree.SetActive(false);
@@ -248,6 +254,7 @@ public class Menu : MonoBehaviour
 		}
 		else
 		{
+			titleGroup.SetActive(false);
 			HideMenus();
 			campaignMainMenu.SetActive(true);
 
@@ -276,6 +283,9 @@ public class Menu : MonoBehaviour
 
 	public void ShowCampaignBoard ()
 	{
+		levelsCommonAssets.SetActive(true);
+
+
 		string buttonName = EventSystem.current.currentSelectedGameObject.name;
 		string boardToShow = buttonName.Substring(0, buttonName.Length - 6);
 
@@ -297,7 +307,8 @@ public class Menu : MonoBehaviour
 
 
 		List<GameObject> levelButtons = new List<GameObject>();
-		foreach (Transform child in boardToSlide.transform)
+		//foreach (Transform child in boardToSlide.transform)
+		foreach (Transform child in boardToSlide.transform.GetChild(0).transform.GetChild(0))
 		{
 			levelButtons.Add(child.gameObject);
 		}
@@ -534,6 +545,8 @@ public class Menu : MonoBehaviour
 		versusTwoPlayerMenu.SetActive(true);
 	}
 
+
+
 	public void LoadCampaignBoard ()
 	{
 		SaveLoad.Save();
@@ -615,6 +628,8 @@ public class Menu : MonoBehaviour
 	}
 
 
+
+
 	public void Back ()
 	{
 
@@ -627,6 +642,7 @@ public class Menu : MonoBehaviour
 			if (boardSelectMenu.activeSelf)
 			{
 				HideMenus();
+				titleGroup.SetActive(true);
 				mainMenuButtons.SetActive(true);
 				devOptionTapCount = 0;
 			}

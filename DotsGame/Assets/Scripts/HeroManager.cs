@@ -43,7 +43,7 @@ public class HeroManager : MonoBehaviour
             usedBoxes = new List<int>();
 
             heroGroup = GameObject.Find("HeroGroup").transform;
-            CampaignData.currentHero = Hero.Thief;
+            //CampaignData.currentHero = Hero.Thief;
             //Debug.Log("Current Hero: " + CampaignData.currentHero);
             //Debug.Log("# Of PowerUps: " + toTriggerCount);
 
