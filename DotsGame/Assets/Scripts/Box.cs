@@ -254,15 +254,19 @@ public class Box : MonoBehaviour
 
 	public void ChangeOwnership ()
 	{
+		Debug.Log("Previous Owner: " + owner);
 		//get mode from whichever GameManager, and make check either CampaignComputer or Computer
-		if (owner == "Computer")
+		if (owner == "CampaignComputer")
 		{
 			//should check gameManagerObj, get mode from whichever GameManager, and make either CampaignPlayer or Player
 			Destroy(chip);
 
-			chip = (GameObject) Instantiate(playerChip, transform.position, playerChip.transform.rotation);
-			chip.name = "PlayerChip";
+			chip = CampaignGameManager.Instance.possiblePlayerChips.transform.GetChild(0).gameObject;
+			chip.transform.position = transform.position;
 			chip.transform.localScale = ownerChipScale;
+			chip.SetActive(true);
+
+			chip.transform.SetParent(_Dynamic.transform, false);
 
 			owner = "CampaginPlayer";
 
@@ -275,6 +279,7 @@ public class Box : MonoBehaviour
 			CampaignGameManager.Instance.UpdatePlayerPoints(pointsAwarded);
 			//AwardPoint();
 		}
+		//If I want the ability for the computer to steal boxes from the player
 		else if (owner == "CampaginPlayer" || owner == "Player")
 		{
 			int pointsSubtracted = 0;

@@ -143,7 +143,10 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 			step3.SetActive(true);
 
 			leftBomb.SetActive(true);
+			leftBomb.transform.parent.GetComponent<Box>().SetPowerUp(leftBomb);
+
 			rightBomb.SetActive(true);
+			rightBomb.transform.parent.GetComponent<Box>().SetPowerUp(rightBomb);
 			
 			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}

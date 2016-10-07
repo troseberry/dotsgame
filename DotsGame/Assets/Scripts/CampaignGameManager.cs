@@ -100,7 +100,7 @@ public class CampaignGameManager : MonoBehaviour
 		neededPointsText.text = "" + oneStarScore;
 
 
-		Debug.Log("Current Selected Hero: " + CampaignData.currentHero.ToString());
+		//Debug.Log("Current Selected Hero: " + CampaignData.currentHero.ToString());
 	}
 
 	

@@ -116,7 +116,7 @@ public class WinLoseMenu : MonoBehaviour
 		}
 		
 
-		Debug.Log(CampaignData.GetAllLevelsDictionary());
+		//Debug.Log(CampaignData.GetAllLevelsDictionary());
 		didSave = false;
 		/*foreach (KeyValuePair<string, bool> pair in CampaignData.GetAllLevelsDictionary())
 		{

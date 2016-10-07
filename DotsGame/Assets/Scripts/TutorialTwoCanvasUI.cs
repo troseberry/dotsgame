@@ -160,7 +160,10 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 			TutorialGameManager.Instance.isPlayerTurn = true;
 
 			left_x2.SetActive(true);
+			left_x2.transform.parent.GetComponent<Box>().SetPowerUp(left_x2);
+
 			right_x2.SetActive(true);
+			right_x2.transform.parent.GetComponent<Box>().SetPowerUp(right_x2);
 		}
 		else if (tutorialStep == 9)
 		{

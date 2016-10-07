@@ -210,7 +210,7 @@ public class CampaignPlayerController : MonoBehaviour
 
 		if (canUseThiefToken && chosenBox.IsComplete())
 		{
-			//Debug.Log("Used thief token");
+			Debug.Log("Used thief token");
 			chosenBox.ChangeOwnership();
 			canUseThiefToken = false;
 			//hide thief token button, or gray it out

@@ -1,13 +1,13 @@
 fileFormatVersion: 2
 guid: 3e97ad80714744c04acd365adbe43ae9
-timeCreated: 1475741570
+timeCreated: 1475835138
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: PowerUpSpriteSheet_0
-    21300002: PowerUpSpriteSheet_1
-    21300004: PowerUpSpriteSheet_2
-    21300006: PowerUpSpriteSheet_3
+    21300000: Minus
+    21300002: x2
+    21300004: Bomb
+    21300006: ThiefToken
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -57,7 +57,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PowerUpSpriteSheet_0
+      name: Minus
       rect:
         serializedVersion: 2
         x: 0
@@ -65,12 +65,12 @@ TextureImporter:
         width: 360
         height: 360
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: PowerUpSpriteSheet_1
+      name: x2
       rect:
         serializedVersion: 2
         x: 360
@@ -78,12 +78,12 @@ TextureImporter:
         width: 360
         height: 360
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: PowerUpSpriteSheet_2
+      name: Bomb
       rect:
         serializedVersion: 2
         x: 0
@@ -91,12 +91,12 @@ TextureImporter:
         width: 360
         height: 360
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: PowerUpSpriteSheet_3
+      name: ThiefToken
       rect:
         serializedVersion: 2
         x: 360
@@ -104,7 +104,7 @@ TextureImporter:
         width: 360
         height: 360
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
