@@ -25,8 +25,8 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 	//step 8 turns off other ui. player free plays board
 	public GameObject step9;
 
-	public GameObject left_x2;
-	public GameObject right_x2;
+	public GameObject minusPowerUp;
+	public GameObject x2PowerUp;
 
 	private GameObject star01;
 	private GameObject star02;
@@ -56,8 +56,8 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 		step7.SetActive(false);
 		step9.SetActive(false);
 
-		left_x2.SetActive(false);
-		right_x2.SetActive(false);
+		minusPowerUp.SetActive(false);
+		x2PowerUp.SetActive(false);
 
 		star01 = step9.transform.Find("Star_01").gameObject;
 		star01.transform.GetChild(2).gameObject.SetActive(false);
@@ -159,11 +159,11 @@ public class TutorialTwoCanvasUI : MonoBehaviour
 			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 			TutorialGameManager.Instance.isPlayerTurn = true;
 
-			left_x2.SetActive(true);
-			left_x2.transform.parent.GetComponent<Box>().SetPowerUp(left_x2);
+			minusPowerUp.SetActive(true);
+			minusPowerUp.transform.parent.GetComponent<Box>().SetPowerUp(minusPowerUp);
 
-			right_x2.SetActive(true);
-			right_x2.transform.parent.GetComponent<Box>().SetPowerUp(right_x2);
+			x2PowerUp.SetActive(true);
+			x2PowerUp.transform.parent.GetComponent<Box>().SetPowerUp(x2PowerUp);
 		}
 		else if (tutorialStep == 9)
 		{

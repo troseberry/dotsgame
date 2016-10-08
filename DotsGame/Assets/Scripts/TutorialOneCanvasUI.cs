@@ -123,7 +123,10 @@ public class TutorialOneCanvasUI : MonoBehaviour
 		else if (tutorialStep == 5)
 		{
 			step4.SetActive(false);
+			Debug.Log("Step 4 Off");
+
 			step5.SetActive(true);
+			Debug.Log("Step 5 On");
 			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 		}
 		else if (tutorialStep == 6)

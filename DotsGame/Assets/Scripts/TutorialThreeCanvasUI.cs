@@ -136,6 +136,8 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 			step2.SetActive(true);
 
 			TutorialGameManager.Instance.passiveDismissDelay = 0f;
+			TutorialGameManager.Instance.SetTutorialPath(0);
+
 		}
 		else if (tutorialStep == 3)
 		{

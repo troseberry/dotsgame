@@ -18,6 +18,11 @@ public class HeroManager : MonoBehaviour
     private GameObject demolition;
     private GameObject thief;
 
+    //public GameObject heroToggles;
+    public Toggle multiplierToggle;
+    public Toggle demolitionToggle;
+    public Toggle thiefToggle;
+
     //private Vector3 powerUpScale;
     private List<int> usedBoxes;
 
@@ -49,6 +54,17 @@ public class HeroManager : MonoBehaviour
 
             EnableHeroButton();
         }
+
+        //Debug.Log(heroToggles);
+        
+        /*if (heroToggles)
+        {
+            //heroToggles = GameObject.Find("HeroButtons");
+            multiplierToggle = heroToggles.transform.Find("MultiplierToggle").GetComponent<Toggle>();
+            demolitionToggle = heroToggles.transform.Find("DemolitionToggle").GetComponent<Toggle>();
+            thiefToggle = heroToggles.transform.Find("ThiefToggle").GetComponent<Toggle>();
+
+        }*/
 	}
 
 
@@ -79,13 +95,28 @@ public class HeroManager : MonoBehaviour
 
     public void ChooseHero ()
     {
-        string buttonName = EventSystem.current.currentSelectedGameObject.name;
+        /*string buttonName = EventSystem.current.currentSelectedGameObject.name;
         string hero = buttonName.Substring(0, buttonName.Length - 6);           //minus "Button" in the string
 
         if (hero == Hero.Multiplier.ToString())
         {
             CampaignData.currentHero = Hero.Multiplier;
+        }*/
+
+        if (multiplierToggle.isOn)
+        {
+            CampaignData.currentHero = Hero.Multiplier;
         }
+        else if (demolitionToggle.isOn)
+        {
+            CampaignData.currentHero = Hero.Demolition;
+        }
+        else if (thiefToggle.isOn)
+        {
+            CampaignData.currentHero = Hero.Thief;
+        }
+
+        Debug.Log("Current Hero Is: " + CampaignData.currentHero);
     }
 
     public void UseMultiplier ()

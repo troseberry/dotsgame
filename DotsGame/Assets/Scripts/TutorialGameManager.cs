@@ -309,7 +309,15 @@ public class TutorialGameManager : MonoBehaviour
 							isPassiveInstruction = true;
 						}
 					}
-					else if (tutorialButton.name.Contains("StepThree") && tutorialStep == 3)
+					else if (tutorialButton.name == "StepThree_01" && tutorialPath == 1 && tutorialStep == 3)
+					{
+						PlayerDrawLine();
+						tutorialStep = 4;
+
+						StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 2.0f));
+						isPassiveInstruction = true;
+					}
+					else if (tutorialButton.name == "StepThree_02" && tutorialPath == 2 && tutorialStep == 3)
 					{
 						PlayerDrawLine();
 						tutorialStep = 4;
@@ -349,7 +357,7 @@ public class TutorialGameManager : MonoBehaviour
 				tutorialStep = 3;
 				StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
 			}
-			else if (tutorialStep == 4 && passiveDismissDelay > 1.0f)
+			else if (tutorialStep == 4 && passiveDismissDelay > 2.5f)
 			{
 				tutorialStep = 5;
 				StartCoroutine(TutorialOneCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
@@ -433,10 +441,40 @@ public class TutorialGameManager : MonoBehaviour
 		{
 			if (tutorialButton.name.Contains("StepFour") && tutorialStep == 4)
 			{
-				PlayerDrawLine();
-				isPlayerTurn = false;
+				if (tutorialPath == 0)
+				{
+					PlayerDrawLine();
+					isPlayerTurn = false;
 
-				if (!TutorialThreeCanvasUI.completedBombBox)
+					if (tutorialButton.name.Contains("01") ||tutorialButton.name.Contains("02") || tutorialButton.name.Contains("03"))
+					{
+						tutorialPath = 1;
+					}
+					else
+					{
+						tutorialPath = 2;
+					}
+				}
+				else if (tutorialPath == 1)
+				{
+					if (tutorialButton.name.Contains("01") ||tutorialButton.name.Contains("02") || tutorialButton.name.Contains("03"))
+					{
+						PlayerDrawLine();
+						isPlayerTurn = false;
+					}
+				}
+				else if (tutorialPath == 2)
+				{
+					if (tutorialButton.name.Contains("04") ||tutorialButton.name.Contains("05") || tutorialButton.name.Contains("06"))
+					{
+						PlayerDrawLine();
+						isPlayerTurn = false;
+					}
+				}
+
+
+
+				if (!TutorialThreeCanvasUI.completedBombBox && !isPlayerTurn)
 				{
 					Line computerDrawChoice = null;
 					if (tutorialButton.name == "StepFour_01" || tutorialButton.name == "StepFour_02")

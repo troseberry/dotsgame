@@ -41,8 +41,8 @@ public class Menu : MonoBehaviour
 	private float maxSwipeTime;
 
 	private GameObject boardToSlide;
-	private List<Transform> currentBoardPages = new List<Transform>();
-	private GameObject currentPageIndicator;
+	//private List<Transform> currentBoardPages = new List<Transform>();
+	//private GameObject currentPageIndicator;
 	private int totalSlidePositions;
 	private int currentSlidePosition;
 	private bool canSlideBoard;
@@ -264,7 +264,14 @@ public class Menu : MonoBehaviour
 			}
 			else
 			{
-				if (CampaignData.GetLastScene().Contains("Campaign3x3"))
+				if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial03")
+				{
+					//ShowCampaignBoard("BoardOne");
+					CampaignData.SetLastScene("");
+					boardSelectMenu.SetActive(true);
+					//ShowCampaignMenu();
+				}
+				else if (CampaignData.GetLastScene().Contains("Campaign3x3"))
 				{
 					ShowCampaignBoard("BoardOne");
 				}
@@ -298,12 +305,12 @@ public class Menu : MonoBehaviour
 		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
 		currentSlidePosition = 0;
 
-		currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
+		/*currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
 		Transform pages = currentBoard.transform.Find("Pages");
 		foreach (Transform page in pages)
 		{
 			currentBoardPages.Add(page);
-		}
+		}*/
 
 
 		List<GameObject> levelButtons = new List<GameObject>();
@@ -359,9 +366,9 @@ public class Menu : MonoBehaviour
 			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))
 			{
 				btn.GetComponent<Button>().enabled = false;
-				Color temp = btn.GetComponent<RawImage>().color;
+				Color temp = btn.GetComponent<Image>().color;
 				temp.a = 0.5f;
-				btn.GetComponent<RawImage>().color = temp;
+				btn.GetComponent<Image>().color = temp;
 
 				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
 				textTemp.a = 0.5f;
@@ -370,9 +377,9 @@ public class Menu : MonoBehaviour
 			else if (prevLevel != 0 && CampaignData.GetLevelStatus(prevLevelName))
 			{
 				btn.GetComponent<Button>().enabled = true;
-				Color temp = btn.GetComponent<RawImage>().color;
+				Color temp = btn.GetComponent<Image>().color;
 				temp.a = 1f;
-				btn.GetComponent<RawImage>().color = temp;
+				btn.GetComponent<Image>().color = temp;
 
 				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
 				textTemp.a = 1f;
@@ -384,6 +391,8 @@ public class Menu : MonoBehaviour
 
 	public void ShowCampaignBoard (string boardToShow)
 	{
+		levelsCommonAssets.SetActive(true);
+
 		GameObject currentBoard = levelsGroup.transform.Find(boardToShow).gameObject;
 		Debug.Log("Current Board: " + currentBoard);
 		currentBoard.SetActive(true);
@@ -392,16 +401,16 @@ public class Menu : MonoBehaviour
 		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
 		currentSlidePosition = 0;
 
-		currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
+		/*currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
 		Transform pages = currentBoard.transform.Find("Pages");
 		foreach (Transform page in pages)
 		{
 			currentBoardPages.Add(page);
-		}
+		}*/
 
 
 		List<GameObject> levelButtons = new List<GameObject>();
-		foreach (Transform child in boardToSlide.transform)
+		foreach (Transform child in boardToSlide.transform.GetChild(0).transform.GetChild(0))
 		{
 			levelButtons.Add(child.gameObject);
 		}
@@ -452,9 +461,9 @@ public class Menu : MonoBehaviour
 			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))
 			{
 				btn.GetComponent<Button>().enabled = false;
-				Color temp = btn.GetComponent<RawImage>().color;
+				Color temp = btn.GetComponent<Image>().color;
 				temp.a = 0.5f;
-				btn.GetComponent<RawImage>().color = temp;
+				btn.GetComponent<Image>().color = temp;
 
 				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
 				textTemp.a = 0.5f;
@@ -463,9 +472,9 @@ public class Menu : MonoBehaviour
 			else if (prevLevel != 0 && CampaignData.GetLevelStatus(prevLevelName))
 			{
 				btn.GetComponent<Button>().enabled = true;
-				Color temp = btn.GetComponent<RawImage>().color;
+				Color temp = btn.GetComponent<Image>().color;
 				temp.a = 1f;
-				btn.GetComponent<RawImage>().color = temp;
+				btn.GetComponent<Image>().color = temp;
 
 				Color textTemp = btn.transform.Find("LevelText").GetComponent<Text>().color;
 				textTemp.a = 1f;
@@ -517,8 +526,8 @@ public class Menu : MonoBehaviour
 
 	void ChangePageIndicator () 
 	{
-		Vector3 newPagePosition = currentBoardPages[(int)Mathf.Abs(currentSlidePosition)].position;
-		currentPageIndicator.transform.position = newPagePosition;
+		//Vector3 newPagePosition = currentBoardPages[(int)Mathf.Abs(currentSlidePosition)].position;
+		//currentPageIndicator.transform.position = newPagePosition;
 	}
 
 	public void ShowVersusMenu ()
@@ -650,7 +659,7 @@ public class Menu : MonoBehaviour
 			{
 				HideBoards();
 				boardToSlide = null;
-				currentBoardPages.Clear();
+				//currentBoardPages.Clear();
 				totalSlidePositions = 0;
 				canSlideBoard = false;
 				boardSelectMenu.SetActive(true);
