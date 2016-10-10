@@ -231,17 +231,17 @@ public class WinLoseMenu : MonoBehaviour
 			
 			if (CampaignData.GetLevelStatus(levelName))
 			{
-				Color temp = nextLevelButton.GetComponent<RawImage>().color;
+				Color temp = nextLevelButton.GetComponent<Image>().color;
 				temp.a = 1f;
-				nextLevelButton.GetComponent<RawImage>().color = temp;
+				nextLevelButton.GetComponent<Image>().color = temp;
 
 				nextLevelButton.GetComponent<Button>().enabled = true;
 			}
 			else 
 			{
-				Color temp = nextLevelButton.GetComponent<RawImage>().color;
+				Color temp = nextLevelButton.GetComponent<Image>().color;
 				temp.a = 0.5f;
-				nextLevelButton.GetComponent<RawImage>().color = temp;
+				nextLevelButton.GetComponent<Image>().color = temp;
 
 				nextLevelButton.GetComponent<Button>().enabled = false;
 			}
