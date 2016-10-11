@@ -35,8 +35,8 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 
 	public static bool completedBombBox;			//true after player finishes bomb box. Use for check in handle passive instructions to incrememnt tutorial step
 
-	public SpriteRenderer staticLineOne;
-	public SpriteRenderer staticLineTwo;
+	//public SpriteRenderer staticLineOne;
+	//public SpriteRenderer staticLineTwo;
 
 	private GameObject star01;
 	private GameObject star02;
@@ -96,6 +96,10 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 	void Update () 
 	{
 		HandleTutorialThreeArrows();
+
+		//DebugPanel.Log("Static Line Destroyed: ", StaticLineDestroyed());
+		//DebugPanel.Log("Static Line One: ", staticLineOne.color);
+		//DebugPanel.Log("Static Line Two: ", staticLineTwo.color);
 	}
 
 
@@ -191,13 +195,14 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 		}
 		else if (tutorialStep == 8)
 		{
-			step7.SetActive(false);
+			//step7.SetActive(false);
 			TutorialGameManager.Instance.isPassiveInstruction = false;
 			TutorialGameManager.Instance.passiveDismissDelay = 0f;
 			TutorialGameManager.Instance.isPlayerTurn = true;
 		}
 		else if (tutorialStep == 9)
 		{
+			step7.SetActive(false);
 			step9.SetActive(true);
 
 			TutorialGameManager.Instance.isPassiveInstruction = true;
@@ -255,8 +260,8 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 		scoreNumber.text = string.Empty + TutorialGameManager.Instance.GetPlayerPoints();
 	}
 
-	public bool StaticLineDestroyed ()
+	/*public bool StaticLineDestroyed ()
 	{
 		return (staticLineOne.color.a == 0 || staticLineTwo.color.a == 0);
-	}
+	}*/
 }

@@ -23,11 +23,18 @@ public class CampaignPlayerController : MonoBehaviour
 
 	//private static string currentPowerUp;
 
-	private GameObject bombButton;
+	//private GameObject bombButton;
 	private bool canUseBomb;
+	private Toggle bombToggle;
 
-	private GameObject thiefTokenButton;
+	//private GameObject thiefTokenButton;
 	private bool canUseThiefToken;
+	private Toggle thiefTokenToggle;
+
+	private ColorBlock holderColorBlock = ColorBlock.defaultColorBlock;
+	private Color32 redBombColor = new Color32 (0xFD, 0x7C, 0x7C, 0xFF);
+	private Color32 yellowThiefColor = new Color32 (0xED, 0xFF, 0x7D, 0xFF);
+	private Color resetColor = new Color (1, 1, 1);
 
 	
 	void Start () 
@@ -44,12 +51,25 @@ public class CampaignPlayerController : MonoBehaviour
 		//currentPowerUp = "";
 
 		canUseBomb = false;
-		bombButton = GameObject.Find("BombButton");
-		bombButton.SetActive(false);
+		//bombButton = GameObject.Find("BombButton");
+		//bombButton.SetActive(false);
+
+		bombToggle = GameObject.Find("BombToggle").GetComponent<Toggle>();
+		bombToggle.gameObject.SetActive(false);
+		bombToggle.onValueChanged.AddListener((isOn) => ToggleBomb() );
+		/*bombToggle.onValueChanged.AddListener((isOn) => {
+			ToggleBomb();
+			}
+		);*/
+
 
 		canUseThiefToken = false;
-		thiefTokenButton = GameObject.Find("ThiefTokenButton");
-		thiefTokenButton.SetActive(false);
+		//thiefTokenButton = GameObject.Find("ThiefTokenButton");
+		//thiefTokenButton.SetActive(false);
+
+		thiefTokenToggle = GameObject.Find("ThiefTokenToggle").GetComponent<Toggle>();
+		thiefTokenToggle.gameObject.SetActive(false);
+		thiefTokenToggle.onValueChanged.AddListener((isOn) => ToggleThiefToken() );
 	}
 	
 	
@@ -150,12 +170,34 @@ public class CampaignPlayerController : MonoBehaviour
 
 	public void PickedUpBomb ()
 	{
-		bombButton.SetActive(true);
+		//bombButton.SetActive(true);
+		bombToggle.gameObject.SetActive(true);
 	}
 
 	public void ToggleBomb ()			//attach to powerup button
 	{
-		if (CampaignGameManager.Instance.isPlayerTurn) canUseBomb = !canUseBomb;
+	
+		if (bombToggle.isOn)
+		{
+			holderColorBlock.pressedColor = redBombColor;
+			holderColorBlock.normalColor = redBombColor;
+			holderColorBlock.highlightedColor = redBombColor;
+
+			bombToggle.colors = holderColorBlock;
+
+			if (CampaignGameManager.Instance.isPlayerTurn) canUseBomb = true;
+			Debug.Log("Can Use Bomb: " + canUseBomb);
+		}
+		else
+		{
+			holderColorBlock.pressedColor = resetColor;
+			holderColorBlock.normalColor = resetColor;
+			holderColorBlock.highlightedColor = resetColor;
+
+			bombToggle.colors = holderColorBlock;
+
+			if (CampaignGameManager.Instance.isPlayerTurn) canUseBomb = false;
+		}
 	}
 
 	//Bomb PowerUp
@@ -185,7 +227,15 @@ public class CampaignPlayerController : MonoBehaviour
 
 				//currentPowerUp = "";
 				canUseBomb = false;
-				bombButton.SetActive(false);
+				//bombButton.SetActive(false);
+				bombToggle.gameObject.SetActive(false);
+
+				//Reset bomb colors 
+				holderColorBlock.pressedColor = resetColor;
+				holderColorBlock.normalColor = resetColor;
+				holderColorBlock.highlightedColor = resetColor;
+
+				bombToggle.colors = holderColorBlock;
 
 				//if either box parent was complete, list it as incomplete/unowned
 				//if either belonged to the player, subtract the correct amount of points 
@@ -196,13 +246,33 @@ public class CampaignPlayerController : MonoBehaviour
 
 	public void PickedUpThiefToken ()
 	{
-		thiefTokenButton.SetActive(true);
+		//thiefTokenButton.SetActive(true);
+		thiefTokenToggle.gameObject.SetActive(true);
 	}
 
 	//Thief Token PowerUp	
 	public void ToggleThiefToken ()			//attach to powerup button
 	{
-		if (CampaignGameManager.Instance.isPlayerTurn) canUseThiefToken = !canUseThiefToken;
+		if (thiefTokenToggle.isOn)
+		{
+			holderColorBlock.pressedColor = yellowThiefColor;
+			holderColorBlock.normalColor = yellowThiefColor;
+			holderColorBlock.highlightedColor = yellowThiefColor;
+
+			thiefTokenToggle.colors = holderColorBlock;
+
+			if (CampaignGameManager.Instance.isPlayerTurn) canUseThiefToken = true;
+		}
+		else
+		{
+			holderColorBlock.pressedColor = resetColor;
+			holderColorBlock.normalColor = resetColor;
+			holderColorBlock.highlightedColor = resetColor;
+
+			thiefTokenToggle.colors = holderColorBlock;
+
+			if (CampaignGameManager.Instance.isPlayerTurn) canUseThiefToken = false;
+		}
 	}
 	public void UseThiefToken ()				//attach to boxObject. (give box objects button components)
 	{
@@ -214,7 +284,15 @@ public class CampaignPlayerController : MonoBehaviour
 			chosenBox.ChangeOwnership();
 			canUseThiefToken = false;
 			//hide thief token button, or gray it out
-			thiefTokenButton.SetActive(false);
+			//thiefTokenButton.SetActive(false);
+
+			holderColorBlock.pressedColor = resetColor;
+			holderColorBlock.normalColor = resetColor;
+			holderColorBlock.highlightedColor = resetColor;
+
+			thiefTokenToggle.colors = holderColorBlock;
+
+			thiefTokenToggle.gameObject.SetActive(false);
 		}
 	}
 }

@@ -48,7 +48,7 @@ public class TutorialGameManager : MonoBehaviour
 	private static GameObject bombButton;
 	private bool canUseBomb;
 
-
+	private Toggle bombToggle;
 
 	private int playerPoints;
 	private Text playerPointsText;
@@ -116,8 +116,14 @@ public class TutorialGameManager : MonoBehaviour
 
 
 		canUseBomb = false;
-		bombButton = GameObject.Find("BombButton");
-		if (bombButton) bombButton.SetActive(false);
+		//bombButton = GameObject.Find("BombButton");
+		//if (bombButton) bombButton.SetActive(false);
+
+		if (isTutorial03)
+		{
+			bombToggle = GameObject.Find("BombToggle").GetComponent<Toggle>();
+			if (bombToggle) bombToggle.gameObject.SetActive(false);
+		}
 
 
 		if (!isTutorial01)
@@ -198,6 +204,8 @@ public class TutorialGameManager : MonoBehaviour
 			UpdateNeededPointsText();
 		}
 
+
+		
 		if (RoundOver())
 		{
 			if (isTutorial01)
@@ -444,7 +452,7 @@ public class TutorialGameManager : MonoBehaviour
 				if (tutorialPath == 0)
 				{
 					PlayerDrawLine();
-					isPlayerTurn = false;
+					//isPlayerTurn = false;
 
 					if (tutorialButton.name.Contains("01") ||tutorialButton.name.Contains("02") || tutorialButton.name.Contains("03"))
 					{
@@ -460,7 +468,7 @@ public class TutorialGameManager : MonoBehaviour
 					if (tutorialButton.name.Contains("01") ||tutorialButton.name.Contains("02") || tutorialButton.name.Contains("03"))
 					{
 						PlayerDrawLine();
-						isPlayerTurn = false;
+						//isPlayerTurn = false;
 					}
 				}
 				else if (tutorialPath == 2)
@@ -468,7 +476,7 @@ public class TutorialGameManager : MonoBehaviour
 					if (tutorialButton.name.Contains("04") ||tutorialButton.name.Contains("05") || tutorialButton.name.Contains("06"))
 					{
 						PlayerDrawLine();
-						isPlayerTurn = false;
+						//isPlayerTurn = false;
 					}
 				}
 
@@ -556,10 +564,10 @@ public class TutorialGameManager : MonoBehaviour
 				//tutorialStep = 6;
 				//StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
 			}
-			else if (tutorialStep == 6 && passiveDismissDelay > 1.0f && TutorialThreeCanvasUI.Instance.StaticLineDestroyed())
+			else if (tutorialStep == 6 && passiveDismissDelay > 1.0f)
 			{
-				tutorialStep = 7;
-				StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+				//tutorialStep = 7;
+				//StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
 			}
 			else if (tutorialStep == 7 && passiveDismissDelay > 1.0f)
 			{
@@ -673,6 +681,11 @@ public class TutorialGameManager : MonoBehaviour
 					//tutorialStep = 5;
 				}
 
+				if (tutorialStep == 4)
+				{
+					isPlayerTurn = false;
+				}
+
 				if (tutorialStep >= 12)
 				{
 					isPlayerTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;
@@ -762,19 +775,57 @@ public class TutorialGameManager : MonoBehaviour
 
 	public void PickedUpBomb ()
 	{
-		bombButton.SetActive(true);
+		//bombButton.SetActive(true);
+		bombToggle.gameObject.SetActive(true);
 	}
 
 	public void ToggleBomb ()			//attach to powerup button
 	{
-		if (isPlayerTurn) canUseBomb = !canUseBomb;
+		if (bombToggle.isOn)
+		{
+			ColorBlock temp = bombToggle.colors;
+			temp.pressedColor = new Color32(0xFD, 0x7C, 0x7C, 0xFF);
+			temp.normalColor = temp.pressedColor;
+			temp.highlightedColor = temp.pressedColor;
+			bombToggle.colors = temp;
+
+			if (isPlayerTurn) canUseBomb = true;//!canUseBomb;
+
+			if(tutorialStep == 5 && isTutorial03)
+			{
+				Debug.Log("Setting Step 6");
+				tutorialStep = 6;
+				StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+			Debug.Log("Can Use Bomb: " + canUseBomb);
+		}
+		else
+		{
+			ColorBlock temp = bombToggle.colors;
+			temp.pressedColor =  new Color(1, 1, 1);
+			temp.normalColor = new Color(1, 1, 1);
+			temp.highlightedColor = temp.pressedColor;
+			bombToggle.colors = temp;
+
+			if (isPlayerTurn) canUseBomb = false;//!canUseBomb;
+
+			if(tutorialStep == 6 && isTutorial03)
+			{
+				Debug.Log("Setting Step Back to 5");
+				tutorialStep = 5;
+				TutorialThreeCanvasUI.Instance.step6.SetActive(false);
+				StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+			}
+		}
+
+		/*if (isPlayerTurn) canUseBomb = !canUseBomb;
 
 		if(tutorialStep == 5 && isTutorial03)
 		{
 			tutorialStep = 6;
 			StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
 		}
-		Debug.Log("Can Use Bomb: " + canUseBomb);
+		Debug.Log("Can Use Bomb: " + canUseBomb);*/
 	}
 
 	//Bomb PowerUp
@@ -799,14 +850,26 @@ public class TutorialGameManager : MonoBehaviour
 				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(-1);
 
 				canUseBomb = false;
-				bombButton.SetActive(false);
+				//bombButton.SetActive(false);
+
+				bombToggle.gameObject.SetActive(false);
+
+				//Reset bomb colors 
+				ColorBlock temp = bombToggle.colors;
+				temp.pressedColor =  new Color(1, 1, 1);
+				temp.normalColor = new Color(1, 1, 1);
+				temp.highlightedColor = temp.pressedColor;
+				bombToggle.colors = temp;
+
+
+				if(tutorialStep == 6)
+				{
+					tutorialStep = 7;
+					StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 1.0f));
+				}
 			}
 		}
 
-		/*if(tutorialStep == 6)
-		{
-			tutorialStep = 7;
-			StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
-		}*/
+		/**/
 	}
 }
