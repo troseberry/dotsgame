@@ -35,6 +35,9 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 
 	public static bool completedBombBox;			//true after player finishes bomb box. Use for check in handle passive instructions to incrememnt tutorial step
 
+	public SpriteRenderer staticLineOne;
+	public SpriteRenderer staticLineTwo;
+
 	private GameObject star01;
 	private GameObject star02;
 	private GameObject star03;
@@ -250,5 +253,10 @@ public class TutorialThreeCanvasUI : MonoBehaviour
 		}
 
 		scoreNumber.text = string.Empty + TutorialGameManager.Instance.GetPlayerPoints();
+	}
+
+	public bool StaticLineDestroyed ()
+	{
+		return (staticLineOne.color.a == 0 || staticLineTwo.color.a == 0);
 	}
 }

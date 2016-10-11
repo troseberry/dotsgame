@@ -9,4 +9,5 @@ public class SaveableData
 
 	//public Dictionary<string, bool> allBoardLevels;
 	public Dictionary<string, LevelStats> allBoardLevels;
+    public Dictionary<HeroManager.Hero, LevelStats> heroesUnlocked;
 }

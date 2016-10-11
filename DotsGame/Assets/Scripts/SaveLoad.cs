@@ -1,4 +1,12 @@
-﻿using UnityEngine;
+﻿/*
+Any time a change is made to save load that affects what is being saved, the gameSave.dat file need to be 
+deleted so new variables will be loaded correctly. Otherwise the save data won't contain the information
+and will through null ref exceptions when trying to retrieve it.
+*/
+
+
+
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +16,6 @@ using System.IO;
 
 public class SaveLoad : MonoBehaviour 
 {
-
 	public static void Save ()
 	{
 		BinaryFormatter data = new BinaryFormatter();
@@ -18,14 +25,15 @@ public class SaveLoad : MonoBehaviour
 
 		//-----------------------Saving Data---------------------------------------------
 		Hashtable dataToSave = new Hashtable();
+
 		dataToSave.Add("finishedTutorial", CampaignData.GetFinishedTutorial());
-
-
 		dataToSave.Add("allBoardLevels", CampaignData.GetAllLevelsDictionary());
+		dataToSave.Add("heroesUnlocked", CampaignData.GetAllHeroBoardsDictionary());
+
 		//-----------------------Done Saving---------------------------------------------
 		data.Serialize(file, dataToSave);
 		file.Close();
-		Debug.Log("Saved here: " + Application.persistentDataPath);
+		//Debug.Log("Saved here: " + Application.persistentDataPath);
 	}
 
 
@@ -34,7 +42,7 @@ public class SaveLoad : MonoBehaviour
 	{
 		if (File.Exists(Application.persistentDataPath + "/gameSave.dat"))
 		{
-			Debug.Log("Loading...");
+			//Debug.Log("Loading...");
 
 			BinaryFormatter data = new BinaryFormatter();
 			FileStream file = File.Open(Application.persistentDataPath + "/gameSave.dat", FileMode.Open);
@@ -44,11 +52,11 @@ public class SaveLoad : MonoBehaviour
 			//-----------------------Loading Stats---------------------------------
 			CampaignData.SetFinishedTutorial((bool) saveData["finishedTutorial"]);
 
-			//CampaignData.SetLevelStatus("boardOneLevelOne", (bool) saveData["boardOneLevelOne"]);
-
-			//CampaignData.SetAllLevelsDictionary( (Dictionary<string, bool>) saveData["allBoardLevels"]);
-			Debug.Log(saveData["allBoardLevels"]);
+			//Debug.Log(saveData["allBoardLevels"]);
 			CampaignData.SetAllLevelsDictionary( (Dictionary<string, LevelStats>) saveData["allBoardLevels"]);
+
+			//Debug.Log(saveData["heroesUnlocked"]);
+			CampaignData.SetAllHeroBoardsDictionary( (Dictionary<HeroManager.Hero, LevelStats>) saveData["heroesUnlocked"]);
 			//-----------------------Done Loading----------------------------------
 		}
 		else {
@@ -58,7 +66,7 @@ public class SaveLoad : MonoBehaviour
 
 	public static void Delete ()
 	{
-		Debug.Log(Application.persistentDataPath);
+		//Debug.Log(Application.persistentDataPath);
 		File.Delete (Application.persistentDataPath + "/gameSave.dat");
 	}
 

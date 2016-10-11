@@ -556,10 +556,10 @@ public class TutorialGameManager : MonoBehaviour
 				//tutorialStep = 6;
 				//StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
 			}
-			else if (tutorialStep == 6 && passiveDismissDelay > 1.0f)
+			else if (tutorialStep == 6 && passiveDismissDelay > 1.0f && TutorialThreeCanvasUI.Instance.StaticLineDestroyed())
 			{
-				//tutorialStep = 7;
-				//StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
+				tutorialStep = 7;
+				StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
 			}
 			else if (tutorialStep == 7 && passiveDismissDelay > 1.0f)
 			{
@@ -803,10 +803,10 @@ public class TutorialGameManager : MonoBehaviour
 			}
 		}
 
-		if(tutorialStep == 6)
+		/*if(tutorialStep == 6)
 		{
 			tutorialStep = 7;
 			StartCoroutine(TutorialThreeCanvasUI.Instance.DisplayTutorialSteps(tutorialStep, tutorialPath, 0f));
-		}
+		}*/
 	}
 }

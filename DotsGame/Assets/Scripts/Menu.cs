@@ -62,7 +62,7 @@ public class Menu : MonoBehaviour
 		mainMenuButtons.SetActive(true);
 
 		SaveLoad.Load();
-		Debug.Log(Application.persistentDataPath);
+		//Debug.Log(Application.persistentDataPath);
 
 		if (CampaignData.GetLastScene() == null)
 		{
@@ -197,9 +197,10 @@ public class Menu : MonoBehaviour
 	{
 		SaveLoad.Delete();
 
-		Debug.Log(CampaignData.GetFinishedTutorial());
+		//Debug.Log(CampaignData.GetFinishedTutorial());
 
 		CampaignData.ClearLevelsDictionary();
+		CampaignData.ClearHeroesUnlockedDictionary();
 
 		/*Debug.Log(CampaignData.GetBoardOneDictionary());
 		foreach (KeyValuePair<string, bool> pair in CampaignData.GetBoardOneDictionary())
@@ -267,7 +268,7 @@ public class Menu : MonoBehaviour
 				if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial03")
 				{
 					//ShowCampaignBoard("BoardOne");
-					CampaignData.SetLastScene("");
+					//CampaignData.SetLastScene("");
 					boardSelectMenu.SetActive(true);
 					//ShowCampaignMenu();
 				}
@@ -283,6 +284,8 @@ public class Menu : MonoBehaviour
 				{
 					ShowCampaignBoard("BoardThree");
 				}
+
+				CampaignData.SetLastScene("");
 			}
 			
 		}

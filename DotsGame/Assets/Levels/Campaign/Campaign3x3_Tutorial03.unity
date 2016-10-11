@@ -8564,6 +8564,8 @@ MonoBehaviour:
   step13: {fileID: 1058137137}
   leftBomb: {fileID: 1297628643}
   rightBomb: {fileID: 1320776078}
+  staticLineOne: {fileID: 366983696}
+  staticLineTwo: {fileID: 1774401563}
 --- !u!1 &1400415261
 GameObject:
   m_ObjectHideFlags: 0

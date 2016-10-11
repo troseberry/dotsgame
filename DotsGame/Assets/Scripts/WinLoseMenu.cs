@@ -143,6 +143,7 @@ public class WinLoseMenu : MonoBehaviour
 
 	public void LoadMainMenu ()
 	{
+		CampaignData.SetLastScene(SceneManager.GetActiveScene().name);
 		SceneManager.LoadScene(0);
 	}
 

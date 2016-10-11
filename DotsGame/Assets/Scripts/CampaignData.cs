@@ -11,7 +11,8 @@ public class CampaignData : MonoBehaviour
 	private static Dictionary<string, LevelStats> allBoardLevels = new Dictionary<string, LevelStats>();
 	private static List<string> allBoardLevelNames = new List<string>();
 	
-	private static Dictionary<string, bool> heroesUnlocked = new Dictionary<string, bool>();
+	private static Dictionary<HeroManager.Hero, LevelStats> heroesUnlocked = new Dictionary<HeroManager.Hero, LevelStats>();
+	private static List<HeroManager.Hero> allHeroNames = new List<HeroManager.Hero>();
 	public static HeroManager.Hero currentHero;
 
 	void Start ()
@@ -54,26 +55,13 @@ public class CampaignData : MonoBehaviour
 		allBoardLevelNames.Add("3-11");
 		allBoardLevelNames.Add("3-12");
 
-		//Debug.Log("not attached");
+		
+		allHeroNames.Add(HeroManager.Hero.Multiplier);
+		allHeroNames.Add(HeroManager.Hero.Demolition);
+		allHeroNames.Add(HeroManager.Hero.Thief);
 
-		//check if the save data has all dictionary entries
-		/*if (!SaveLoad.DoesSaveExist())
-		{
-			boardOneLevels.Add("1-1", false);
-			boardOneLevels.Add("1-2", false);
-			boardOneLevels.Add("1-3", false);
-			boardOneLevels.Add("1-4", false);
-			boardOneLevels.Add("1-5", false);
-			boardOneLevels.Add("1-6", false);
-			boardOneLevels.Add("1-7", false);
-			boardOneLevels.Add("1-8", false);
-			boardOneLevels.Add("1-9", false);
-		}
-		else
-		{
-			//load dictionary?
-			SaveLoad.Load();
-		}*/
+		//Debug.Log("Levels Dictionary Exists? " + allBoardLevels);
+		//Debug.Log("Heroes Unlocked Exists? " + heroesUnlocked);
 
 		SaveLoad.Load();
 
@@ -87,6 +75,18 @@ public class CampaignData : MonoBehaviour
 			}
 		}
 
+		//Same for unlocked heroes (boss levels completed)
+		foreach (HeroManager.Hero hero in allHeroNames)
+		{
+			if (!heroesUnlocked.ContainsKey(hero))
+			{
+				heroesUnlocked.Add(hero, new LevelStats(false, 0, 0));
+			}
+		}
+
+
+
+
 		//Debug.Log(boardOneLevels);
 		/*foreach (KeyValuePair<string, bool> pair in allBoardLevels)
 		{
@@ -94,21 +94,9 @@ public class CampaignData : MonoBehaviour
 		}*/
 
 		//SaveLoad.Save();
+
+		//Debug.Log("Last Scene Visited: " + lastScene);
 	}
-
-
-
-	public static void ClearLevelsDictionary ()
-	{
-		//Can't iterate over dictionary and change values at same time
-		//Iterate thru names list. Should contain the same strings as dictionary keys
-		foreach (string levelName in allBoardLevelNames)
-		{
-			//Setting allBoardLevels values no allBoardLeveNames
-			SetLevelStatus(levelName, false);
-		}
-	}
-
 
 
 	public static bool GetFinishedTutorial ()
@@ -123,9 +111,21 @@ public class CampaignData : MonoBehaviour
 
 
 
+
+	public static void ClearLevelsDictionary ()
+	{
+		//Can't iterate over dictionary and change values at same time
+		//Iterate thru names list. Should contain the same strings as dictionary keys
+		foreach (string levelName in allBoardLevelNames)
+		{
+			//Setting allBoardLevels values no allBoardLeveNames
+			//SetLevelStatus(levelName, false);	//Should be UpdateLevelStatus?
+			UpdateLevelStatus(levelName, false, 0, 0);
+		}
+	}
+
 	public static bool GetLevelStatus (string levelName)
 	{
-		//return allBoardLevels[levelName];
 		return allBoardLevels[levelName].isComplete;
 	}
 
@@ -133,7 +133,6 @@ public class CampaignData : MonoBehaviour
 	{
 		return allBoardLevels[levelName];
 	}
-
 
 	public static void SetLevelStatus (string levelName, bool status)
 	{
@@ -147,26 +146,10 @@ public class CampaignData : MonoBehaviour
 		allBoardLevels[levelName].UpdateStats(status, rating, score);
 	}
 
-
-
-	/*public static Dictionary<string, bool> GetAllLevelsDictionary ()
-	{
-		return allBoardLevels;
-	}*/
-
 	public static Dictionary<string, LevelStats> GetAllLevelsDictionary ()
 	{
 		return allBoardLevels;
 	}
-
-
-
-
-
-	/*public static void SetAllLevelsDictionary (Dictionary<string, bool> toSet)
-	{
-		allBoardLevels = toSet;
-	}*/
 
 	public static void SetAllLevelsDictionary (Dictionary<string, LevelStats> toSet)
 	{
@@ -185,5 +168,47 @@ public class CampaignData : MonoBehaviour
 	public static string GetLastScene ()
 	{
 		return lastScene;
+	}
+
+
+
+
+
+	public static void ClearHeroesUnlockedDictionary () 
+	{
+		foreach (HeroManager.Hero hero in allHeroNames)
+		{
+			UpdateHeroBoardStatus(hero, false, 0, 0);
+		}
+	}
+
+	public static bool GetHeroBoardStatus (HeroManager.Hero heroBoardName)
+	{
+		return heroesUnlocked[heroBoardName].isComplete;
+	}
+
+	public static LevelStats GetFullHeroBoardStatus (HeroManager.Hero heroBoardName)
+	{
+		return heroesUnlocked[heroBoardName];
+	}
+
+	public static void SetHeroBoardStatus (HeroManager.Hero heroBoardName, bool status)
+	{
+		heroesUnlocked[heroBoardName].isComplete = status;
+	}
+
+	public static void UpdateHeroBoardStatus (HeroManager.Hero heroBoardName, bool status, int rating, int score)
+	{
+		heroesUnlocked[heroBoardName].UpdateStats(status, rating, score);
+	}
+
+	public static Dictionary<HeroManager.Hero, LevelStats> GetAllHeroBoardsDictionary ()
+	{
+		return heroesUnlocked;
+	}
+
+	public static void SetAllHeroBoardsDictionary (Dictionary<HeroManager.Hero, LevelStats> toSet)
+	{
+		heroesUnlocked = toSet;
 	}
 }
