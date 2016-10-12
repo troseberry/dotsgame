@@ -211,9 +211,9 @@ public class CampaignPlayerController : MonoBehaviour
 			if (playerChoice.GetLineStatic())
 			{
 				//Debug.Log("Destroy Line");
-				Color change = playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color;
+				Color change = playerChoice.gameObject.transform.parent.GetComponent<SpriteRenderer>().color;
 				change.a = 0f;
-				playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color = change;
+				playerChoice.gameObject.transform.parent.GetComponent<SpriteRenderer>().color = change;
 
 				playerChoice.SetLineStatic(false);
 				playerChoice.SetOpen(true);

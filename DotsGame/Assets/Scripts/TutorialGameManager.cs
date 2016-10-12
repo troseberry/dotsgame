@@ -71,7 +71,7 @@ public class TutorialGameManager : MonoBehaviour
 			Line currentLine = line.GetComponent<Line>();
 			lineObjects.Add(currentLine);
 
-			SpriteRenderer lineSprite = line.transform.parent.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+			SpriteRenderer lineSprite = line.transform.parent.gameObject.GetComponent<SpriteRenderer>();
 
 			if(lineSprite.enabled)
 			{
@@ -839,9 +839,9 @@ public class TutorialGameManager : MonoBehaviour
 			if (playerChoice.GetLineStatic())
 			{
 				//Debug.Log("Destroy Line");
-				Color change = playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color;
+				Color change = playerChoice.gameObject.transform.parent.GetComponent<SpriteRenderer>().color;
 				change.a = 0f;
-				playerChoice.gameObject.transform.parent.transform.parent.GetComponent<SpriteRenderer>().color = change;
+				playerChoice.gameObject.transform.parent.GetComponent<SpriteRenderer>().color = change;
 
 				playerChoice.SetLineStatic(false);
 				playerChoice.SetOpen(true);
