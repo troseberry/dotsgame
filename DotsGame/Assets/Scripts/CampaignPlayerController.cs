@@ -276,7 +276,8 @@ public class CampaignPlayerController : MonoBehaviour
 	}
 	public void UseThiefToken ()				//attach to boxObject. (give box objects button components)
 	{
-		Box chosenBox = EventSystem.current.currentSelectedGameObject.transform.parent.transform.parent.GetComponent<Box>();
+		//Box chosenBox = EventSystem.current.currentSelectedGameObject.transform.parent.transform.parent.GetComponent<Box>();
+		Box chosenBox = EventSystem.current.currentSelectedGameObject.GetComponent<Box>();
 
 		if (canUseThiefToken && chosenBox.IsComplete())
 		{

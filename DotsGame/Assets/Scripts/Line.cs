@@ -57,7 +57,8 @@ public class Line : MonoBehaviour
 		
 
 		
-		string lineParent = transform.parent.transform.parent.name;
+		//string lineParent = transform.parent.transform.parent.name;
+		string lineParent = transform.parent.name;
 		//Debug.Log(lineParent.Substring(5, 2));
 
 		lineNumber = int.Parse(lineParent.Substring(5, 2));

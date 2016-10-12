@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-12.unity
+- path: Assets/Levels/Menu.unity
   isLoaded: 1
   isActive: 1

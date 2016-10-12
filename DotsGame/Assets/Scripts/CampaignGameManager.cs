@@ -41,7 +41,10 @@ public class CampaignGameManager : MonoBehaviour
 
 			lineObjects.Add(currentLine);
 
-			SpriteRenderer lineSprite = linePlacement.transform.parent.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+			//SpriteRenderer lineSprite = linePlacement.transform.parent.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+			SpriteRenderer lineSprite = linePlacement.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+			
+
 			if (lineSprite.enabled)
 			{
 				currentLine.SetLineStatic(true);
@@ -180,8 +183,8 @@ public class CampaignGameManager : MonoBehaviour
 	}
 
 
-	public void PlayerGoesFirst ()
+	public void TestNewLines ()
 	{
-
+		Debug.Log("Button Input Received");
 	}
 }
