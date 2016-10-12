@@ -53,7 +53,7 @@ public class HeroManager : MonoBehaviour
             usedBoxNumbers = new List<int>();
 
             heroGroup = GameObject.Find("HeroGroup").transform;
-            CampaignData.currentHero = Hero.Demolition;
+            //CampaignData.currentHero = Hero.Demolition;
             //Debug.Log("Current Hero: " + CampaignData.currentHero);
             //Debug.Log("# Of PowerUps: " + toTriggerCount);
 
@@ -241,7 +241,7 @@ public class HeroManager : MonoBehaviour
 
         if (openBoxes.Count < toTriggerCount) toTriggerCount = openBoxes.Count;
 
-        //for some reason, using a foreach only works for the 1st two children
+        //Foreach only works for the 1st two children b/c iterating and trying to edit children at same time
         //Debug.Log("# of Bombs: " + demolition.transform.childCount);
         //foreach (Transform child in demolition.transform)
         for (int i = 0; i < toTriggerCount; i++)

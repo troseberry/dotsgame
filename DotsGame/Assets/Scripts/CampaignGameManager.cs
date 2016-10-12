@@ -110,7 +110,7 @@ public class CampaignGameManager : MonoBehaviour
 	
 	void Update () 
 	{
-		//DebugPanel.Log("Is Player's Turn? ", isPlayerTurn);
+		DebugPanel.Log("Is Player's Turn? ", isPlayerTurn);
 		//DebugPanel.Log("Player Points: ", playerPoints);
 
 		playerPointsText.text = "" + playerPoints;

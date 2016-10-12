@@ -26,7 +26,7 @@ public class Line : MonoBehaviour
 	
 	void Start () 
 	{
-		lineName = transform.parent.transform.parent.name;
+		lineName = transform.parent.name;
 
 		//isOpen = isStatic ? false : true;
 		
@@ -35,7 +35,7 @@ public class Line : MonoBehaviour
 		linePosition = transform.position;// new Vector3(transform.localPosition.x / 100, transform.localPosition.y / 100, transform.localPosition.z / 100);
 		lineRotation = new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
 
-		owner = "";
+		owner = string.Empty;
 
 
 		if(SceneManager.GetActiveScene().name.Contains("3x3"))
@@ -160,4 +160,13 @@ public class Line : MonoBehaviour
 		isOpen = state;
 	}
 
+	public void ResetLine ()
+	{
+		//Don't reset calledAdd. Still apart of the same box parent(s)
+		//Clears static if static
+		transform.parent.GetComponent<SpriteRenderer>().enabled = false;
+		isStatic = false;
+		isOpen = true;
+		calledAdd = false;
+	}
 }

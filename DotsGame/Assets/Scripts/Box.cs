@@ -41,7 +41,7 @@ public class Box : MonoBehaviour
 	{
 		boxNumber = int.Parse(name.Substring(4, 2));
 		sideCount = 0;
-		owner = "";
+		owner = string.Empty;
 		claimed = false;
 		chip = null;
 
@@ -61,7 +61,7 @@ public class Box : MonoBehaviour
 		
 	void Update () 
 	{
-		//DebugPanel.Log(name + " Sides Left Open: ", SidesLeftOpen());
+		DebugPanel.Log(name + " Sides Left Open: ", SidesLeftOpen());
 
 		//DebugPanel.Log(name + " Is Claimed: ", claimed);
 		//DebugPanel.Log(name + " Owner: ", owner);
@@ -117,6 +117,21 @@ public class Box : MonoBehaviour
 	public void SetPowerUp (GameObject powerUp)
 	{
 		heldPowerUp = powerUp;
+	}
+
+	public GameObject GetPowerUp ()
+	{
+		return heldPowerUp;
+	}
+
+
+	public void ResetBox ()
+	{
+		sideCount = 0;
+		owner = string.Empty;
+		claimed = false;
+		chip = null;
+		boxLineObjects.Clear();
 	}
 
 
@@ -292,8 +307,5 @@ public class Box : MonoBehaviour
 		}
 	}
 
-	public GameObject GetPowerUp ()
-	{
-		return heldPowerUp;
-	}
+	
 }

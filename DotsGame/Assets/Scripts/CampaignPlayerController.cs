@@ -297,15 +297,3 @@ public class CampaignPlayerController : MonoBehaviour
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
