@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -27,6 +28,8 @@ public class HeroBoardManager : MonoBehaviour
 
 	private int roundWins;
 	private Text roundWinsText;
+	private Text currentPointsText;
+
 	private bool randomizedBoard;
 
 	private bool paused;
@@ -35,13 +38,15 @@ public class HeroBoardManager : MonoBehaviour
 	private string formattedTimer;
 
 	private float currentTimer;
-	private float roundDuration = 60.0f;
-	private float timeBonus = 10.0f;
+	private float roundDuration;// = 60.0f;
+	private float timeBonus;// = 10.0f;
 	private float overallTotalTime;
 
 	private Text roundDurationText;
 	private Text pointGoalText;
 	private Text timeBonusText;
+
+	private string sceneName;
 
 	void Start () 
     {
@@ -50,11 +55,34 @@ public class HeroBoardManager : MonoBehaviour
 		_Dynamic = GameObject.Find("_Dynamic").transform;
 		boxes = GameObject.FindGameObjectsWithTag("Box");
 
-		boardSize = ((int) Mathf.Sqrt(boxes.Length));// + 1;
+		sceneName = SceneManager.GetActiveScene().name;
+		int pointGoalNumber = 0;
+
+		if (sceneName.Contains("3x3"))
+		{
+			boardSize = ((int) Mathf.Sqrt(boxes.Length));// + 1;
+			roundDuration = 60.0f;
+			timeBonus = 10.0f;
+			pointGoalNumber = 5;		//2 Star Rating Equivalent
+		}
+		else if (sceneName.Contains("4x4"))
+		{
+			boardSize = ((int) Mathf.Sqrt(boxes.Length)) * 2;
+			roundDuration = 75.0f;
+			timeBonus = 15.0f;
+			pointGoalNumber = 10;		//2 Star Rating Equivalent
+		}
+		else if (sceneName.Contains("5x5"))
+		{
+			boardSize = ((int) Mathf.Sqrt(boxes.Length)) * 3;
+			roundDuration = 90.0f;
+			timeBonus = 20.0f;
+			pointGoalNumber = 23;		//3 Star Rating Equivalent
+		}	
+
 		usedLines = new List<int>();
 
 		scoreObjects = GameObject.Find("ScoreObjects");
-		//scoreObjects.SetActive(false);
 
 		startingTurnText = GameObject.Find("StartingTurn").GetComponent<Text>();
 		turnTextVisible = true;
@@ -64,17 +92,24 @@ public class HeroBoardManager : MonoBehaviour
 		roundWinsText = GameObject.Find("CurrentRoundTotal").GetComponent<Text>();
 		roundWinsText.text = string.Empty + roundWins;
 
+		currentPointsText = GameObject.Find("CurrentPointTotal").GetComponent<Text>();
+		currentPointsText.text = string.Empty;// + CampaignGameManager.Instance.GetPlayerPoints();
+
 		randomizedBoard = false;
 
 		roundTimerText = GameObject.Find("TimerText").GetComponent<Text>();
 		currentTimer = roundDuration;
 		overallTotalTime = roundDuration;
 
-		// roundDurationText = GameObject.Find("TimeAmount").GetComponent<Text>();
-		// roundDurationText.text = roundDuration + " Seconds";
 
-		// pointGoalText = GameObject.Find("PointsNeeded").GetComponent<Text>();
-		// timeBonusText = GameObject.Find("BonusTimeAmount").GetComponent<Text>();
+		roundDurationText = GameObject.Find("TimeAmount").GetComponent<Text>();
+		roundDurationText.text = roundDuration + " Seconds";
+
+		pointGoalText = GameObject.Find("PointsNeeded").GetComponent<Text>();
+		pointGoalText.text = pointGoalNumber + "/Round";
+
+		timeBonusText = GameObject.Find("BonusTimeAmount").GetComponent<Text>();
+		timeBonusText.text = timeBonus + " Seconds";
 		
 		paused = true;
 	}
@@ -113,12 +148,14 @@ public class HeroBoardManager : MonoBehaviour
 				Invoke("SwitchTurnText", 0.5f);
 				randomizedBoard = true;
 
-				//For 3x3, if the number of generated static lines (or boardSize) is 2, have to manually switch starting turn here
-				CampaignGameManager.Instance.isPlayerTurn = !CampaignGameManager.Instance.isPlayerTurn;
+				//For 3x3 and 5x5, the current number of generated static lines (or boardSize) requires manually switching starting turn here
+				if (!sceneName.Contains("4x4")) CampaignGameManager.Instance.isPlayerTurn = !CampaignGameManager.Instance.isPlayerTurn;
 			}	
 		}
 
 		roundWinsText.text = string.Empty + roundWins;
+		currentPointsText.text = string.Empty + CampaignGameManager.Instance.GetPlayerPoints();
+		
 		if (turnTextVisible) 
 		{
 			Invoke("HideTurnText", 3.0f);
@@ -139,14 +176,14 @@ public class HeroBoardManager : MonoBehaviour
 	public void RandomizeBoardLayout ()
 	{
 		//Debug.Log("Randomizing Board");
-		Debug.Log("Total Points Before Clear: " + CampaignGameManager.Instance.GetPlayerPoints());
+		//Debug.Log("Total Points Before Clear: " + CampaignGameManager.Instance.GetPlayerPoints());
 		ClearBoard();
 
-		Debug.Log("Round Rating: " + CampaignGameManager.Instance.PlayerWon());
+		//Debug.Log("Round Rating: " + CampaignGameManager.Instance.PlayerWon());
 
 		if (CampaignGameManager.Instance.PlayerWon() == "S02" || CampaignGameManager.Instance.PlayerWon() == "S03")
 		{
-			Debug.Log("Won Round");
+			//Debug.Log("Won Round");
 			IncrementRoundWins();
 
 			if (!BoardWon())

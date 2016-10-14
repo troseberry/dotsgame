@@ -160,7 +160,16 @@ public class WinLoseMenu : MonoBehaviour
 
 	public void LoadNextLevel ()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+		if (nextIndex != 22 && nextIndex != 35 && nextIndex != 48)
+		{
+			SceneManager.LoadScene(nextIndex);
+		}
+		else
+		{
+			LoadMainMenu();
+		}
 	}
 
 

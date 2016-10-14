@@ -161,6 +161,9 @@ public class CampaignGameManager : MonoBehaviour
 		oneStarScore = (int) Mathf.Ceil(totalPossiblePoints * 0.3f);
 		twoStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.6f);
 		threeStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.85f);
+
+		//Debug.Log("Points Goal: " + twoStarScore);
+		//Debug.Log("3 Star: " + threeStarScore);
 	}
 
 	public string PlayerWon ()

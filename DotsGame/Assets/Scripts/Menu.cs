@@ -343,22 +343,22 @@ public class Menu : MonoBehaviour
 
 				if(levelStarRating == 1)
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("1Star").gameObject.SetActive(true);
 				}
 				else if(levelStarRating == 2)
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("2Stars").gameObject.SetActive(true);
 				}
 				else if(levelStarRating == 3)
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("3Stars").gameObject.SetActive(true);
 				}
 				else
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("1Star").gameObject.SetActive(false);
 					btn.transform.Find("2Stars").gameObject.SetActive(false);
 					btn.transform.Find("3Stars").gameObject.SetActive(false);
@@ -389,6 +389,13 @@ public class Menu : MonoBehaviour
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
 		}
+		//If completed all previous level, unlocked hero board (later add check for # of stars required)
+		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
+		if (CampaignData.GetLevelStatus(lastLevelName))
+		{
+			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
+		}
+
 		boardSelectMenu.SetActive(false);
 	}
 
@@ -397,19 +404,12 @@ public class Menu : MonoBehaviour
 		levelsCommonAssets.SetActive(true);
 
 		GameObject currentBoard = levelsGroup.transform.Find(boardToShow).gameObject;
-		Debug.Log("Current Board: " + currentBoard);
+		//Debug.Log("Current Board: " + currentBoard);
 		currentBoard.SetActive(true);
 
 		boardToSlide = currentBoard.transform.Find("LevelSlider").gameObject;
 		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
 		currentSlidePosition = 0;
-
-		/*currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
-		Transform pages = currentBoard.transform.Find("Pages");
-		foreach (Transform page in pages)
-		{
-			currentBoardPages.Add(page);
-		}*/
 
 
 		List<GameObject> levelButtons = new List<GameObject>();
@@ -438,22 +438,22 @@ public class Menu : MonoBehaviour
 
 				if(levelStarRating == 1)
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("1Star").gameObject.SetActive(true);
 				}
 				else if(levelStarRating == 2)
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("2Stars").gameObject.SetActive(true);
 				}
 				else if(levelStarRating == 3)
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("3Stars").gameObject.SetActive(true);
 				}
 				else
 				{
-					Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
+					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("1Star").gameObject.SetActive(false);
 					btn.transform.Find("2Stars").gameObject.SetActive(false);
 					btn.transform.Find("3Stars").gameObject.SetActive(false);
@@ -484,6 +484,14 @@ public class Menu : MonoBehaviour
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
 		}
+
+		//If completed all previous level, unlocked hero board (later add check for # of stars required)
+		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
+		if (CampaignData.GetLevelStatus(lastLevelName))
+		{
+			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
+		}
+
 		boardSelectMenu.SetActive(false);
 	}
 
@@ -582,6 +590,31 @@ public class Menu : MonoBehaviour
 		{
 			Debug.Log("Found 5x5 scene with that name");
 			SceneManager.LoadScene("Levels/Campaign/BoardThree/Campaign5x5_" + levelToLoad);
+		}
+	}
+
+	public void LoadHeroBoard ()
+	{
+		SaveLoad.Save();
+
+		string buttonName = EventSystem.current.currentSelectedGameObject.name;
+		string heroString = buttonName.Substring(0, buttonName.Length - 6);
+		Debug.Log("Hero String: " + heroString);
+
+		if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/HeroBoards/Campaign3x3HeroBoard_" + heroString))
+		{
+			Debug.Log("Found 3x3 hero board with that name");
+			SceneManager.LoadScene("Levels/Campaign/HeroBoards/Campaign3x3HeroBoard_" + heroString);
+		}
+		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/HeroBoards/Campaign4x4HeroBoard_" + heroString))
+		{
+			Debug.Log("Found 4x4 hero board with that name");
+			SceneManager.LoadScene("Levels/Campaign/HeroBoards/Campaign4x4HeroBoard_" + heroString);
+		}
+		else if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/HeroBoards/Campaign5x5HeroBoard_" + heroString))
+		{
+			Debug.Log("Found 5x5 hero board with that name");
+			SceneManager.LoadScene("Levels/Campaign/HeroBoards/Campaign5x5HeroBoard_" + heroString);
 		}
 	}
 

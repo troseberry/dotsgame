@@ -50,6 +50,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Levels/Campaign/BoardOne/Campaign3x3_1-9.unity
   - enabled: 1
+    path: Assets/Levels/Campaign/HeroBoards/Campaign3x3HeroBoard_Multiplier.unity
+  - enabled: 1
     path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-1.unity
   - enabled: 1
     path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-2.unity
@@ -74,6 +76,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Levels/Campaign/BoardTwo/Campaign4x4_2-12.unity
   - enabled: 1
+    path: Assets/Levels/Campaign/HeroBoards/Campaign4x4HeroBoard_Demolition.unity
+  - enabled: 1
     path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-1.unity
   - enabled: 1
     path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-2.unity
@@ -97,3 +101,5 @@ EditorBuildSettings:
     path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-11.unity
   - enabled: 1
     path: Assets/Levels/Campaign/BoardThree/Campaign5x5_3-12.unity
+  - enabled: 1
+    path: Assets/Levels/Campaign/HeroBoards/Campaign5x5HeroBoard_Thief.unity
