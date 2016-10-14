@@ -17,7 +17,7 @@ public class ComputerAI : MonoBehaviour
 	private bool canDraw;
 	private GameObject lineToDraw;
 	private float drawingTime;
-	private float drawDuration = 2.0f;
+	private float drawDuration;// = 2.0f;			//if hero board, make this shorter
 
 	private Vector3 endDrawPosition;
 
@@ -58,6 +58,10 @@ public class ComputerAI : MonoBehaviour
 		{
 			mode = "tutorial";
 		}
+		else if (SceneManager.GetActiveScene().name.Contains("HeroBoard"))
+		{
+			mode = "hero";
+		}
 		else
 		{
 			if (SceneManager.GetActiveScene().name.Contains("Campaign"))
@@ -75,6 +79,15 @@ public class ComputerAI : MonoBehaviour
 		versusConditions = false;
 		campaignConditions = false;
 		tutorialConditions = false;
+
+		if (mode != "hero")
+		{
+			drawDuration = 2.0f;
+		}
+		else
+		{
+			drawDuration = 0.5f;
+		}
 		
 	}
 	
@@ -82,7 +95,7 @@ public class ComputerAI : MonoBehaviour
 	void Update () 
 	{
 		if (mode == "versus") versusConditions = !GameManager.Instance.isPlayerTurn && !placing && !GameManager.Instance.RoundOver();
-		if (mode == "campaign") campaignConditions = !CampaignGameManager.Instance.isPlayerTurn && !placing && !CampaignGameManager.Instance.RoundOver();
+		if (mode == "campaign" || mode == "hero") campaignConditions = !CampaignGameManager.Instance.isPlayerTurn && !placing && !CampaignGameManager.Instance.RoundOver();
 		if (mode== "tutorial") tutorialConditions = !TutorialGameManager.Instance.isPlayerTurn && !placing && !TutorialGameManager.Instance.RoundOver();
 
 
@@ -115,7 +128,7 @@ public class ComputerAI : MonoBehaviour
 
 		if (canDraw)
 		{
-			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
+			if (drawingTime < drawDuration) drawingTime += Time.deltaTime/drawDuration;
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		
@@ -194,7 +207,7 @@ public class ComputerAI : MonoBehaviour
 			int randomPlace = UnityEngine.Random.Range(0, GameManager.Instance.lineObjects.Count);
 			toPlace = GameManager.Instance.lineObjects.ElementAt(randomPlace);
 		}
-		else if (mode == "campaign")
+		else if (mode == "campaign" || mode == "hero")
 		{
 			int randomPlace = UnityEngine.Random.Range(0, CampaignGameManager.Instance.lineObjects.Count);
 			toPlace = CampaignGameManager.Instance.lineObjects.ElementAt(randomPlace);
@@ -247,7 +260,7 @@ public class ComputerAI : MonoBehaviour
 		computerChoice.SetOpen(false);
 		computerChoice.owner = "Computer";
 
-		string boxOwner = (mode == "campaign") ? "CampaignComputer" : "Computer";
+		string boxOwner = (mode == "campaign" || mode == "hero") ? "CampaignComputer" : "Computer";
 
 
 
@@ -262,7 +275,7 @@ public class ComputerAI : MonoBehaviour
 		{
 			GameManager.Instance.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
 		}
-		else if (mode == "campaign")
+		else if (mode == "campaign" || mode == "hero")
 		{
 			CampaignGameManager.Instance.isPlayerTurn = (computerChoice.boxParentOne.IsComplete() || computerChoice.boxParentTwo.IsComplete()) ? false : true;
 		}

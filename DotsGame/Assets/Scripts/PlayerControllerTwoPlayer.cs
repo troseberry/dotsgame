@@ -44,7 +44,7 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 		//DebugPanel.Log("Drawing Time: ", drawingTime);
 		if (canDraw)
 		{
-			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
+			if (drawingTime < drawDuration) drawingTime += Time.deltaTime/drawDuration;
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position =  Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		

@@ -26,7 +26,6 @@ public class HeroManager : MonoBehaviour
     public Toggle demolitionToggle;
     public Toggle thiefToggle;
 
-    //private Vector3 powerUpScale;
     private List<int> usedBoxNumbers;
 
     private int randomBox;
@@ -34,12 +33,9 @@ public class HeroManager : MonoBehaviour
 
 	void Start () 
     {
-       
         if (SceneManager.GetActiveScene().buildIndex != 0)
         {
-            //powerUpScale = GameObject.Find("BoxGroup").transform.localScale;
-
-    	    boxes = GameObject.FindGameObjectsWithTag("Box");
+            boxes = GameObject.FindGameObjectsWithTag("Box");
             toTriggerCount = (int) Mathf.Sqrt(boxes.Length);
 
             openBoxes = new List<GameObject>();
@@ -53,9 +49,7 @@ public class HeroManager : MonoBehaviour
             usedBoxNumbers = new List<int>();
 
             heroGroup = GameObject.Find("HeroGroup").transform;
-            //CampaignData.currentHero = Hero.Demolition;
-            //Debug.Log("Current Hero: " + CampaignData.currentHero);
-            //Debug.Log("# Of PowerUps: " + toTriggerCount);
+            CampaignData.currentHero = Hero.None;
 
             EnableHeroButton();
         }
@@ -63,26 +57,12 @@ public class HeroManager : MonoBehaviour
         {
             ManageUnlockedHeroes();
         }
-
-        //Debug.Log(heroToggles);
-        
-        /*if (heroToggles)
-        {
-            //heroToggles = GameObject.Find("HeroButtons");
-            multiplierToggle = heroToggles.transform.Find("MultiplierToggle").GetComponent<Toggle>();
-            demolitionToggle = heroToggles.transform.Find("DemolitionToggle").GetComponent<Toggle>();
-            thiefToggle = heroToggles.transform.Find("ThiefToggle").GetComponent<Toggle>();
-
-        }*/
 	}
+
 
     //Enables hero choice buttons if player has unlocked them
     void ManageUnlockedHeroes ()
     {
-        //Debug.Log("Hero Board One Status: " + CampaignData.GetHeroBoardStatus(Hero.Multiplier));
-       
-        //if locked, show off image, grayed out
-        //turn toggle off
         if (!CampaignData.GetHeroBoardStatus(Hero.Multiplier))
         {
             multiplierToggle.isOn = false;
@@ -129,6 +109,7 @@ public class HeroManager : MonoBehaviour
         }
 
     }
+
 
     //For hero buttons in the main menu
     public void ChooseHero ()
@@ -183,9 +164,6 @@ public class HeroManager : MonoBehaviour
     }
 
 
-    
-
-
     public void UseMultiplier ()
     {
         foreach (GameObject box in boxes)
@@ -208,16 +186,13 @@ public class HeroManager : MonoBehaviour
 
             while (usedBoxNumbers.Contains(randomBox))
             {
-                //randomBox = Random.Range(0, boxes.Length);  //openBoxes
                 randomBox = Random.Range(0, openBoxes.Count);
             }
             usedBoxNumbers.Add(randomBox);
 
 
-            //GameObject boxParent = boxes[randomBox];        //openBoxes
             GameObject boxParent = openBoxes[randomBox];
 
-            //currentPower.transform.localScale = powerUpScale;
             currentPower.transform.SetParent(boxParent.transform, false);
             currentPower.SetActive(true);
 
@@ -241,13 +216,9 @@ public class HeroManager : MonoBehaviour
 
         if (openBoxes.Count < toTriggerCount) toTriggerCount = openBoxes.Count;
 
-        //Foreach only works for the 1st two children b/c iterating and trying to edit children at same time
-        //Debug.Log("# of Bombs: " + demolition.transform.childCount);
-        //foreach (Transform child in demolition.transform)
         for (int i = 0; i < toTriggerCount; i++)
         {
             GameObject currentPower = demolition.transform.GetChild(0).gameObject;
-            //GameObject currentPower = child.gameObject;
             
             while (usedBoxNumbers.Contains(randomBox))
             {
@@ -258,7 +229,6 @@ public class HeroManager : MonoBehaviour
 
             GameObject boxParent = openBoxes[randomBox];
 
-            //currentPower.transform.localScale = powerUpScale;
             currentPower.transform.SetParent(boxParent.transform, false);
             currentPower.SetActive(true);
 
@@ -305,9 +275,6 @@ public class HeroManager : MonoBehaviour
     }
 
 
-
-
-
     //FOR DEV OPTIONS MENU ONLY
     public void ToggleMultiplier ()
     {
@@ -323,8 +290,6 @@ public class HeroManager : MonoBehaviour
         
         SaveLoad.Save();
         SceneManager.LoadScene(0);
-        //ManageUnlockedHeroes();
-
     }
 
     public void ToggleDemolition ()
@@ -355,11 +320,3 @@ public class HeroManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 }
-
-
-
-
-
-
-
-

@@ -147,6 +147,7 @@ public class Line : MonoBehaviour
 	public void SetLineStatic (bool state)
 	{
 		isStatic = state;
+		owner = state ? "static" : string.Empty;
 	}
 
 	public bool GetOpen ()
@@ -168,5 +169,6 @@ public class Line : MonoBehaviour
 		isStatic = false;
 		isOpen = true;
 		calledAdd = false;
+		owner = string.Empty;
 	}
 }

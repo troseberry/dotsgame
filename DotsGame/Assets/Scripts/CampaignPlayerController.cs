@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class CampaignPlayerController : MonoBehaviour 
@@ -17,7 +18,7 @@ public class CampaignPlayerController : MonoBehaviour
 	private bool canDraw;
 	private GameObject lineToDraw;
 	private float drawingTime;
-	private float drawDuration = 2.0f;
+	private float drawDuration;// = 2.0f;		//if hero board, make this shorter
 
 	private Vector3 endDrawPosition;
 
@@ -36,10 +37,14 @@ public class CampaignPlayerController : MonoBehaviour
 	private Color32 yellowThiefColor = new Color32 (0xED, 0xFF, 0x7D, 0xFF);
 	private Color resetColor = new Color (1, 1, 1);
 
+	private string mode;
+
 	
 	void Start () 
 	{
 		Instance = this;
+
+		mode = (SceneManager.GetActiveScene().name.Contains("HeroBoard")) ? "hero" : string.Empty;
 
 		//playerLine = (GameObject) Resources.Load("PlayerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
@@ -50,26 +55,25 @@ public class CampaignPlayerController : MonoBehaviour
 
 		//currentPowerUp = "";
 
-		canUseBomb = false;
-		//bombButton = GameObject.Find("BombButton");
-		//bombButton.SetActive(false);
-
-		bombToggle = GameObject.Find("BombToggle").GetComponent<Toggle>();
-		bombToggle.gameObject.SetActive(false);
-		bombToggle.onValueChanged.AddListener((isOn) => ToggleBomb() );
-		/*bombToggle.onValueChanged.AddListener((isOn) => {
-			ToggleBomb();
-			}
-		);*/
+		if (mode != "hero")
+		{
+			canUseBomb = false;
+			bombToggle = GameObject.Find("BombToggle").GetComponent<Toggle>();
+			bombToggle.gameObject.SetActive(false);
+			bombToggle.onValueChanged.AddListener((isOn) => ToggleBomb() );
 
 
-		canUseThiefToken = false;
-		//thiefTokenButton = GameObject.Find("ThiefTokenButton");
-		//thiefTokenButton.SetActive(false);
+			canUseThiefToken = false;
+			thiefTokenToggle = GameObject.Find("ThiefTokenToggle").GetComponent<Toggle>();
+			thiefTokenToggle.gameObject.SetActive(false);
+			thiefTokenToggle.onValueChanged.AddListener((isOn) => ToggleThiefToken() );
 
-		thiefTokenToggle = GameObject.Find("ThiefTokenToggle").GetComponent<Toggle>();
-		thiefTokenToggle.gameObject.SetActive(false);
-		thiefTokenToggle.onValueChanged.AddListener((isOn) => ToggleThiefToken() );
+			drawDuration = 2.0f;
+		}
+		else
+		{
+			drawDuration = 0.5f;
+		}
 	}
 	
 	
@@ -78,7 +82,7 @@ public class CampaignPlayerController : MonoBehaviour
 		//DebugPanel.Log("Drawing Time: ", drawingTime);
 		if (canDraw)
 		{
-			if (drawingTime < 2.0f) drawingTime += Time.deltaTime/drawDuration;
+			if (drawingTime < drawDuration) drawingTime += Time.deltaTime/drawDuration;
 			lineToDraw.transform.localScale = Vector3.Lerp(lineToDraw.transform.localScale, lineGridScale, drawingTime);
 			lineToDraw.transform.position = Vector3.Lerp(lineToDraw.transform.position, endDrawPosition, drawingTime);
 		

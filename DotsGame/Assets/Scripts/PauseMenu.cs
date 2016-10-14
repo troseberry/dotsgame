@@ -7,7 +7,7 @@ public class PauseMenu : MonoBehaviour
 {
 	private Canvas pauseMenu;
 	private float softBackDelay;
-	
+	private string mode;
 
 	void Start () 
 	{
@@ -15,6 +15,8 @@ public class PauseMenu : MonoBehaviour
 		pauseMenu.enabled = false;
 
 		softBackDelay = 0f;
+
+		mode = (SceneManager.GetActiveScene().name.Contains("HeroBoard")) ? "hero" : string.Empty;
 	}
 
 	void Update ()
@@ -39,6 +41,8 @@ public class PauseMenu : MonoBehaviour
 	{
 		softBackDelay = 0.5f;
 		pauseMenu.enabled = !pauseMenu.enabled;
+
+		if (mode == "hero") HeroBoardManager.Instance.TogglePause();
 	}
 
 	public void ResetLevel ()
