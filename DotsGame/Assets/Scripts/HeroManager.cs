@@ -49,7 +49,7 @@ public class HeroManager : MonoBehaviour
             usedBoxNumbers = new List<int>();
 
             heroGroup = GameObject.Find("HeroGroup").transform;
-            CampaignData.currentHero = Hero.None;
+            //CampaignData.currentHero = Hero.None;
 
             EnableHeroButton();
         }
@@ -166,11 +166,11 @@ public class HeroManager : MonoBehaviour
 
     public void UseMultiplier ()
     {
-        foreach (GameObject box in boxes)
+        for (int i = 0; i < boxes.Length; i++)
         {
-            if (!box.GetComponent<Box>().IsComplete())
+            if (!boxes[i].GetComponent<Box>().IsComplete())
             {
-                openBoxes.Add(box);
+                openBoxes.Add(boxes[i]);
             }
         }
         randomBox = Random.Range(0, openBoxes.Count);
@@ -204,11 +204,11 @@ public class HeroManager : MonoBehaviour
 
     public void UseDemolition ()
     {
-        foreach (GameObject box in boxes)
+        for (int i = 0; i < boxes.Length; i++)
         {
-            if (!box.GetComponent<Box>().IsComplete())
+            if (!boxes[i].GetComponent<Box>().IsComplete())
             {
-                openBoxes.Add(box);
+                openBoxes.Add(boxes[i]);
             }
         }
         randomBox = Random.Range(0, openBoxes.Count);
@@ -240,11 +240,11 @@ public class HeroManager : MonoBehaviour
 
     public void UseThief ()
     {
-        foreach (GameObject box in boxes)
+        for (int i = 0; i < boxes.Length; i++)
         {
-            if (!box.GetComponent<Box>().IsComplete())
+            if (!boxes[i].GetComponent<Box>().IsComplete())
             {
-                openBoxes.Add(box);
+                openBoxes.Add(boxes[i]);
             }
         }
         randomBox = Random.Range(0, openBoxes.Count);

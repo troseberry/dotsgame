@@ -22,6 +22,7 @@ public class HeroBoardManager : MonoBehaviour
 
 	private GameObject scoreObjects;
 
+	private bool playerStartsRound;
 	private Text startingTurnText;
 	private bool turnTextVisible;
 	private Color originalTextColor; 
@@ -61,22 +62,22 @@ public class HeroBoardManager : MonoBehaviour
 		if (sceneName.Contains("3x3"))
 		{
 			boardSize = ((int) Mathf.Sqrt(boxes.Length));// + 1;
-			roundDuration = 60.0f;
-			timeBonus = 10.0f;
+			roundDuration = 45.0f;
+			timeBonus = 5.0f;
 			pointGoalNumber = 5;		//2 Star Rating Equivalent
 		}
 		else if (sceneName.Contains("4x4"))
 		{
 			boardSize = ((int) Mathf.Sqrt(boxes.Length)) * 2;
-			roundDuration = 75.0f;
-			timeBonus = 15.0f;
+			roundDuration = 60.0f;
+			timeBonus = 10.0f;
 			pointGoalNumber = 10;		//2 Star Rating Equivalent
 		}
 		else if (sceneName.Contains("5x5"))
 		{
 			boardSize = ((int) Mathf.Sqrt(boxes.Length)) * 3;
-			roundDuration = 90.0f;
-			timeBonus = 20.0f;
+			roundDuration = 75.0f;
+			timeBonus = 15.0f;
 			pointGoalNumber = 23;		//3 Star Rating Equivalent
 		}	
 
@@ -84,6 +85,8 @@ public class HeroBoardManager : MonoBehaviour
 
 		scoreObjects = GameObject.Find("ScoreObjects");
 
+
+		playerStartsRound = true;
 		startingTurnText = GameObject.Find("StartingTurn").GetComponent<Text>();
 		turnTextVisible = true;
 		originalTextColor = startingTurnText.color;
@@ -148,8 +151,8 @@ public class HeroBoardManager : MonoBehaviour
 				Invoke("SwitchTurnText", 0.5f);
 				randomizedBoard = true;
 
-				//For 3x3 and 5x5, the current number of generated static lines (or boardSize) requires manually switching starting turn here
-				if (!sceneName.Contains("4x4")) CampaignGameManager.Instance.isPlayerTurn = !CampaignGameManager.Instance.isPlayerTurn;
+				playerStartsRound = !playerStartsRound;
+				CampaignGameManager.Instance.isPlayerTurn = playerStartsRound;
 			}	
 		}
 
@@ -195,7 +198,6 @@ public class HeroBoardManager : MonoBehaviour
 		CampaignGameManager.Instance.ClearPlayerPoints();
 		
 
-
 		Line lineToStatic = null;
 
 		for (int i = 0; i < boardSize; i++)
@@ -221,14 +223,16 @@ public class HeroBoardManager : MonoBehaviour
 		usedLines.Clear();
 		
 
-		foreach (Line line in CampaignGameManager.Instance.lineObjects)
+		//foreach (Line line in CampaignGameManager.Instance.lineObjects)
+		for (int i = 0; i < CampaignGameManager.Instance.lineObjects.Count; i++)
 		{
-			line.ResetLine();
+			CampaignGameManager.Instance.lineObjects[i].ResetLine();
 		}
 
-		foreach (GameObject box in boxes)
+		//foreach (GameObject box in boxes)
+		for (int i = 0; i < boxes.Length; i++)
 		{
-			box.GetComponent<Box>().ResetBox();
+			boxes[i].GetComponent<Box>().ResetBox();
 		}
 
 		for (int i = _Dynamic.childCount-1; i > -1 ; i--)
@@ -283,8 +287,7 @@ public class HeroBoardManager : MonoBehaviour
 	}
 
 	void SwitchTurnText ()
-	{
-		
+	{	
 		startingTurnText.color = originalTextColor;
 		turnTextVisible = true;
 		startingTurnText.text = (startingTurnText.text == "Player Start") ? "Computer Start" : "Player Start";

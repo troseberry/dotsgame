@@ -36,12 +36,13 @@ public class CampaignGameManager : MonoBehaviour
 
 		GameObject[] linePlacementholder = GameObject.FindGameObjectsWithTag("LinePlacement");
 		int staticLineCount = 0;
-		foreach (GameObject linePlacement in linePlacementholder)
+		//foreach (GameObject linePlacement in linePlacementholder)
+		for (int i = 0; i < linePlacementholder.Length; i++)
 		{
-			Line currentLine = linePlacement.GetComponent<Line>();
+			Line currentLine = linePlacementholder[i].GetComponent<Line>();
 			lineObjects.Add(currentLine);
 
-			SpriteRenderer lineSprite = linePlacement.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+			SpriteRenderer lineSprite = linePlacementholder[i].transform.parent.gameObject.GetComponent<SpriteRenderer>();
 			if (lineSprite.enabled)
 			{
 				currentLine.SetLineStatic(true);
@@ -62,17 +63,18 @@ public class CampaignGameManager : MonoBehaviour
 		int x2Count = 0;
 		int bombCount = 0;
 		int thiefCount = 0;
-		foreach (GameObject powerUp in powerUpHolder)
+		//foreach (GameObject powerUp in powerUpHolder)
+		for (int i = 0; i < powerUpHolder.Length; i++)
 		{
-			if (powerUp.name.Contains("x2"))
+			if (powerUpHolder[i].name.Contains("x2"))
 			{
 				x2Count++;
 			}
-			else if (powerUp.name.Contains("Bomb"))
+			else if (powerUpHolder[i].name.Contains("Bomb"))
 			{
 				bombCount++;
 			}
-			else if (powerUp.name.Contains("Thief"))
+			else if (powerUpHolder[i].name.Contains("Thief"))
 			{
 				thiefCount++;
 			}
@@ -111,9 +113,10 @@ public class CampaignGameManager : MonoBehaviour
 
 	public bool RoundOver ()
 	{
-		foreach (Line obj in lineObjects)
+		//foreach (Line obj in lineObjects)
+		for (int i = 0; i < lineObjects.Count; i++)
 		{
-			if (obj.GetOpen()) return false;
+			if (lineObjects[i].GetOpen()) return false;
 		}
 		return true;
 	}
@@ -150,9 +153,10 @@ public class CampaignGameManager : MonoBehaviour
 	public void CalculateHeroScoring ()
 	{
 		int staticLineCount = 0;
-		foreach (Line line in lineObjects)
+		//foreach (Line line in lineObjects)
+		for (int i = 0; i < lineObjects.Count; i++)
 		{
-			SpriteRenderer lineSprite = line.transform.parent.gameObject.GetComponent<SpriteRenderer>();
+			SpriteRenderer lineSprite = lineObjects[i].transform.parent.gameObject.GetComponent<SpriteRenderer>();
 			
 			if (lineSprite.enabled) staticLineCount++;
 		}

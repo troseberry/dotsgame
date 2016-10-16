@@ -27,32 +27,15 @@ public class Menu : MonoBehaviour
 
 	public GameObject developerOptionsMenu;
 
-	//private bool deleteSave;
 	private int devOptionTapCount;
 
-
-
-	//Vars for Detecting Swipe
-	private float startTime;
-	private Vector2 startPos;
-	private bool couldBeSwipe;
-	private float comfortZone;
-	private float minSwipeDist;
-	private float maxSwipeTime;
-
-	private GameObject boardToSlide;
-	//private List<Transform> currentBoardPages = new List<Transform>();
-	//private GameObject currentPageIndicator;
-	private int totalSlidePositions;
-	private int currentSlidePosition;
-	private bool canSlideBoard;
+	private GameObject currentBoardLevels;
 
 	private float softBackDelay;
 	
 
 	void Start () 
 	{
-		//levelsGroup = GameObject.Find("Levels");
 		levelsCommonAssets = levelsGroup.transform.Find("_CommonAssets").gameObject;
 		boardOne = levelsGroup.transform.Find("BoardOne").gameObject;
 		boardTwo = levelsGroup.transform.Find("BoardTwo").gameObject;
@@ -62,7 +45,6 @@ public class Menu : MonoBehaviour
 		mainMenuButtons.SetActive(true);
 
 		SaveLoad.Load();
-		//Debug.Log(Application.persistentDataPath);
 
 		if (CampaignData.GetLastScene() == null)
 		{
@@ -89,12 +71,6 @@ public class Menu : MonoBehaviour
 		}
 
 		devOptionTapCount = 0;
-
-		comfortZone = 50.0f;
-		minSwipeDist = 90.0f;
-		maxSwipeTime = 2.0f;
-
-		//canUseSoftBack = true;
 		softBackDelay = 0f;
 	}
 
@@ -105,87 +81,18 @@ public class Menu : MonoBehaviour
 		//Using delay so Back() won't be executed twice in rapid succession
 		softBackDelay = (softBackDelay > 0) ? (softBackDelay - Time.deltaTime) : 0;
 
-
 		//Android Soft Back Button Handling
 		if (Input.GetKey(KeyCode.Escape) && softBackDelay == 0)
 		{
-			//Need to stop this from executing twice in a row
 			Back();
 			softBackDelay = 0.5f;
-		}
-
-		//Detect Swipe
-		//Only detect swipe if a board menu is active
-		if (campaignMainMenu.activeSelf && !boardSelectMenu.activeSelf)
-		{
-			//Debug.Log("Can Swipe");
-			/*if (Input.GetMouseButtonDown(0))
-			{
-				Debug.Log("Mouse Position: " + Input.mousePosition);
-			}*/
-
-			/*if (Input.touchCount > 0) {
-		        Touch touch = Input.touches[0];
-		        
-		    	//if swipe is near levelslider 
-		    	if (touch.position.y <= 885.0f && touch.position.y >= 500.0f)
-		    	{
-			        switch (touch.phase) 
-			        {
-			            case TouchPhase.Began:
-			            	//Debug.Log("Began Touch");
-			                couldBeSwipe = true;
-			                startPos = touch.position;
-			                startTime = Time.time;
-			                break;
-			           
-			            case TouchPhase.Moved:
-			            	//Debug.Log("Change From Horizontal: " + Mathf.Abs(touch.position.x - startPos.x));
-
-			                if (Mathf.Abs(touch.position.x - startPos.x) > comfortZone) {
-			                    couldBeSwipe = false;
-			                }
-			                break;
-			           
-			            case TouchPhase.Stationary:
-			                couldBeSwipe = false;
-			                break;
-			           
-			            case TouchPhase.Ended:
-
-			                float swipeTime = Time.time - startTime;
-			                float swipeDist = (touch.position - startPos).magnitude;
-
-			               // Debug.Log("End Swipe Time: " + swipeTime);
-			                //Debug.Log("End Swipe Distance: " + swipeDist);
-			               
-			                if (couldBeSwipe || (swipeTime < maxSwipeTime) || (swipeDist > minSwipeDist)) {
-			                    // Acceptable Swipe Detected
-			                    float swipeDirection = Mathf.Sign(touch.position.x - startPos.x);
-			                   
-			                    MoveLevelSlider(swipeDirection);
-			                  	ChangePageIndicator();
-			                }
-
-			                //after first swipe, set canSlideBoard true
-			                //doing this because a swipe is detected when pressing board select button. maybe change comfortZone val
-			            	if(!canSlideBoard) canSlideBoard = true;
-			                break;
-			        }
-			    }
-		    }*/
 		}
 	}
 	
 	public void ShowDeveloperMenu ()
 	{
 		devOptionTapCount++;
-		if (devOptionTapCount < 5)
-		{
-			
-			//Debug.Log("Tap Count: " + devOptionTapCount);
-		}
-		else
+		if (devOptionTapCount >= 5)
 		{
 			HideMenus();
 			developerOptionsMenu.SetActive(true);
@@ -197,19 +104,8 @@ public class Menu : MonoBehaviour
 	{
 		SaveLoad.Delete();
 
-		//Debug.Log(CampaignData.GetFinishedTutorial());
-
 		CampaignData.ClearLevelsDictionary();
 		CampaignData.ClearHeroesUnlockedDictionary();
-
-		/*Debug.Log(CampaignData.GetBoardOneDictionary());
-		foreach (KeyValuePair<string, bool> pair in CampaignData.GetBoardOneDictionary())
-		{
-		    Debug.Log(pair.Key + pair.Value);
-		}*/
-		//SaveLoad.Load();
-		//SceneManager.LoadScene(0);
-		
 	}
 
 	public void SkipTutorial ()
@@ -267,10 +163,7 @@ public class Menu : MonoBehaviour
 			{
 				if (CampaignData.GetLastScene() == "Campaign3x3_Tutorial03")
 				{
-					//ShowCampaignBoard("BoardOne");
-					//CampaignData.SetLastScene("");
 					boardSelectMenu.SetActive(true);
-					//ShowCampaignMenu();
 				}
 				else if (CampaignData.GetLastScene().Contains("Campaign3x3"))
 				{
@@ -304,28 +197,18 @@ public class Menu : MonoBehaviour
 		Debug.Log("Current Board: " + currentBoard);
 		currentBoard.SetActive(true);
 
-		boardToSlide = currentBoard.transform.Find("LevelSlider").gameObject;
-		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
-		currentSlidePosition = 0;
-
-		/*currentPageIndicator = currentBoard.transform.Find("Indicator").gameObject;
-		Transform pages = currentBoard.transform.Find("Pages");
-		foreach (Transform page in pages)
-		{
-			currentBoardPages.Add(page);
-		}*/
+		currentBoardLevels = currentBoard.transform.Find("LevelSlider").transform.GetChild(0).transform.GetChild(0).gameObject;
 
 
 		List<GameObject> levelButtons = new List<GameObject>();
-		//foreach (Transform child in boardToSlide.transform)
-		foreach (Transform child in boardToSlide.transform.GetChild(0).transform.GetChild(0))
+		foreach (Transform child in currentBoardLevels.transform)
 		{
 			levelButtons.Add(child.gameObject);
 		}
 
-		//GameObject[] levelButtons = GameObject.FindGameObjectsWithTag("LevelButton");
-		foreach (GameObject btn in levelButtons)
+		for (int i = 0; i < levelButtons.Count; i++)
 		{
+			GameObject btn = levelButtons[i];
 			//Handle Transparency
 			string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
 			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
@@ -404,28 +287,25 @@ public class Menu : MonoBehaviour
 		levelsCommonAssets.SetActive(true);
 
 		GameObject currentBoard = levelsGroup.transform.Find(boardToShow).gameObject;
-		//Debug.Log("Current Board: " + currentBoard);
 		currentBoard.SetActive(true);
 
-		boardToSlide = currentBoard.transform.Find("LevelSlider").gameObject;
-		totalSlidePositions = boardToSlide.transform.childCount - 2;		//-2 so first and last never move into borders
-		currentSlidePosition = 0;
+		currentBoardLevels = currentBoard.transform.Find("LevelSlider").transform.GetChild(0).transform.GetChild(0).gameObject;
 
 
 		List<GameObject> levelButtons = new List<GameObject>();
-		foreach (Transform child in boardToSlide.transform.GetChild(0).transform.GetChild(0))
+		foreach (Transform child in currentBoardLevels.transform)
 		{
 			levelButtons.Add(child.gameObject);
 		}
 
-		//GameObject[] levelButtons = GameObject.FindGameObjectsWithTag("LevelButton");
-		foreach (GameObject btn in levelButtons)
+		for (int i = 0; i < levelButtons.Count; i++)
 		{
+			GameObject btn = levelButtons[i];
+
 			//Handle Transparency
 			string lvlNum = btn.name.Substring(6, btn.name.Length - 6);
 			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
 			string prevLevelName = lvlNum.Substring(0, 1) + "-" + prevLevel;
-			//Debug.Log(prevLevel);
 
 			int levelStarRating = CampaignData.GetFullLevelStatus(lvlNum).starRating;
 
@@ -433,27 +313,22 @@ public class Menu : MonoBehaviour
 			//If level completed
 			if (CampaignData.GetLevelStatus(lvlNum))
 			{
-				//Debug.Log("Level Button Stuff:" + lvlNum);
 				btn.transform.Find("CheckMark").gameObject.SetActive(true);
 
 				if(levelStarRating == 1)
 				{
-					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("1Star").gameObject.SetActive(true);
 				}
 				else if(levelStarRating == 2)
 				{
-					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("2Stars").gameObject.SetActive(true);
 				}
 				else if(levelStarRating == 3)
 				{
-					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("3Stars").gameObject.SetActive(true);
 				}
 				else
 				{
-					//Debug.Log(lvlNum + " Star Rating: " + levelStarRating);
 					btn.transform.Find("1Star").gameObject.SetActive(false);
 					btn.transform.Find("2Stars").gameObject.SetActive(false);
 					btn.transform.Find("3Stars").gameObject.SetActive(false);
@@ -496,51 +371,6 @@ public class Menu : MonoBehaviour
 	}
 
 
-
-
-	void MoveLevelSlider (float slideDirection)
-	{
-		float boardXPosition = boardToSlide.transform.localPosition.x;
-
-		//If at either left or right end, can't slide
-		if( (boardXPosition == -375 && slideDirection > 0) || ( (boardXPosition == (-375 * totalSlidePositions)) && slideDirection < 0))
-		{
-			canSlideBoard = false;
-		}
-
-		if (boardToSlide && canSlideBoard)
-		{
-			float newPositionX = (slideDirection > 0) ? boardToSlide.transform.localPosition.x + (375f*3) : boardToSlide.transform.localPosition.x - (375f*3);
-			boardToSlide.transform.localPosition = new Vector2(newPositionX, boardToSlide.transform.localPosition.y);
-
-			currentSlidePosition = (slideDirection > 0) ? currentSlidePosition + 1 : currentSlidePosition - 1;
-		}
-
-		//ChangePageIndicator();
-		Debug.Log("Current Slide Position: " + currentSlidePosition);
-	}
-
-	public void ButtonLeftSlide ()
-	{
-		canSlideBoard = true;
-		MoveLevelSlider(1f);
-	}
-
-	public void ButtonRightSlide ()
-	{
-		canSlideBoard = true;
-		MoveLevelSlider(-1f);
-	}
-
-
-
-
-	void ChangePageIndicator () 
-	{
-		//Vector3 newPagePosition = currentBoardPages[(int)Mathf.Abs(currentSlidePosition)].position;
-		//currentPageIndicator.transform.position = newPagePosition;
-	}
-
 	public void ShowVersusMenu ()
 	{
 		HideMenus();
@@ -573,8 +403,6 @@ public class Menu : MonoBehaviour
 		
 		string buttonName = EventSystem.current.currentSelectedGameObject.name;
 		string levelToLoad = buttonName.Substring(6, buttonName.Length - 6);
-
-		//SceneManager.LoadScene("Campaign5x5_" + levelToLoad);
 
 		if (Application.CanStreamedLevelBeLoaded("Levels/Campaign/BoardOne/Campaign3x3_" + levelToLoad))
 		{
@@ -694,10 +522,7 @@ public class Menu : MonoBehaviour
 			else
 			{
 				HideBoards();
-				boardToSlide = null;
-				//currentBoardPages.Clear();
-				totalSlidePositions = 0;
-				canSlideBoard = false;
+				currentBoardLevels = null;
 				boardSelectMenu.SetActive(true);
 			}
 		}

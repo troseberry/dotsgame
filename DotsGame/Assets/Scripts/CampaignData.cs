@@ -13,7 +13,7 @@ public class CampaignData : MonoBehaviour
 	
 	private static Dictionary<HeroManager.Hero, LevelStats> heroesUnlocked = new Dictionary<HeroManager.Hero, LevelStats>();
 	private static List<HeroManager.Hero> allHeroNames = new List<HeroManager.Hero>();
-	public static HeroManager.Hero currentHero;
+	public static HeroManager.Hero currentHero = HeroManager.Hero.None;
 
 	void Start ()
 	{
@@ -62,25 +62,27 @@ public class CampaignData : MonoBehaviour
 
 		//Debug.Log("Levels Dictionary Exists? " + allBoardLevels);
 		//Debug.Log("Heroes Unlocked Exists? " + heroesUnlocked);
+		//currentHero =  HeroManager.Hero.None;
 
 		SaveLoad.Load();
 
 		//If for some reason the loaded dictionary doesn't have the level, add it and make its completion status false
-		foreach(string lvlName in allBoardLevelNames)
+		//foreach(string lvlName in allBoardLevelNames)
+		for (int i = 0; i < allBoardLevelNames.Count; i++)
 		{
-			if (!allBoardLevels.ContainsKey(lvlName))
+			if (!allBoardLevels.ContainsKey(allBoardLevelNames[i]))
 			{
-				//allBoardLevels.Add(lvlName, false);
-				allBoardLevels.Add(lvlName, new LevelStats(false, 0, 0));
+				allBoardLevels.Add(allBoardLevelNames[i], new LevelStats(false, 0, 0));
 			}
 		}
 
 		//Same for unlocked heroes (boss levels completed)
-		foreach (HeroManager.Hero hero in allHeroNames)
+		//foreach (HeroManager.Hero hero in allHeroNames)
+		for (int i = 0; i < allHeroNames.Count; i++)
 		{
-			if (!heroesUnlocked.ContainsKey(hero))
+			if (!heroesUnlocked.ContainsKey(allHeroNames[i]))
 			{
-				heroesUnlocked.Add(hero, new LevelStats(false, 0, 0));
+				heroesUnlocked.Add(allHeroNames[i], new LevelStats(false, 0, 0));
 			}
 		}
 
@@ -116,11 +118,12 @@ public class CampaignData : MonoBehaviour
 	{
 		//Can't iterate over dictionary and change values at same time
 		//Iterate thru names list. Should contain the same strings as dictionary keys
-		foreach (string levelName in allBoardLevelNames)
+		//foreach (string levelName in allBoardLevelNames)
+		for (int i = 0; i < allBoardLevelNames.Count; i++)
 		{
 			//Setting allBoardLevels values no allBoardLeveNames
 			//SetLevelStatus(levelName, false);	//Should be UpdateLevelStatus?
-			UpdateLevelStatus(levelName, false, 0, 0);
+			UpdateLevelStatus(allBoardLevelNames[i], false, 0, 0);
 		}
 	}
 
@@ -176,9 +179,10 @@ public class CampaignData : MonoBehaviour
 
 	public static void ClearHeroesUnlockedDictionary () 
 	{
-		foreach (HeroManager.Hero hero in allHeroNames)
+		//foreach (HeroManager.Hero hero in allHeroNames)
+		for (int i = 0; i < allHeroNames.Count; i++)
 		{
-			UpdateHeroBoardStatus(hero, false, 0, 0);
+			UpdateHeroBoardStatus(allHeroNames[i], false, 0, 0);
 		}
 	}
 

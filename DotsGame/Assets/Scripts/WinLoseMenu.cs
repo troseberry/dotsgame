@@ -8,7 +8,6 @@ public class WinLoseMenu : MonoBehaviour
 {
 
 	private Canvas winLoseMenuCanvas;
-	//private Text winLoseText;
 
 	public GameObject titleGroup;
 	private GameObject boardCompleteImage;
@@ -114,25 +113,12 @@ public class WinLoseMenu : MonoBehaviour
 			p2ScoreNumber = transform.Find("P2ScoreNumber").GetComponent<Text>();
 			p2ScoreNumber.text = "";
 		}
-		
-
-		//Debug.Log(CampaignData.GetAllLevelsDictionary());
 		didSave = false;
-		/*foreach (KeyValuePair<string, bool> pair in CampaignData.GetAllLevelsDictionary())
-		{
-		    Debug.Log(pair.Key + pair.Value);
-		}*/
 	}
 	
 	
 	void Update () 
 	{
-		/*if (gameManagerObj && (gameManagerRef.RoundOver() || gameManagerTwoPlayerRef.RoundOver()))
-		{
-			ShowWinLoseMenu();
-			ShowOutcomeText(mode);
-		}*/
-
 		if ((gameManagerRef && GameManager.Instance.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.Instance.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.Instance.RoundOver()) )
 		{
 			Invoke("ShowWinLoseMenu", 1.25f);
@@ -259,7 +245,6 @@ public class WinLoseMenu : MonoBehaviour
 
 			if (CampaignGameManager.Instance.PlayerWon() == "L")
 			{
-				//winLoseText.text = "Board Failed";
 				boardFailedImage.SetActive(true);
 				boardCompleteImage.SetActive(false);
 				//Debug.Log("Lost");
@@ -267,7 +252,6 @@ public class WinLoseMenu : MonoBehaviour
 			}
 			else
 			{
-				//winLoseText.text = "Board Complete";
 				boardCompleteImage.SetActive(true);
 				boardFailedImage.SetActive(false);
 				//Debug.Log("Won");
@@ -295,12 +279,6 @@ public class WinLoseMenu : MonoBehaviour
 
 					newStarRating = 3;
 				}
-
-				//string sceneName = SceneManager.GetActiveScene().name;
-				//string levelName = sceneName.Split('_')[1];
-
-				//Debug.Log("Scene Name: " + sceneName);
-				//Debug.Log("Level Name: " + levelName);
 
 				//if level has never been completed before, update all stats
 				if (!CampaignData.GetLevelStatus(levelName))

@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Elasticity: 0.5
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 0.5
+  m_ScrollSensitivity: 0.25
   m_Viewport: {fileID: 162518163}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 933581923}
@@ -3759,7 +3759,7 @@ Prefab:
     - target: {fileID: 224000010430278586, guid: b339e7b3ba0634845b96eaa78ebc46b9,
         type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224000010430278586, guid: b339e7b3ba0634845b96eaa78ebc46b9,
         type: 2}
@@ -4656,7 +4656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
-  m_DragThreshold: 5
+  m_DragThreshold: 20
 --- !u!4 &322600603
 Transform:
   m_ObjectHideFlags: 0
@@ -6970,7 +6970,7 @@ Prefab:
     - target: {fileID: 224000011148726208, guid: 6423ab0df04f341e68bcb28d01eedee1,
         type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 224000011148726208, guid: 6423ab0df04f341e68bcb28d01eedee1,
         type: 2}
@@ -9051,7 +9051,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 0.5
   m_Viewport: {fileID: 456169969}
   m_HorizontalScrollbar: {fileID: 1901160745}
   m_VerticalScrollbar: {fileID: 0}
@@ -12194,7 +12194,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 0.5
   m_Viewport: {fileID: 1902987674}
   m_HorizontalScrollbar: {fileID: 10398295}
   m_VerticalScrollbar: {fileID: 0}
@@ -12717,7 +12717,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &833408518
 GameObject:
   m_ObjectHideFlags: 0
@@ -18098,7 +18098,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1142627622
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20267,7 +20267,7 @@ Prefab:
     - target: {fileID: 224000011184020514, guid: 6cc5124d3dd5a4b1295fa4bfe5d65ba8,
         type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 224000011184020514, guid: 6cc5124d3dd5a4b1295fa4bfe5d65ba8,
         type: 2}
@@ -21963,7 +21963,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 0.5
   m_Viewport: {fileID: 755421630}
   m_HorizontalScrollbar: {fileID: 1449311799}
   m_VerticalScrollbar: {fileID: 0}
@@ -23688,7 +23688,7 @@ MonoBehaviour:
   m_Script: {fileID: -1184210157, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowSwitchOff: 0
+  m_AllowSwitchOff: 1
 --- !u!1 &1519609851
 GameObject:
   m_ObjectHideFlags: 0
