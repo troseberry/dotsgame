@@ -63,7 +63,7 @@ public class HeroManager : MonoBehaviour
     //Enables hero choice buttons if player has unlocked them
     void ManageUnlockedHeroes ()
     {
-        if (!CampaignData.GetHeroBoardStatus(Hero.Multiplier))
+        if (!CampaignData.GetHeroBoardStats(Hero.Multiplier).isComplete)
         {
             multiplierToggle.isOn = false;
             multiplierToggle.enabled = false;
@@ -78,7 +78,7 @@ public class HeroManager : MonoBehaviour
             multiplierToggle.gameObject.transform.Find("Label").GetComponent<Text>().color = tempLabel; 
         }
 
-        if (!CampaignData.GetHeroBoardStatus(Hero.Demolition))
+        if (!CampaignData.GetHeroBoardStats(Hero.Demolition).isComplete)
         {
             demolitionToggle.isOn = false;
             demolitionToggle.enabled = false;
@@ -93,7 +93,7 @@ public class HeroManager : MonoBehaviour
             demolitionToggle.gameObject.transform.Find("Label").GetComponent<Text>().color = tempLabel;
         }
 
-        if (!CampaignData.GetHeroBoardStatus(Hero.Thief))
+        if (!CampaignData.GetHeroBoardStats(Hero.Thief).isComplete)
         {
             thiefToggle.isOn = false;
             thiefToggle.enabled = false;
@@ -180,8 +180,7 @@ public class HeroManager : MonoBehaviour
 
         for (int i = 0; i < toTriggerCount; i++)
         {
-            int randomIndex = Random.Range(0, multiplier.transform.childCount);
-            GameObject currentPower = multiplier.transform.GetChild(randomIndex).gameObject;
+           GameObject currentPower = multiplier.transform.GetChild(0).gameObject;
             
 
             while (usedBoxNumbers.Contains(randomBox))
@@ -278,15 +277,15 @@ public class HeroManager : MonoBehaviour
     //FOR DEV OPTIONS MENU ONLY
     public void ToggleMultiplier ()
     {
-        if (!CampaignData.GetHeroBoardStatus(Hero.Multiplier))
+        if (!CampaignData.GetHeroBoardStats(Hero.Multiplier).isComplete)
         {
-            CampaignData.SetHeroBoardStatus(HeroManager.Hero.Multiplier, true);
+            CampaignData.GetHeroBoardStats(HeroManager.Hero.Multiplier).isComplete = true;
         }
         else
         {
-            CampaignData.SetHeroBoardStatus(HeroManager.Hero.Multiplier, false);
+            CampaignData.GetHeroBoardStats(HeroManager.Hero.Multiplier).isComplete = false;
         }
-        Debug.Log("Multiplier Unlocked: " + CampaignData.GetHeroBoardStatus(Hero.Multiplier));
+        //Debug.Log("Multiplier Unlocked: " + CampaignData.GetHeroBoardStats(Hero.Multiplier).isComplete);
         
         SaveLoad.Save();
         SceneManager.LoadScene(0);
@@ -294,13 +293,13 @@ public class HeroManager : MonoBehaviour
 
     public void ToggleDemolition ()
     {
-        if (!CampaignData.GetHeroBoardStatus(Hero.Demolition))
+        if (!CampaignData.GetHeroBoardStats(Hero.Demolition).isComplete)
         {
-            CampaignData.SetHeroBoardStatus(HeroManager.Hero.Demolition, true);
+            CampaignData.GetHeroBoardStats(HeroManager.Hero.Demolition).isComplete = true;
         }
         else
         {
-            CampaignData.SetHeroBoardStatus(HeroManager.Hero.Demolition, false);
+            CampaignData.GetHeroBoardStats(HeroManager.Hero.Demolition).isComplete = false;
         }
         SaveLoad.Save();
         SceneManager.LoadScene(0);
@@ -308,13 +307,13 @@ public class HeroManager : MonoBehaviour
 
     public void ToggleThief ()
     {
-       if (!CampaignData.GetHeroBoardStatus(Hero.Thief))
+       if (!CampaignData.GetHeroBoardStats(Hero.Thief).isComplete)
         {
-            CampaignData.SetHeroBoardStatus(HeroManager.Hero.Thief, true);
+            CampaignData.GetHeroBoardStats(HeroManager.Hero.Thief).isComplete = true;
         }
         else
         {
-            CampaignData.SetHeroBoardStatus(HeroManager.Hero.Thief, false);
+            CampaignData.GetHeroBoardStats(HeroManager.Hero.Thief).isComplete = false;
         } 
         SaveLoad.Save();
         SceneManager.LoadScene(0);

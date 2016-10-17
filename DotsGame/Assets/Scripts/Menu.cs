@@ -43,6 +43,7 @@ public class Menu : MonoBehaviour
 
 		HideMenus();
 		mainMenuButtons.SetActive(true);
+		titleGroup.SetActive(true);
 
 		SaveLoad.Load();
 
@@ -119,6 +120,7 @@ public class Menu : MonoBehaviour
 	void HideMenus ()
 	{
 		mainMenuButtons.SetActive(false);
+		titleGroup.SetActive(false);
 
 		campaignMainMenu.SetActive(false);
 		boardSelectMenu.SetActive(false);
@@ -154,6 +156,7 @@ public class Menu : MonoBehaviour
 			titleGroup.SetActive(false);
 			HideMenus();
 			campaignMainMenu.SetActive(true);
+			CampaignData.currentHero = HeroManager.Hero.None;
 
 			if (CampaignData.GetLastScene() == "")
 			{
@@ -197,6 +200,8 @@ public class Menu : MonoBehaviour
 		Debug.Log("Current Board: " + currentBoard);
 		currentBoard.SetActive(true);
 
+		
+
 		currentBoardLevels = currentBoard.transform.Find("LevelSlider").transform.GetChild(0).transform.GetChild(0).gameObject;
 
 
@@ -215,11 +220,11 @@ public class Menu : MonoBehaviour
 			string prevLevelName = lvlNum.Substring(0, 1) + "-" + prevLevel;
 			//Debug.Log(prevLevel);
 
-			int levelStarRating = CampaignData.GetFullLevelStatus(lvlNum).starRating;
+			int levelStarRating = CampaignData.GetLevelStats(lvlNum).starRating;
 
 
 			//If level completed
-			if (CampaignData.GetLevelStatus(lvlNum))
+			if (CampaignData.GetLevelStats(lvlNum).isComplete)
 			{
 				//Debug.Log("Level Button Stuff:" + lvlNum);
 				btn.transform.Find("CheckMark").gameObject.SetActive(true);
@@ -249,7 +254,7 @@ public class Menu : MonoBehaviour
 
 			}
 
-			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))
+			if (prevLevel != 0 && !CampaignData.GetLevelStats(prevLevelName).isComplete)
 			{
 				btn.GetComponent<Button>().enabled = false;
 				Color temp = btn.GetComponent<Image>().color;
@@ -260,7 +265,7 @@ public class Menu : MonoBehaviour
 				textTemp.a = 0.5f;
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
-			else if (prevLevel != 0 && CampaignData.GetLevelStatus(prevLevelName))
+			else if (prevLevel != 0 && CampaignData.GetLevelStats(prevLevelName).isComplete)
 			{
 				btn.GetComponent<Button>().enabled = true;
 				Color temp = btn.GetComponent<Image>().color;
@@ -274,12 +279,14 @@ public class Menu : MonoBehaviour
 		}
 		//If completed all previous level, unlocked hero board (later add check for # of stars required)
 		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
-		if (CampaignData.GetLevelStatus(lastLevelName))
+		if (CampaignData.GetLevelStats(lastLevelName).isComplete)
 		{
 			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
 		}
 
 		boardSelectMenu.SetActive(false);
+
+		//currentBoard.transform.Find("HeaderTitles").GetComponent<Animation>().Play("SwitchHeaders");
 	}
 
 	public void ShowCampaignBoard (string boardToShow)
@@ -307,11 +314,11 @@ public class Menu : MonoBehaviour
 			int prevLevel = (int.Parse(lvlNum.Substring(2, lvlNum.Length - 2))) - 1;
 			string prevLevelName = lvlNum.Substring(0, 1) + "-" + prevLevel;
 
-			int levelStarRating = CampaignData.GetFullLevelStatus(lvlNum).starRating;
+			int levelStarRating = CampaignData.GetLevelStats(lvlNum).starRating;
 
 
 			//If level completed
-			if (CampaignData.GetLevelStatus(lvlNum))
+			if (CampaignData.GetLevelStats(lvlNum).isComplete)
 			{
 				btn.transform.Find("CheckMark").gameObject.SetActive(true);
 
@@ -336,7 +343,7 @@ public class Menu : MonoBehaviour
 
 			}
 
-			if (prevLevel != 0 && !CampaignData.GetLevelStatus(prevLevelName))
+			if (prevLevel != 0 && !CampaignData.GetLevelStats(prevLevelName).isComplete)
 			{
 				btn.GetComponent<Button>().enabled = false;
 				Color temp = btn.GetComponent<Image>().color;
@@ -347,7 +354,7 @@ public class Menu : MonoBehaviour
 				textTemp.a = 0.5f;
 				btn.transform.Find("LevelText").GetComponent<Text>().color = textTemp;
 			}
-			else if (prevLevel != 0 && CampaignData.GetLevelStatus(prevLevelName))
+			else if (prevLevel != 0 && CampaignData.GetLevelStats(prevLevelName).isComplete)
 			{
 				btn.GetComponent<Button>().enabled = true;
 				Color temp = btn.GetComponent<Image>().color;
@@ -362,7 +369,7 @@ public class Menu : MonoBehaviour
 
 		//If completed all previous level, unlocked hero board (later add check for # of stars required)
 		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
-		if (CampaignData.GetLevelStatus(lastLevelName))
+		if (CampaignData.GetLevelStats(lastLevelName).isComplete)
 		{
 			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
 		}

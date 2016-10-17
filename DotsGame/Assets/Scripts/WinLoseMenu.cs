@@ -225,7 +225,7 @@ public class WinLoseMenu : MonoBehaviour
 			string sceneName = SceneManager.GetActiveScene().name;
 			string levelName = sceneName.Split('_')[1];
 			
-			if (CampaignData.GetLevelStatus(levelName))
+			if (CampaignData.GetLevelStats(levelName).isComplete)
 			{
 				Color temp = nextLevelButton.GetComponent<Image>().color;
 				temp.a = 1f;
@@ -280,24 +280,15 @@ public class WinLoseMenu : MonoBehaviour
 					newStarRating = 3;
 				}
 
-				//if level has never been completed before, update all stats
-				if (!CampaignData.GetLevelStatus(levelName))
-				{
-					CampaignData.UpdateLevelStatus(levelName, true, newStarRating, CampaignGameManager.Instance.GetPlayerPoints());
-				}
-				else
-				{
-					LevelStats currentLevelStats = CampaignData.GetFullLevelStatus(levelName);
-					if (currentLevelStats.starRating < newStarRating)
-					{
-						CampaignData.UpdateLevelStatus(levelName, currentLevelStats.isComplete, newStarRating, currentLevelStats.bestScore);
-					}
 
-					if (currentLevelStats.bestScore < CampaignGameManager.Instance.GetPlayerPoints())
-					{
-						CampaignData.UpdateLevelStatus(levelName, currentLevelStats.isComplete, currentLevelStats.starRating, CampaignGameManager.Instance.GetPlayerPoints());
-					}
-				}
+				LevelStats currentStats = CampaignData.GetLevelStats(levelName);
+				
+				if (!currentStats.isComplete) currentStats.isComplete = true;
+				if (currentStats.starRating < newStarRating) currentStats.starRating = newStarRating;
+				if (currentStats.bestScore < CampaignGameManager.Instance.GetPlayerPoints()) currentStats.bestScore = CampaignGameManager.Instance.GetPlayerPoints();
+
+				CampaignData.SetLevelStats(levelName, currentStats);
+
 
 				if(!didSave)
 				{

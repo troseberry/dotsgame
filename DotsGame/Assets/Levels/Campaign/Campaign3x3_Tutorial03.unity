@@ -438,7 +438,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: complete this board to move on
+  m_Text: complete this level to move on
 --- !u!222 &36981335
 CanvasRenderer:
   m_ObjectHideFlags: 0

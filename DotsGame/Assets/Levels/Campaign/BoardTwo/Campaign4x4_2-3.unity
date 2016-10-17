@@ -267,7 +267,7 @@ Prefab:
     - target: {fileID: 114000010119918644, guid: 7418c3022ab114963a6d32c1caf5558f,
         type: 2}
       propertyPath: m_Text
-      value: Board 2-3
+      value: Level 2-3
       objectReference: {fileID: 0}
     - target: {fileID: 114000011634647314, guid: 7418c3022ab114963a6d32c1caf5558f,
         type: 2}

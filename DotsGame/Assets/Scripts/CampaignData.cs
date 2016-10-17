@@ -116,37 +116,21 @@ public class CampaignData : MonoBehaviour
 
 	public static void ClearLevelsDictionary ()
 	{
-		//Can't iterate over dictionary and change values at same time
-		//Iterate thru names list. Should contain the same strings as dictionary keys
-		//foreach (string levelName in allBoardLevelNames)
 		for (int i = 0; i < allBoardLevelNames.Count; i++)
 		{
-			//Setting allBoardLevels values no allBoardLeveNames
-			//SetLevelStatus(levelName, false);	//Should be UpdateLevelStatus?
-			UpdateLevelStatus(allBoardLevelNames[i], false, 0, 0);
+			//Setting allBoardLevels values not allBoardLeveNames
+			SetLevelStats(allBoardLevelNames[i], new LevelStats(false, 0, 0));
 		}
 	}
 
-	public static bool GetLevelStatus (string levelName)
-	{
-		return allBoardLevels[levelName].isComplete;
-	}
-
-	public static LevelStats GetFullLevelStatus (string levelName)
+	public static LevelStats GetLevelStats (string levelName)
 	{
 		return allBoardLevels[levelName];
 	}
 
-	public static void SetLevelStatus (string levelName, bool status)
+	public static void SetLevelStats (string levelName, LevelStats stats)
 	{
-		//Debug.Log("Input Level Name: " + levelName);
-
-		allBoardLevels[levelName].isComplete = status;
-	}
-
-	public static void UpdateLevelStatus (string levelName, bool status, int rating, int score)
-	{
-		allBoardLevels[levelName].UpdateStats(status, rating, score);
+		allBoardLevels[levelName] = stats;
 	}
 
 	public static Dictionary<string, LevelStats> GetAllLevelsDictionary ()
@@ -179,31 +163,20 @@ public class CampaignData : MonoBehaviour
 
 	public static void ClearHeroesUnlockedDictionary () 
 	{
-		//foreach (HeroManager.Hero hero in allHeroNames)
 		for (int i = 0; i < allHeroNames.Count; i++)
 		{
-			UpdateHeroBoardStatus(allHeroNames[i], false, 0, 0);
+			SetHeroBoardStats(allHeroNames[i], new LevelStats(false, 0, 0));
 		}
 	}
 
-	public static bool GetHeroBoardStatus (HeroManager.Hero heroBoardName)
-	{
-		return heroesUnlocked[heroBoardName].isComplete;
-	}
-
-	public static LevelStats GetFullHeroBoardStatus (HeroManager.Hero heroBoardName)
+	public static LevelStats GetHeroBoardStats (HeroManager.Hero heroBoardName)
 	{
 		return heroesUnlocked[heroBoardName];
 	}
 
-	public static void SetHeroBoardStatus (HeroManager.Hero heroBoardName, bool status)
+	public static void SetHeroBoardStats (HeroManager.Hero heroBoardName, LevelStats stats)
 	{
-		heroesUnlocked[heroBoardName].isComplete = status;
-	}
-
-	public static void UpdateHeroBoardStatus (HeroManager.Hero heroBoardName, bool status, int rating, int score)
-	{
-		heroesUnlocked[heroBoardName].UpdateStats(status, rating, score);
+		heroesUnlocked[heroBoardName] = stats;
 	}
 
 	public static Dictionary<HeroManager.Hero, LevelStats> GetAllHeroBoardsDictionary ()

@@ -78,7 +78,7 @@ public class HeroBoardManager : MonoBehaviour
 			boardSize = ((int) Mathf.Sqrt(boxes.Length)) * 3;
 			roundDuration = 75.0f;
 			timeBonus = 15.0f;
-			pointGoalNumber = 23;		//3 Star Rating Equivalent
+			pointGoalNumber = 16;		//2 Star Rating Equivalent
 		}	
 
 		usedLines = new List<int>();
@@ -204,7 +204,9 @@ public class HeroBoardManager : MonoBehaviour
 		{
 			int randomLine = Random.Range(0, CampaignGameManager.Instance.lineObjects.Count);
 
-			while (!CampaignGameManager.Instance.lineObjects[randomLine].GetOpen())
+			while (!CampaignGameManager.Instance.lineObjects[randomLine].GetOpen() 
+					&& CampaignGameManager.Instance.lineObjects[randomLine].boxParentOne.SidesLeftOpen() > 1 
+					&& CampaignGameManager.Instance.lineObjects[randomLine].boxParentTwo.SidesLeftOpen() > 1)
 			{
 				randomLine = Random.Range(0, CampaignGameManager.Instance.lineObjects.Count); 
 			}
@@ -270,7 +272,9 @@ public class HeroBoardManager : MonoBehaviour
 
 	public bool BoardFailed ()
 	{
-		return (currentTimer <= 0);
+		//return (currentTimer <= 0);
+
+		return (roundTimerText.text == "0:00.00");
 	}
 
 	public void StartBoard ()

@@ -10,13 +10,7 @@ public class Box : MonoBehaviour
 
 	private int sideCount;
 
-	private Dot upperLeft;
-	private Dot upperRight;
-	private Dot lowerLeft;
-	private Dot lowerRight;
-
 	public List<Line> boxLineObjects = new List<Line>();
-	//private List<GameObject> linePositions = new List<GameObject>();
 
 	private string owner;
 	private bool claimed;

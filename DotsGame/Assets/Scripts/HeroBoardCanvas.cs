@@ -65,7 +65,7 @@ public class HeroBoardCanvas : MonoBehaviour
 	{
 		string heroString = SceneManager.GetActiveScene().name.Split('_')[1];
 		HeroManager.Hero hero = (HeroManager.Hero)Enum.Parse(typeof (HeroManager.Hero), heroString); 
-		CampaignData.SetHeroBoardStatus(hero, true);
+		CampaignData.GetHeroBoardStats(hero).isComplete = true;
 
 		if(!didSave)
 		{

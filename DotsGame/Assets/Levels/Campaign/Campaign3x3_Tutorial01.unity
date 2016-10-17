@@ -6496,7 +6496,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'You''ve completed your
 
-    first board!'
+    first level!'
 --- !u!222 &1951852251
 CanvasRenderer:
   m_ObjectHideFlags: 0

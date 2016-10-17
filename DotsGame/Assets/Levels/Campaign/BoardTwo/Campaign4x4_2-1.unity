@@ -337,7 +337,7 @@ Prefab:
     - target: {fileID: 114000010119918644, guid: 7418c3022ab114963a6d32c1caf5558f,
         type: 2}
       propertyPath: m_Text
-      value: Board 2-1
+      value: Level 2-1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7418c3022ab114963a6d32c1caf5558f, type: 2}
@@ -786,6 +786,10 @@ Prefab:
     - target: {fileID: 212000014205248132, guid: d396ade33f4a94f939a429fb4383a7cd,
         type: 2}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000013325352756, guid: d396ade33f4a94f939a429fb4383a7cd, type: 2}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
