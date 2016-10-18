@@ -221,7 +221,7 @@ public class Menu : MonoBehaviour
 			//Debug.Log(prevLevel);
 
 			int levelStarRating = CampaignData.GetLevelStats(lvlNum).starRating;
-
+			//Debug.Log(lvlNum + " Stars: " + levelStarRating);
 
 			//If level completed
 			if (CampaignData.GetLevelStats(lvlNum).isComplete)
@@ -279,11 +279,12 @@ public class Menu : MonoBehaviour
 		}
 		//If completed all previous level, unlocked hero board (later add check for # of stars required)
 		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
-		if (CampaignData.GetLevelStats(lastLevelName).isComplete)
+		if (CampaignData.GetLevelStats(lastLevelName).isComplete && CampaignData.EnoughBoardStars(currentBoard.name))
 		{
+			Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
 		}
-
+		Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 		boardSelectMenu.SetActive(false);
 
 		//currentBoard.transform.Find("HeaderTitles").GetComponent<Animation>().Play("SwitchHeaders");
@@ -315,6 +316,7 @@ public class Menu : MonoBehaviour
 			string prevLevelName = lvlNum.Substring(0, 1) + "-" + prevLevel;
 
 			int levelStarRating = CampaignData.GetLevelStats(lvlNum).starRating;
+			//Debug.Log(lvlNum + " Stars: " + levelStarRating);
 
 
 			//If level completed
@@ -369,11 +371,12 @@ public class Menu : MonoBehaviour
 
 		//If completed all previous level, unlocked hero board (later add check for # of stars required)
 		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
-		if (CampaignData.GetLevelStats(lastLevelName).isComplete)
+		if (CampaignData.GetLevelStats(lastLevelName).isComplete && CampaignData.EnoughBoardStars(currentBoard.name))
 		{
+			Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
 		}
-
+		Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 		boardSelectMenu.SetActive(false);
 	}
 

@@ -34,6 +34,7 @@ public class WinLoseMenu : MonoBehaviour
 	private Text p2ScoreNumber;
 	//private Text timeNumber;
 
+	private bool showingOutcome;
 	private bool didSave;
 
 	private GameObject nextLevelButton;
@@ -113,6 +114,8 @@ public class WinLoseMenu : MonoBehaviour
 			p2ScoreNumber = transform.Find("P2ScoreNumber").GetComponent<Text>();
 			p2ScoreNumber.text = "";
 		}
+
+		showingOutcome = false;
 		didSave = false;
 	}
 	
@@ -120,9 +123,9 @@ public class WinLoseMenu : MonoBehaviour
 	void Update () 
 	{
 		if ((gameManagerRef && GameManager.Instance.RoundOver()) || (gameManagerTwoPlayerRef && GameManagerTwoPlayer.Instance.RoundOver()) || (gameManagerCampaignRef && CampaignGameManager.Instance.RoundOver()) )
-		{
-			Invoke("ShowWinLoseMenu", 1.25f);
-			ShowOutcomeText(mode);
+		{	
+			if (!winLoseMenuCanvas.enabled) Invoke("ShowWinLoseMenu", 1.25f);
+			if (!showingOutcome) StartCoroutine(ShowOutcomeText(mode, 1.25f));
 		}
 	}
 
@@ -158,9 +161,11 @@ public class WinLoseMenu : MonoBehaviour
 		}
 	}
 
-
-	void ShowOutcomeText (string mode)
+	IEnumerator ShowOutcomeText (string mode, float waitDelay)
 	{
+		showingOutcome = true;
+		yield return new WaitForSeconds(waitDelay);
+		
 		if (mode == "classic")
 		{
 			scoreNumber.text = GameManager.Instance.GetPlayerPoints() + " / " + GameManager.Instance.GetTotalPoints();
@@ -225,38 +230,21 @@ public class WinLoseMenu : MonoBehaviour
 			string sceneName = SceneManager.GetActiveScene().name;
 			string levelName = sceneName.Split('_')[1];
 			
-			if (CampaignData.GetLevelStats(levelName).isComplete)
-			{
-				Color temp = nextLevelButton.GetComponent<Image>().color;
-				temp.a = 1f;
-				nextLevelButton.GetComponent<Image>().color = temp;
-
-				nextLevelButton.GetComponent<Button>().enabled = true;
-			}
-			else 
-			{
-				Color temp = nextLevelButton.GetComponent<Image>().color;
-				temp.a = 0.5f;
-				nextLevelButton.GetComponent<Image>().color = temp;
-
-				nextLevelButton.GetComponent<Button>().enabled = false;
-			}
 
 
 			if (CampaignGameManager.Instance.PlayerWon() == "L")
 			{
 				boardFailedImage.SetActive(true);
 				boardCompleteImage.SetActive(false);
-				//Debug.Log("Lost");
-				
 			}
 			else
 			{
 				boardCompleteImage.SetActive(true);
 				boardFailedImage.SetActive(false);
-				//Debug.Log("Won");
+				Debug.Log("Won");
 
 				int newStarRating = 0;
+				Debug.Log(CampaignGameManager.Instance.PlayerWon());
 
 				if (CampaignGameManager.Instance.PlayerWon() == "S01")
 				{
@@ -282,12 +270,31 @@ public class WinLoseMenu : MonoBehaviour
 
 
 				LevelStats currentStats = CampaignData.GetLevelStats(levelName);
+				int starChange = 0;
 				
 				if (!currentStats.isComplete) currentStats.isComplete = true;
-				if (currentStats.starRating < newStarRating) currentStats.starRating = newStarRating;
+				if (currentStats.starRating < newStarRating) 
+				{
+					starChange = newStarRating - currentStats.starRating;
+					currentStats.starRating = newStarRating;Debug.Log("New Star Rating: " + currentStats.starRating);
+				}
 				if (currentStats.bestScore < CampaignGameManager.Instance.GetPlayerPoints()) currentStats.bestScore = CampaignGameManager.Instance.GetPlayerPoints();
 
 				CampaignData.SetLevelStats(levelName, currentStats);
+
+
+				if(levelName[0] == '1')
+				{
+					CampaignData.UpdateBoardStars("BoardOne", starChange);
+				}
+				else if(levelName[0] == '2')
+				{
+					CampaignData.UpdateBoardStars("BoardTwo", starChange);
+				}
+				else if(levelName[0] == '3')
+				{
+					CampaignData.UpdateBoardStars("BoardThree", starChange);
+				}
 
 
 				if(!didSave)
@@ -297,7 +304,23 @@ public class WinLoseMenu : MonoBehaviour
 				}
 			}
 			scoreNumber.text = "" + CampaignGameManager.Instance.GetPlayerPoints();
+
+			if (CampaignData.GetLevelStats(levelName).isComplete)
+			{
+				Color temp = nextLevelButton.GetComponent<Image>().color;
+				temp.a = 1f;
+				nextLevelButton.GetComponent<Image>().color = temp;
+
+				nextLevelButton.GetComponent<Button>().enabled = true;
+			}
+			else 
+			{
+				Color temp = nextLevelButton.GetComponent<Image>().color;
+				temp.a = 0.5f;
+				nextLevelButton.GetComponent<Image>().color = temp;
+
+				nextLevelButton.GetComponent<Button>().enabled = false;
+			}
 		}
-		
 	}
 }

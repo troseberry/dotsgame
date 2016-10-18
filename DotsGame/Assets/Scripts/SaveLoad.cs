@@ -4,8 +4,6 @@ deleted so new variables will be loaded correctly. Otherwise the save data won't
 and will through null ref exceptions when trying to retrieve it.
 */
 
-
-
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -29,6 +27,7 @@ public class SaveLoad : MonoBehaviour
 		dataToSave.Add("finishedTutorial", CampaignData.GetFinishedTutorial());
 		dataToSave.Add("allBoardLevels", CampaignData.GetAllLevelsDictionary());
 		dataToSave.Add("heroesUnlocked", CampaignData.GetAllHeroBoardsDictionary());
+		dataToSave.Add("boardStarCounts", CampaignData.GetAllBoardStarCounts());
 
 		//-----------------------Done Saving---------------------------------------------
 		data.Serialize(file, dataToSave);
@@ -51,12 +50,9 @@ public class SaveLoad : MonoBehaviour
 
 			//-----------------------Loading Stats---------------------------------
 			CampaignData.SetFinishedTutorial((bool) saveData["finishedTutorial"]);
-
-			//Debug.Log(saveData["allBoardLevels"]);
 			CampaignData.SetAllLevelsDictionary( (Dictionary<string, LevelStats>) saveData["allBoardLevels"]);
-
-			//Debug.Log(saveData["heroesUnlocked"]);
 			CampaignData.SetAllHeroBoardsDictionary( (Dictionary<HeroManager.Hero, LevelStats>) saveData["heroesUnlocked"]);
+			CampaignData.SetAllBoardStarCounts( (Dictionary<string, int>) saveData["boardStarCounts"]);
 			//-----------------------Done Loading----------------------------------
 		}
 		else {

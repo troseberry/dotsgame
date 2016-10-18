@@ -39,8 +39,8 @@ public class HeroBoardManager : MonoBehaviour
 	private string formattedTimer;
 
 	private float currentTimer;
-	private float roundDuration;// = 60.0f;
-	private float timeBonus;// = 10.0f;
+	private float roundDuration;
+	private float timeBonus;
 	private float overallTotalTime;
 
 	private Text roundDurationText;
@@ -61,7 +61,7 @@ public class HeroBoardManager : MonoBehaviour
 
 		if (sceneName.Contains("3x3"))
 		{
-			boardSize = ((int) Mathf.Sqrt(boxes.Length));// + 1;
+			boardSize = ((int) Mathf.Sqrt(boxes.Length));
 			roundDuration = 45.0f;
 			timeBonus = 5.0f;
 			pointGoalNumber = 5;		//2 Star Rating Equivalent
@@ -96,7 +96,7 @@ public class HeroBoardManager : MonoBehaviour
 		roundWinsText.text = string.Empty + roundWins;
 
 		currentPointsText = GameObject.Find("CurrentPointTotal").GetComponent<Text>();
-		currentPointsText.text = string.Empty;// + CampaignGameManager.Instance.GetPlayerPoints();
+		currentPointsText.text = string.Empty;
 
 		randomizedBoard = false;
 
@@ -141,10 +141,6 @@ public class HeroBoardManager : MonoBehaviour
 
 		if (CampaignGameManager.Instance.RoundOver())
 		{
-			//This visually looks cool. Can tell it's randomizing lines
-			//But it also calls RandomizeBoardLayout about 30 times each invoke
-			//RandomizeBoardLayout();
-			
 			if (!randomizedBoard)
 			{
 				Invoke("RandomizeBoardLayout",0.5f);
@@ -178,15 +174,10 @@ public class HeroBoardManager : MonoBehaviour
 
 	public void RandomizeBoardLayout ()
 	{
-		//Debug.Log("Randomizing Board");
-		//Debug.Log("Total Points Before Clear: " + CampaignGameManager.Instance.GetPlayerPoints());
 		ClearBoard();
-
-		//Debug.Log("Round Rating: " + CampaignGameManager.Instance.PlayerWon());
 
 		if (CampaignGameManager.Instance.PlayerWon() == "S02" || CampaignGameManager.Instance.PlayerWon() == "S03")
 		{
-			//Debug.Log("Won Round");
 			IncrementRoundWins();
 
 			if (!BoardWon())
@@ -225,13 +216,11 @@ public class HeroBoardManager : MonoBehaviour
 		usedLines.Clear();
 		
 
-		//foreach (Line line in CampaignGameManager.Instance.lineObjects)
 		for (int i = 0; i < CampaignGameManager.Instance.lineObjects.Count; i++)
 		{
 			CampaignGameManager.Instance.lineObjects[i].ResetLine();
 		}
 
-		//foreach (GameObject box in boxes)
 		for (int i = 0; i < boxes.Length; i++)
 		{
 			boxes[i].GetComponent<Box>().ResetBox();
@@ -272,8 +261,6 @@ public class HeroBoardManager : MonoBehaviour
 
 	public bool BoardFailed ()
 	{
-		//return (currentTimer <= 0);
-
 		return (roundTimerText.text == "0:00.00");
 	}
 

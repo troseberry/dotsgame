@@ -285,8 +285,6 @@ public class HeroManager : MonoBehaviour
         {
             CampaignData.GetHeroBoardStats(HeroManager.Hero.Multiplier).isComplete = false;
         }
-        //Debug.Log("Multiplier Unlocked: " + CampaignData.GetHeroBoardStats(Hero.Multiplier).isComplete);
-        
         SaveLoad.Save();
         SceneManager.LoadScene(0);
     }

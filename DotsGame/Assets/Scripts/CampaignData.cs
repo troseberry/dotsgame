@@ -15,6 +15,9 @@ public class CampaignData : MonoBehaviour
 	private static List<HeroManager.Hero> allHeroNames = new List<HeroManager.Hero>();
 	public static HeroManager.Hero currentHero = HeroManager.Hero.None;
 
+	private static List<string> allBoardNames = new List<string>();
+	private static Dictionary<string, int> boardStarCounts = new Dictionary<string, int>();
+
 	void Start ()
 	{
 		allBoardLevelNames.Add("1-1");
@@ -60,14 +63,13 @@ public class CampaignData : MonoBehaviour
 		allHeroNames.Add(HeroManager.Hero.Demolition);
 		allHeroNames.Add(HeroManager.Hero.Thief);
 
-		//Debug.Log("Levels Dictionary Exists? " + allBoardLevels);
-		//Debug.Log("Heroes Unlocked Exists? " + heroesUnlocked);
-		//currentHero =  HeroManager.Hero.None;
+		allBoardNames.Add("BoardOne");
+		allBoardNames.Add("BoardTwo");
+		allBoardNames.Add("BoardThree");
 
 		SaveLoad.Load();
 
 		//If for some reason the loaded dictionary doesn't have the level, add it and make its completion status false
-		//foreach(string lvlName in allBoardLevelNames)
 		for (int i = 0; i < allBoardLevelNames.Count; i++)
 		{
 			if (!allBoardLevels.ContainsKey(allBoardLevelNames[i]))
@@ -77,7 +79,6 @@ public class CampaignData : MonoBehaviour
 		}
 
 		//Same for unlocked heroes (boss levels completed)
-		//foreach (HeroManager.Hero hero in allHeroNames)
 		for (int i = 0; i < allHeroNames.Count; i++)
 		{
 			if (!heroesUnlocked.ContainsKey(allHeroNames[i]))
@@ -86,18 +87,13 @@ public class CampaignData : MonoBehaviour
 			}
 		}
 
-
-
-
-		//Debug.Log(boardOneLevels);
-		/*foreach (KeyValuePair<string, bool> pair in allBoardLevels)
+		for (int i = 0; i < allBoardNames.Count; i++)
 		{
-		    Debug.Log(pair.Key + pair.Value);
-		}*/
-
-		//SaveLoad.Save();
-
-		//Debug.Log("Last Scene Visited: " + lastScene);
+			if (!boardStarCounts.ContainsKey(allBoardNames[i]))
+			{
+				boardStarCounts.Add(allBoardNames[i], 0);
+			}
+		}
 	}
 
 
@@ -187,5 +183,41 @@ public class CampaignData : MonoBehaviour
 	public static void SetAllHeroBoardsDictionary (Dictionary<HeroManager.Hero, LevelStats> toSet)
 	{
 		heroesUnlocked = toSet;
+	}
+
+
+
+	public static int GetBoardStars (string boardName)
+	{
+		return boardStarCounts[boardName];
+	}
+
+	public static void UpdateBoardStars (string boardName, int toAdd)
+	{
+		boardStarCounts[boardName] += toAdd;
+	}
+
+	public static bool EnoughBoardStars (string boardName)
+	{
+		if (boardName == "BoardOne")
+		{
+			return boardStarCounts[boardName] >= 15;
+		}
+		else if (boardName == "BoardTwo" || boardName == "BoardThree")
+		{
+			return boardStarCounts[boardName] >= 21;
+		}
+
+		return false;
+	}
+
+	public static Dictionary<string, int> GetAllBoardStarCounts ()
+	{
+		return boardStarCounts;
+	}
+
+	public static void SetAllBoardStarCounts (Dictionary<string, int> toSet)
+	{
+		boardStarCounts = toSet;
 	}
 }

@@ -10,6 +10,7 @@ public class Line : MonoBehaviour
 	private int farRightDigit;
 	private int bottomTensNumber;
 	private int lastDigit;
+	private int firstDigit;
 
 	private bool isOpen;
 	public Vector3 linePosition;
@@ -63,6 +64,7 @@ public class Line : MonoBehaviour
 
 		lineNumber = int.Parse(lineParent.Substring(5, 2));
 		lastDigit = int.Parse(lineNumber.ToString().Substring(1, 1));
+		firstDigit = int.Parse(lineNumber.ToString().Substring(0, 1));
 
 		//Always the first row
 		if (lineNumber > 9 && lineNumber < 20)
@@ -81,11 +83,6 @@ public class Line : MonoBehaviour
 		else if ((lineNumber == (20 + farRightDigit)) || (lineNumber == (40 + farRightDigit)) || (lineNumber == (60 + farRightDigit)) || (lineNumber == (80 + farRightDigit)))
 		{
 			int tensDigit = ((int) Mathf.Ceil(lineNumber/10) * 10) / 2;
-
-			/*Debug.Log("Line Number: " + lineNumber);
-			Debug.Log("Far Right Digit: " + farRightDigit);
-			Debug.Log("Last Digit: " + lastDigit);
-			Debug.Log(tensDigit + lastDigit);*/
 			
 			boxParentOne = GameObject.Find("Box_" + (tensDigit + lastDigit - 1)).GetComponent<Box>();
 			boxParentTwo = GameObject.Find("Box_" + (tensDigit + lastDigit - 1)).GetComponent<Box>();
@@ -111,16 +108,10 @@ public class Line : MonoBehaviour
 		}
 		else
 		{
-			//line number tens /2 ceil and line number tens/2 floor both plus last digit
 			float tensNumber = (Mathf.Ceil(lineNumber/10) * 10) / 2;
 
 			int firstBoxNumber = (int) (Mathf.Ceil(tensNumber / 10) * 10) + lastDigit;
 			int secondBoxNumber = (int) (Mathf.Floor(tensNumber/10) * 10) + lastDigit;
-
-			//Debug.Log("Line Number: " + lineNumber);
-			//Debug.Log("Last Digit: " + lastDigit);
-			//Debug.Log(firstBoxNumber);
-			//Debug.Log(secondBoxNumber);
 
 			boxParentOne = GameObject.Find("Box_" + firstBoxNumber).GetComponent<Box>();
 			boxParentTwo = GameObject.Find("Box_" + secondBoxNumber).GetComponent<Box>();
@@ -139,6 +130,45 @@ public class Line : MonoBehaviour
 		}
 	}
 
+	public int GetLineNumber ()
+	{
+		return lineNumber;
+	}
+
+	public bool IsRightEdgeLine ()
+	{
+		return (farRightDigit == lastDigit);
+	}
+
+
+	public bool IsPerimeterLine ()
+	{
+		bool top = (lineNumber - 10 < 10);
+		bool bottom = (lineNumber - bottomTensNumber >= 0 && lineNumber - bottomTensNumber < 10);
+		bool left = (lineNumber % 10 == 0 && firstDigit % 2 == 0);
+		bool right = ((farRightDigit == lastDigit));
+
+		return (top || bottom || left || right);
+	}
+
+
+	public bool BoxParentsDiffer ()
+	{
+		return (boxParentOne != boxParentTwo);
+	}
+
+	public Box GetOtherBoxParent (Box currentParent)
+	{
+		if (currentParent == boxParentOne)
+		{
+			return boxParentTwo;
+		}
+		else
+		{
+			return boxParentOne;
+		}
+	}
+
 	public bool GetLineStatic ()
 	{
 		return isStatic;
@@ -152,7 +182,6 @@ public class Line : MonoBehaviour
 
 	public bool GetOpen ()
 	{
-
 		return isOpen;
 	}
 

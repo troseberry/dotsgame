@@ -3,12 +3,14 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CampaignGameManager : MonoBehaviour 
 {
 	public static CampaignGameManager Instance;
 
 	public List<Line> lineObjects = new List<Line>();
+	public List<Line> perimeterLines = new List<Line>();
 
 	public GameObject possiblePlayerChips;
 	public GameObject possibleComputerChips;
@@ -54,7 +56,20 @@ public class CampaignGameManager : MonoBehaviour
 				currentLine.SetLineStatic(false);
 				currentLine.SetOpen(true);
 			}
+
+			if (currentLine.IsPerimeterLine()) perimeterLines.Add(currentLine);
 		}
+
+
+		// var holder = from element in perimeterLines
+		// 			orderby element.lineName
+		// 			select element;
+
+		// foreach (Line line in holder)
+		// {
+		// 	Debug.Log(line.lineName);
+		// }
+
 
 		isPlayerTurn = true;
 		playerPoints = 0;
@@ -153,7 +168,6 @@ public class CampaignGameManager : MonoBehaviour
 	public void CalculateHeroScoring ()
 	{
 		int staticLineCount = 0;
-		//foreach (Line line in lineObjects)
 		for (int i = 0; i < lineObjects.Count; i++)
 		{
 			SpriteRenderer lineSprite = lineObjects[i].transform.parent.gameObject.GetComponent<SpriteRenderer>();
@@ -165,9 +179,6 @@ public class CampaignGameManager : MonoBehaviour
 		oneStarScore = (int) Mathf.Ceil(totalPossiblePoints * 0.3f);
 		twoStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.6f);
 		threeStarScore = (int) Mathf.Floor(totalPossiblePoints * 0.85f);
-
-		//Debug.Log("Points Goal: " + twoStarScore);
-		//Debug.Log("3 Star: " + threeStarScore);
 	}
 
 	public string PlayerWon ()

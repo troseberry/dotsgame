@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public class Box : MonoBehaviour 
 {
@@ -67,6 +68,24 @@ public class Box : MonoBehaviour
 		}
 	}
 
+	public int GetBoxNumber()
+	{
+		return boxNumber;
+	}
+
+	//for use only if two open lines
+	public Line GetOtherOpenLine (Line currentLine)
+	{
+		if (SidesLeftOpen() == 2)
+		{
+			foreach (Line line in boxLineObjects)
+			{
+				if (line.GetOpen() && line.lineName != currentLine.lineName) return line;
+			}
+		}
+		return null;
+	}
+
 	public string GetOwner ()
 	{
 		return owner;
@@ -94,14 +113,30 @@ public class Box : MonoBehaviour
 		{
 			boxLineObjects.Add(toAdd);
 			if (toAdd.GetLineStatic()) UpdateSideCount(1);
+
+			if (boxLineObjects.Count == 4)
+			{
+				//Linq query to sort by lineName
+				var orderedLines = from element in boxLineObjects 
+								orderby element.lineName
+								select element;
+
+				foreach (Line line in orderedLines)
+				{
+					boxLineObjects.RemoveAt(0);
+					boxLineObjects.Add(line);
+				}
+
+				// if (name == "Box_21")
+				// {
+				// 	for (int i = 0; i < boxLineObjects.Count; i++)
+				// 	{
+				// 		Debug.Log(name + " " +boxLineObjects[i].lineName);
+				// 	}
+				// }
+			}	
 		}
-
 	}
-
-	/*public void AddLinePositionToBox (GameObject toAdd)
-	{
-		if(!linePositions.Contains(toAdd)) linePositions.Add(toAdd);
-	}*/
 
 	public int SidesLeftOpen ()
 	{

@@ -8,8 +8,7 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance;
 
 	public List<Line> lineObjects = new List<Line>();
-
-	//public Canvas gameSpaceCanvas;
+	public List<Line> perimeterLines = new List<Line>();
 
 	public GameObject possiblePlayerChips;
 	public GameObject possibleComputerChips;
@@ -32,6 +31,8 @@ public class GameManager : MonoBehaviour
 
 			//since classic would never have static lines, set all lines open
 			line.GetComponent<Line>().SetOpen(true);
+
+			if (line.GetComponent<Line>().IsPerimeterLine()) perimeterLines.Add(line.GetComponent<Line>());
 		}
 
 

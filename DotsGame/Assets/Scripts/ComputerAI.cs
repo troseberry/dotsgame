@@ -7,6 +7,9 @@ using System.Linq;
 
 public class ComputerAI : MonoBehaviour 
 {
+	private List<GameObject> allBoxObjects = new List<GameObject>();
+	private List<Box> cornerBoxes = new List<Box>();
+
 	private GameObject computerLine;
 	public GameObject possibleComputerLines;
 
@@ -35,10 +38,32 @@ public class ComputerAI : MonoBehaviour
 	private bool tutorialConditions;
 
 	//private PowerUp currentPowerUp;
+
+	private int currentPlayerChain = 0;
 	
 	void Start () 
 	{
-		//computerLine = (GameObject) Resources.Load("ComputerLine");
+		var holder = from element in GameObject.FindGameObjectsWithTag("Box")
+					orderby element.name
+					select element;
+
+		foreach (GameObject box in holder)
+		{
+			allBoxObjects.Add(box);
+			//Debug.Log(box.name);
+		}
+
+		cornerBoxes.Add(allBoxObjects[0].GetComponent<Box>());
+		cornerBoxes.Add(allBoxObjects[(int)Mathf.Sqrt(allBoxObjects.Count) - 1].GetComponent<Box>());
+		cornerBoxes.Add(allBoxObjects[allBoxObjects.Count - (int)Mathf.Sqrt(allBoxObjects.Count)].GetComponent<Box>());
+		cornerBoxes.Add(allBoxObjects[allBoxObjects.Count - 1].GetComponent<Box>());
+
+		// foreach(Box corner in cornerBoxes)
+		// {
+		// 	Debug.Log(corner.GetBoxNumber());
+		// }
+		
+
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 
 		canDraw = false;
@@ -99,12 +124,8 @@ public class ComputerAI : MonoBehaviour
 		if (mode== "tutorial") tutorialConditions = !TutorialGameManager.Instance.isPlayerTurn && !placing && !TutorialGameManager.Instance.RoundOver();
 
 
-		//if ((!GameManager.isPlayerTurn && !placing && !GameManager.RoundOver()) || (!CampaignGameManager.isPlayerTurn && !placing && !CampaignGameManager.RoundOver()))
-		if (versusConditions || campaignConditions/* || tutorialConditions*/)
+		if (versusConditions || campaignConditions)
 		{
-			//Invoke("ComputerPlaceLine", 2.0f);
-
-			//StartCoroutine(ComputerPlaceLine( DetermineLineToPlace() ));
 			StartCoroutine( ComputerDrawLine( DetermineLineToPlace() ));
 			placing = true;
 		}
@@ -141,13 +162,6 @@ public class ComputerAI : MonoBehaviour
 				if (lineToDraw) lineToDraw = null;
 			}
 		}
-
-		/*if (drawingTime >= 0.5f)
-		{
-			drawingTime = 0f;
-			canDraw = false;
-			if (lineToDraw) lineToDraw = null;
-		}*/
 	}
 
 	private Line DetermineLineToPlace ()
@@ -156,28 +170,28 @@ public class ComputerAI : MonoBehaviour
 		List<Box> boxObjectsClone = boxObjects;
 		Shuffle(boxObjectsClone);
 
-		//Look for boxes with only 1 open side first
+		
+
 		foreach (Box box in boxObjectsClone)
 		{
+			//Look for boxes with only 1 open side first
 			if (box.SidesLeftOpen() == 1)
 			{
-				foreach (Line line in box.boxLineObjects)
+				
+				for (int i = 0; i < box.boxLineObjects.Count; i++)
 				{
-					if (line.GetOpen()) 
+					if (box.boxLineObjects[i].GetOpen()) 
 					{
-						toPlace = line;
-						//Debug.Log("Computer Placing Last Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
+						//Debug.Log("Found 1 Open Sided Box");
+						toPlace = box.boxLineObjects[i];
 						return toPlace;
 					}
 				}
 			}
-		}
-
-		//Look for boxes with 3 open sides
-		foreach (Box box in boxObjectsClone)
-		{
-			if (box.SidesLeftOpen() >= 3)
+			//Look for boxes with 3 open sides
+			else if (box.SidesLeftOpen() >= 3)
 			{
+				
 				//foreach open line
 				foreach (Line line in box.boxLineObjects)
 				{
@@ -190,8 +204,8 @@ public class ComputerAI : MonoBehaviour
 						//If both have 3 sides left open, then return that line
 						if (parentOne.SidesLeftOpen() >= 3 && parentTwo.SidesLeftOpen() >= 3)
 						{
+							//Debug.Log("Found 3 or 4 Open Sided Box");
 							toPlace = line;
-							//Debug.Log("Computer Placing 1st or 2nd Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
 							return toPlace;
 						}
 					}
@@ -199,9 +213,236 @@ public class ComputerAI : MonoBehaviour
 			}
 		}
 
-		//if no boxes with 3 open sides, or boxes with only one open side, then place randomly
-		//(should later come back and change this so that it places to limit the player's chain length)
+		//check if corner boxes have 2 outside open lines
+		int randomLine = UnityEngine.Random.Range(0, 2);
 
+		if (cornerBoxes[0].SidesLeftOpen() == 2 && cornerBoxes[0].boxLineObjects[0].GetOpen() && cornerBoxes[0].boxLineObjects[1].GetOpen())
+		{
+			//Debug.Log("Open Upper Left Corner Box");
+			toPlace = randomLine == 0 ? cornerBoxes[0].boxLineObjects[0] : cornerBoxes[0].boxLineObjects[0];
+			return toPlace;
+		}
+		else if (cornerBoxes[1].SidesLeftOpen() == 2 && cornerBoxes[1].boxLineObjects[0].GetOpen() && cornerBoxes[1].boxLineObjects[2].GetOpen())
+		{
+			//Debug.Log("Open Upper Right Corner Box");
+			toPlace = randomLine == 0 ? cornerBoxes[1].boxLineObjects[0] : cornerBoxes[1].boxLineObjects[2];
+			return toPlace;
+		}
+		else if (cornerBoxes[2].SidesLeftOpen() == 2 && cornerBoxes[2].boxLineObjects[1].GetOpen() && cornerBoxes[2].boxLineObjects[3].GetOpen())
+		{
+			//Debug.Log("Open Lower Left Corner Box");
+			toPlace = randomLine == 0 ? cornerBoxes[2].boxLineObjects[1] : cornerBoxes[2].boxLineObjects[3];
+			return toPlace;
+		}
+		else if (cornerBoxes[3].SidesLeftOpen() == 2 && cornerBoxes[3].boxLineObjects[2].GetOpen() && cornerBoxes[3].boxLineObjects[3].GetOpen())
+		{
+			//Debug.Log("Open Lower Right Corner Box");
+			toPlace = randomLine == 0 ? cornerBoxes[3].boxLineObjects[2] : cornerBoxes[3].boxLineObjects[3];
+			return toPlace;
+		}
+
+
+
+		
+		foreach (Box box in boxObjectsClone)
+		{
+			//Would only get here if theres a line straddling 3 open and 2 open sided box
+			if (box.SidesLeftOpen() >= 3)
+			{
+				//Debug.Log("Found 3 Open Sided Box and 2 Open Sided Box");
+				//if 0 or 3 is not open, then outnumbered line is odd
+				//if 1 or 2 is not open, then outnumbered line is even 
+				int currentBoxNumber = box.GetBoxNumber();
+				Box verifyBox = null;
+
+				if ( !box.boxLineObjects[0].GetOpen() || !box.boxLineObjects[3].GetOpen() )
+				{
+					if (currentBoxNumber % 10 != 0)
+					{
+						//went to lower box
+						verifyBox = GameObject.Find("Box_" + (currentBoxNumber - 1)).GetComponent<Box>();
+
+						if (box.boxLineObjects[0].GetOpen())			//outnumbered line is top
+						{
+							if (verifyBox.boxLineObjects[3].GetOpen())	//opposite side check
+							{
+								toPlace = box.boxLineObjects[1];		//place line at lower ever
+							}
+							else
+							{
+								toPlace = box.boxLineObjects[2];
+							}
+						}
+						else											//outnumbered line is bottom
+						{
+							if (verifyBox.boxLineObjects[0].GetOpen())	//opposite side check
+							{
+								toPlace = box.boxLineObjects[2];		//place line at higer even
+							}
+							else
+							{
+								toPlace = box.boxLineObjects[1];
+							}
+						}
+					}
+					else
+					{
+						//Went to a higher box
+						verifyBox = GameObject.Find("Box_" + (currentBoxNumber + 1)).GetComponent<Box>();
+
+						if (box.boxLineObjects[0].GetOpen())			//outnumbered line is top
+						{
+							if (verifyBox.boxLineObjects[3].GetOpen())	//opposite side is open
+							{
+								toPlace = box.boxLineObjects[2];		//place line at higher even
+							}
+							else										//opposite side is closed
+							{
+								toPlace = box.boxLineObjects[1];		//place line at lower ever
+							}
+						}
+						else											//outnumbered line is bottom
+						{
+							if (verifyBox.boxLineObjects[0].GetOpen())	//opposite side is open
+							{
+								toPlace = box.boxLineObjects[1];		//place line at lower even
+							}
+							else										//opposite side is closed
+							{
+								toPlace = box.boxLineObjects[2];		//place line at higher even
+							}
+						}
+					}
+				}
+				else
+				{
+					if (currentBoxNumber - 10 >= 10)
+					{
+						//went to lower box
+						verifyBox = GameObject.Find("Box_" + (currentBoxNumber - 10)).GetComponent<Box>();
+
+						if (box.boxLineObjects[1].GetOpen())			//outnumbered line is left
+						{
+							if (verifyBox.boxLineObjects[2].GetOpen())	//opposite side check
+							{
+								toPlace = box.boxLineObjects[0];		//place line at lower odd
+							}
+							else
+							{
+								toPlace = box.boxLineObjects[3];
+							}
+						}
+						else											//outnumbered line is right
+						{
+							if (verifyBox.boxLineObjects[1].GetOpen())	//opposite side check
+							{
+								toPlace = box.boxLineObjects[3];		//place line at higher odd
+							}
+							else
+							{
+								toPlace = box.boxLineObjects[0];
+							}
+						}
+					}
+					else
+					{
+						//went to higher box
+						verifyBox = GameObject.Find("Box_" + (currentBoxNumber + 10)).GetComponent<Box>();
+
+						if (box.boxLineObjects[1].GetOpen())			//outnumbered line is left
+						{
+							if (verifyBox.boxLineObjects[2].GetOpen())	//opposite side check
+							{
+								toPlace = box.boxLineObjects[3];		//place line at higher odd
+							}
+							else
+							{
+								toPlace = box.boxLineObjects[0];
+							}
+						}
+						else											//outnumbered line is right
+						{
+							if (verifyBox.boxLineObjects[1].GetOpen())	//opposite side check
+							{
+								toPlace = box.boxLineObjects[0];		//place line at lower odd
+							}
+							else
+							{
+								toPlace = box.boxLineObjects[3];
+							}
+						}
+					}
+				}
+
+				return toPlace;
+			}
+		}
+	
+
+		int optimalPlayerChain = 0;
+		Line optimalLineChoice = null;
+
+		Line currentLineChoice = null;
+		Box currentBox = null;
+		List<Line> checkedLines = new List<Line>();
+
+		List<Line> perimeterLinesRef = new List<Line>();
+		if (campaignConditions)
+		{
+			perimeterLinesRef = CampaignGameManager.Instance.perimeterLines;
+		}
+		else if (versusConditions)
+		{
+			perimeterLinesRef = GameManager.Instance.perimeterLines;
+		}
+
+
+		foreach (Line line in perimeterLinesRef)
+		{
+			if (line.GetOpen() && line.boxParentOne.SidesLeftOpen() == 2 && !checkedLines.Contains(line))
+			{
+				currentPlayerChain = 0;
+
+				currentLineChoice = line;
+				checkedLines.Add(currentLineChoice);
+				//Debug.Log("Current Line Choice: " + currentLineChoice.lineName);
+				currentBox = line.boxParentOne;			//box parents should be the same
+
+				do
+				{
+					currentBox = currentLineChoice.GetOtherBoxParent(currentBox);
+					currentPlayerChain++;
+					currentLineChoice = currentBox.GetOtherOpenLine(currentLineChoice);
+				} while (currentLineChoice.BoxParentsDiffer());
+				checkedLines.Add(currentLineChoice);
+				// Debug.Log("Current Line Choice Post-Loop: " + currentLineChoice.lineName);
+				// Debug.Log("Recent Chain Search: " + currentPlayerChain);
+				// Debug.Log("Optimial Player Chain: " + optimalPlayerChain);
+
+
+				if (optimalPlayerChain == 0)
+				{
+					optimalPlayerChain = currentPlayerChain;
+					optimalLineChoice = line;
+				}
+				else if (currentPlayerChain < optimalPlayerChain)
+				{
+					optimalPlayerChain = currentPlayerChain;
+					optimalLineChoice = line;
+				}
+			}
+		}
+
+		//If found shortest chain, place there
+		if (optimalLineChoice)
+		{
+			toPlace = optimalLineChoice;
+			//Debug.Log("To Place: "+ toPlace.lineName);
+			return toPlace;
+		}
+
+
+		//otherwise, place randomly
 		if (mode == "versus")
 		{
 			int randomPlace = UnityEngine.Random.Range(0, GameManager.Instance.lineObjects.Count);
@@ -218,10 +459,11 @@ public class ComputerAI : MonoBehaviour
 			toPlace = TutorialGameManager.Instance.lineObjects.ElementAt(randomPlace);
 		}
 
+		//Debug.Log("Randomly Placing");
+
 
 		if (toPlace.GetOpen())
 		{
-			//Debug.Log("Computer Placing 3rd Line at " + toPlace.lineName + " and line is open: " + toPlace.isOpen);
 			return toPlace;
 		}
 		else
@@ -229,30 +471,6 @@ public class ComputerAI : MonoBehaviour
 			return DetermineLineToPlace();
 		}
 	}
-
-
-	/*
-	IEnumerator ComputerPlaceLine(Line toPlace)
-	{
-		yield return new WaitForSeconds(2.0f);
-
-		//GameObject computerChoice = (GameObject) Instantiate(computerLine, toPlace.linePosition, toPlace.lineRotation);
-		//computerChoice.transform.localScale = lineGridScale;
-		//computerChoice.name = "ComputerLine";
-		toPlace.isOpen = false;
-		toPlace.owner = "Computer";
-
-		toPlace.boxParentOne.UpdateSideCount(1);
-		if (toPlace.boxParentOne != toPlace.boxParentTwo) toPlace.boxParentTwo.UpdateSideCount(1);
-
-		if (toPlace.boxParentOne.IsComplete()) toPlace.boxParentOne.SetOwner("Computer");
-		if (toPlace.boxParentTwo.IsComplete()) toPlace.boxParentTwo.SetOwner("Computer");
-
-		//Debug.Log("Computer Placed Line");
-		GameManager.isPlayerTurn = (toPlace.boxParentOne.IsComplete() || toPlace.boxParentTwo.IsComplete()) ? false : true;
-		placing = false;
-	}*/
-
 
 	IEnumerator ComputerDrawLine (Line computerChoice) 
 	{
@@ -298,10 +516,6 @@ public class ComputerAI : MonoBehaviour
 			startPosition.y = computerChoice.linePosition.y + (120f * lineGridScale.y);
 		}
 
-		//GameObject newLine = (GameObject) Instantiate(computerLine, startPosition, computerChoice.lineRotation);
-		//newLine.name = "ComputerLine";
-
-
 		GameObject newLine = possibleComputerLines.transform.GetChild(0).gameObject;
 		
 		newLine.transform.position = startPosition;
@@ -314,29 +528,7 @@ public class ComputerAI : MonoBehaviour
 		canDraw = true;
 	}
 
-	/*void ComputerPlaceLine()
-	{
-		int randomPlace = Random.Range(0, GameManager.lineObjects.Count);
-		Line toPlace = GameManager.lineObjects.ElementAt(randomPlace);
-
-		if(toPlace.isOpen)
-		{
-			GameObject computerChoice = (GameObject) Instantiate(computerLine, toPlace.linePosition, toPlace.lineRotation);
-			computerChoice.name = "ComputerLine";
-			toPlace.isOpen = false;
-
-			toPlace.boxParentOne.UpdateSideCount(1);
-			if(toPlace.boxParentOne != toPlace.boxParentTwo) toPlace.boxParentTwo.UpdateSideCount(1);
-
-			//Debug.Log("Computer Placed Line");
-			GameManager.isPlayerTurn = (toPlace.boxParentOne.IsComplete() || toPlace.boxParentTwo.IsComplete()) ? false : true;
-			placing = false;
-		}
-		else
-		{
-			ComputerPlaceLine();
-		}
-	}*/
+	
 
 	public static void Shuffle (List<Box> list)
 	{
