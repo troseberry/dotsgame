@@ -11314,7 +11314,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Board Two
+  m_Text: Board One
 --- !u!222 &772304238
 CanvasRenderer:
   m_ObjectHideFlags: 0
