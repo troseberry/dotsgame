@@ -277,11 +277,11 @@ public class ComputerAI : MonoBehaviour
 						{
 							if (verifyBox.boxLineObjects[0].GetOpen())	//opposite side check
 							{
-								toPlace = box.boxLineObjects[2];		//place line at higer even
+								toPlace = box.boxLineObjects[1];		//place line at lower even
 							}
 							else
 							{
-								toPlace = box.boxLineObjects[1];
+								toPlace = box.boxLineObjects[2];
 							}
 						}
 					}
@@ -305,11 +305,11 @@ public class ComputerAI : MonoBehaviour
 						{
 							if (verifyBox.boxLineObjects[0].GetOpen())	//opposite side is open
 							{
-								toPlace = box.boxLineObjects[1];		//place line at lower even
+								toPlace = box.boxLineObjects[2];		//place line at higher even
 							}
 							else										//opposite side is closed
 							{
-								toPlace = box.boxLineObjects[2];		//place line at higher even
+								toPlace = box.boxLineObjects[1];		//place line at lower even
 							}
 						}
 					}
@@ -321,7 +321,7 @@ public class ComputerAI : MonoBehaviour
 						//went to lower box
 						verifyBox = GameObject.Find("Box_" + (currentBoxNumber - 10)).GetComponent<Box>();
 
-						if (box.boxLineObjects[1].GetOpen())			//outnumbered line is left
+						if (box.boxLineObjects[1].GetOpen())			//outnumbered line is left.  can combine with below check
 						{
 							if (verifyBox.boxLineObjects[2].GetOpen())	//opposite side check
 							{
@@ -336,11 +336,11 @@ public class ComputerAI : MonoBehaviour
 						{
 							if (verifyBox.boxLineObjects[1].GetOpen())	//opposite side check
 							{
-								toPlace = box.boxLineObjects[3];		//place line at higher odd
+								toPlace = box.boxLineObjects[0];		//place line at lower odd
 							}
 							else
 							{
-								toPlace = box.boxLineObjects[0];
+								toPlace = box.boxLineObjects[3];
 							}
 						}
 					}
@@ -364,11 +364,11 @@ public class ComputerAI : MonoBehaviour
 						{
 							if (verifyBox.boxLineObjects[1].GetOpen())	//opposite side check
 							{
-								toPlace = box.boxLineObjects[0];		//place line at lower odd
+								toPlace = box.boxLineObjects[3];		//place line at higher odd
 							}
 							else
 							{
-								toPlace = box.boxLineObjects[3];
+								toPlace = box.boxLineObjects[0];
 							}
 						}
 					}

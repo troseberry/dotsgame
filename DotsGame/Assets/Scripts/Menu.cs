@@ -200,7 +200,7 @@ public class Menu : MonoBehaviour
 		Debug.Log("Current Board: " + currentBoard);
 		currentBoard.SetActive(true);
 
-		
+		currentBoard.transform.Find("StarsInfo").transform.Find("StarsObtained").GetComponent<Text>().text = CampaignData.GetBoardStars(currentBoard.name).ToString();
 
 		currentBoardLevels = currentBoard.transform.Find("LevelSlider").transform.GetChild(0).transform.GetChild(0).gameObject;
 
@@ -254,7 +254,9 @@ public class Menu : MonoBehaviour
 
 			}
 
-			if (prevLevel != 0 && !CampaignData.GetLevelStats(prevLevelName).isComplete)
+			if ( prevLevel != 0 && !CampaignData.GetLevelStats(prevLevelName).isComplete
+				||(lvlNum == "2-1" && !CampaignData.GetHeroBoardStats(HeroManager.Hero.Multiplier).isComplete) 
+				|| (lvlNum == "3-1" && !CampaignData.GetHeroBoardStats(HeroManager.Hero.Demolition).isComplete) )
 			{
 				btn.GetComponent<Button>().enabled = false;
 				Color temp = btn.GetComponent<Image>().color;
@@ -281,10 +283,10 @@ public class Menu : MonoBehaviour
 		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
 		if (CampaignData.GetLevelStats(lastLevelName).isComplete && CampaignData.EnoughBoardStars(currentBoard.name))
 		{
-			Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
+			//Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
 		}
-		Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
+		//Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 		boardSelectMenu.SetActive(false);
 
 		//currentBoard.transform.Find("HeaderTitles").GetComponent<Animation>().Play("SwitchHeaders");
@@ -296,6 +298,8 @@ public class Menu : MonoBehaviour
 
 		GameObject currentBoard = levelsGroup.transform.Find(boardToShow).gameObject;
 		currentBoard.SetActive(true);
+
+		currentBoard.transform.Find("StarsInfo").transform.Find("StarsObtained").GetComponent<Text>().text = CampaignData.GetBoardStars(currentBoard.name).ToString();
 
 		currentBoardLevels = currentBoard.transform.Find("LevelSlider").transform.GetChild(0).transform.GetChild(0).gameObject;
 
@@ -345,7 +349,9 @@ public class Menu : MonoBehaviour
 
 			}
 
-			if (prevLevel != 0 && !CampaignData.GetLevelStats(prevLevelName).isComplete)
+			if ( prevLevel != 0 && !CampaignData.GetLevelStats(prevLevelName).isComplete
+				||(lvlNum == "2-1" && !CampaignData.GetHeroBoardStats(HeroManager.Hero.Multiplier).isComplete) 
+				|| (lvlNum == "3-1" && !CampaignData.GetHeroBoardStats(HeroManager.Hero.Demolition).isComplete) )
 			{
 				btn.GetComponent<Button>().enabled = false;
 				Color temp = btn.GetComponent<Image>().color;
@@ -373,10 +379,10 @@ public class Menu : MonoBehaviour
 		string lastLevelName = levelButtons[levelButtons.Count - 1].name.Split('_')[1];
 		if (CampaignData.GetLevelStats(lastLevelName).isComplete && CampaignData.EnoughBoardStars(currentBoard.name))
 		{
-			Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
+			//Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 			currentBoard.transform.Find("Locked").gameObject.SetActive(false);
 		}
-		Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
+		//Debug.Log("Star Count: " + CampaignData.GetBoardStars(currentBoard.name));
 		boardSelectMenu.SetActive(false);
 	}
 
@@ -384,24 +390,28 @@ public class Menu : MonoBehaviour
 	public void ShowVersusMenu ()
 	{
 		HideMenus();
+		titleGroup.SetActive(true);
 		versusMainMenu.SetActive(true);
 	}
 
 	public void ShowVersusClassicMenu ()
 	{
 		HideMenus();
+		titleGroup.SetActive(true);
 		versusClassicMenu.SetActive(true);
 	}
 
 	public void ShowVersusBattleMenu ()
 	{
 		HideMenus();
+		titleGroup.SetActive(true);
 		versusBattleMenu.SetActive(true);
 	}
 
 	public void ShowVersusTwoPlayerMenu ()
 	{
 		HideMenus();
+		titleGroup.SetActive(true);
 		versusTwoPlayerMenu.SetActive(true);
 	}
 
@@ -539,12 +549,14 @@ public class Menu : MonoBehaviour
 		else if (versusMainMenu.activeSelf || developerOptionsMenu.activeSelf)
 		{
 			HideMenus();
+			titleGroup.SetActive(true);
 			mainMenuButtons.SetActive(true);
 			devOptionTapCount = 0;
 		}
 		else if (versusClassicMenu.activeSelf || versusBattleMenu.activeSelf || versusTwoPlayerMenu.activeSelf)
 		{
 			HideMenus();
+			titleGroup.SetActive(true);
 			versusMainMenu.SetActive(true);
 		}
 	}

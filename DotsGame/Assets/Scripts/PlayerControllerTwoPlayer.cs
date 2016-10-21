@@ -28,13 +28,9 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 	{
 		_Dynamic = GameObject.Find("_Dynamic");
 		
-		//playerOneLine = (GameObject) Resources.Load("PlayerLine");
-		//playerTwoLine = (GameObject) Resources.Load("ComputerLine");
 		lineGridScale = GameObject.Find("LineGrid").transform.localScale;
 
 		canDraw = false;
-		//canPlayerOneDraw = false;
-		//canPlayerTwoDraw = false;
 		drawingTime = 0f;
 	}
 	
@@ -97,16 +93,10 @@ public class PlayerControllerTwoPlayer : MonoBehaviour
 				GameObject newLine = null;
 				if (GameManagerTwoPlayer.Instance.isPlayerOneTurn) 
 				{
-					//newLine = (GameObject) Instantiate(playerOneLine, startPosition, playerChoice.lineRotation);
-					//newLine.name = "PlayerOneLine";
-
 					newLine = possiblePlayerOneLines.transform.GetChild(0).gameObject;
 				}
 				else if (GameManagerTwoPlayer.Instance.isPlayerTwoTurn) 
 				{
-					//newLine = (GameObject) Instantiate(playerTwoLine, startPosition, playerChoice.lineRotation);
-					//newLine.name = "PlayerTwoLine";
-
 					newLine = possiblePlayerTwoLines.transform.GetChild(0).gameObject;
 				}
 

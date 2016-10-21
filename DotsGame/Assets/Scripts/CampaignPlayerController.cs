@@ -127,9 +127,6 @@ public class CampaignPlayerController : MonoBehaviour
 				}
 
 
-				//GameObject newLine = (GameObject) Instantiate(playerLine, startPosition, playerChoice.lineRotation);
-				//newLine.name = "PlayerLine";
-
 				GameObject newLine = possiblePlayerLines.transform.GetChild(0).gameObject;
 
 				newLine.transform.position = startPosition;

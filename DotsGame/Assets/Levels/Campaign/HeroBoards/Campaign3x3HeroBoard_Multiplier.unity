@@ -663,7 +663,7 @@ Prefab:
     - target: {fileID: 114000010274636898, guid: 47cbf9c85aded4c9c9e5d655bda139c5,
         type: 2}
       propertyPath: m_Text
-      value: Multiplier Hero
+      value: Ability Board
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 47cbf9c85aded4c9c9e5d655bda139c5, type: 2}
