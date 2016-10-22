@@ -25,6 +25,7 @@ public class SaveLoad : MonoBehaviour
 		Hashtable dataToSave = new Hashtable();
 
 		dataToSave.Add("finishedTutorial", CampaignData.GetFinishedTutorial());
+		dataToSave.Add("viewedAbilityMatchInstructions", CampaignData.ViewedMatchAbilityInstructions());
 		dataToSave.Add("allBoardLevels", CampaignData.GetAllLevelsDictionary());
 		dataToSave.Add("heroesUnlocked", CampaignData.GetAllHeroBoardsDictionary());
 		dataToSave.Add("boardStarCounts", CampaignData.GetAllBoardStarCounts());
@@ -50,6 +51,7 @@ public class SaveLoad : MonoBehaviour
 
 			//-----------------------Loading Stats---------------------------------
 			CampaignData.SetFinishedTutorial((bool) saveData["finishedTutorial"]);
+			CampaignData.SetAbilityInstructionsState((bool) saveData["viewedAbilityMatchInstructions"]);
 			CampaignData.SetAllLevelsDictionary( (Dictionary<string, LevelStats>) saveData["allBoardLevels"]);
 			CampaignData.SetAllHeroBoardsDictionary( (Dictionary<HeroManager.Hero, LevelStats>) saveData["heroesUnlocked"]);
 			CampaignData.SetAllBoardStarCounts( (Dictionary<string, int>) saveData["boardStarCounts"]);

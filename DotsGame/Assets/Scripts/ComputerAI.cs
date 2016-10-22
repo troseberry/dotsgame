@@ -175,6 +175,7 @@ public class ComputerAI : MonoBehaviour
 		foreach (Box box in boxObjectsClone)
 		{
 			//Look for boxes with only 1 open side first
+			//Debug.Log(box.GetBoxNumber() + ": " + box.SidesLeftOpen());
 			if (box.SidesLeftOpen() == 1)
 			{
 				
@@ -188,8 +189,12 @@ public class ComputerAI : MonoBehaviour
 					}
 				}
 			}
+		}
+
+		foreach (Box box in boxObjectsClone)
+		{
 			//Look for boxes with 3 open sides
-			else if (box.SidesLeftOpen() >= 3)
+			if (box.SidesLeftOpen() >= 3)
 			{
 				
 				//foreach open line
@@ -437,6 +442,7 @@ public class ComputerAI : MonoBehaviour
 		if (optimalLineChoice)
 		{
 			toPlace = optimalLineChoice;
+			//Debug.Log("Found optimial chain starting on perimeter.");
 			//Debug.Log("To Place: "+ toPlace.lineName);
 			return toPlace;
 		}

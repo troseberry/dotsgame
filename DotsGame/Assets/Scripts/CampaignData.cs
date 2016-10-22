@@ -18,6 +18,8 @@ public class CampaignData : MonoBehaviour
 	private static List<string> allBoardNames = new List<string>();
 	private static Dictionary<string, int> boardStarCounts = new Dictionary<string, int>();
 
+	private static bool viewedAbilityMatchInstructions = false;
+
 	void Start ()
 	{
 		allBoardLevelNames.Add("1-1");
@@ -219,5 +221,16 @@ public class CampaignData : MonoBehaviour
 	public static void SetAllBoardStarCounts (Dictionary<string, int> toSet)
 	{
 		boardStarCounts = toSet;
+	}
+
+
+	public static bool ViewedMatchAbilityInstructions ()
+	{
+		return viewedAbilityMatchInstructions;
+	}
+
+	public static void SetAbilityInstructionsState (bool state)
+	{
+		viewedAbilityMatchInstructions = state;
 	}
 }

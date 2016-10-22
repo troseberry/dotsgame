@@ -529,7 +529,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Demolition Hero
+  m_Text: Ability Match
 --- !u!114 &114000010463898586
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -616,7 +616,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Board Details
+  m_Text: Match Details
 --- !u!114 &114000010803713274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1053,9 +1053,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Round Win
-
-    Time Bonus:'
+  m_Text: 'Time Bonus:'
 --- !u!114 &114000012910325582
 MonoBehaviour:
   m_ObjectHideFlags: 1

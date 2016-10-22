@@ -111,9 +111,19 @@ public class CampaignPlayerController : MonoBehaviour
 		{
 			Line playerChoice = EventSystem.current.currentSelectedGameObject.GetComponent<Line>();
 
-
 			if (playerChoice.GetOpen())
 			{
+				//Update side counts and dole out points if need be
+				playerChoice.owner = "Player";
+				playerChoice.SetOpen(false);
+
+				playerChoice.boxParentOne.UpdateSideCount(1);
+				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(1);
+				
+				if (playerChoice.boxParentOne.IsComplete()) playerChoice.boxParentOne.SetOwner("CampaignPlayer");
+				if (playerChoice.boxParentTwo.IsComplete()) playerChoice.boxParentTwo.SetOwner("CampaignPlayer");
+
+				
 				Vector3 startPosition = playerChoice.linePosition;
 				endDrawPosition = playerChoice.linePosition;
 
@@ -138,22 +148,6 @@ public class CampaignPlayerController : MonoBehaviour
 				lineToDraw = newLine;
 				canDraw = true;
 
-				
-				//Update side counts and dole out points if need be
-				
-				playerChoice.owner = "Player";
-
-				playerChoice.boxParentOne.UpdateSideCount(1);
-				if (playerChoice.boxParentOne != playerChoice.boxParentTwo) playerChoice.boxParentTwo.UpdateSideCount(1);
-
-				
-				if (playerChoice.boxParentOne.IsComplete()) 
-				{
-					playerChoice.boxParentOne.SetOwner("CampaignPlayer");
-				}
-				if (playerChoice.boxParentTwo.IsComplete()) playerChoice.boxParentTwo.SetOwner("CampaignPlayer");
-
-				playerChoice.SetOpen(false);
 
 				//Determine whose turn is next
 				CampaignGameManager.Instance.isPlayerTurn = (playerChoice.boxParentOne.IsComplete() || playerChoice.boxParentTwo.IsComplete()) ? true : false;

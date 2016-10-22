@@ -149,7 +149,7 @@ public class CampaignGameManager : MonoBehaviour
 	public void ClearPlayerPoints ()
 	{
 		playerPoints = 0;
-		Debug.Log("Total Points After Clear: " + playerPoints);
+		//Debug.Log("Total Points After Clear: " + playerPoints);
 	}
 
 	void UpdateNeededPointsText ()

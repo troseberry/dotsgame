@@ -17,8 +17,11 @@ public class HeroBoardManager : MonoBehaviour
 
 	private GameObject[] boxes;
 
-	private int boardSize;
+	private int linesToGenerate;
 	private List<int> usedLines;
+
+	private int pointGoalNumber;
+	private int bonusPointGoal;
 
 	private GameObject scoreObjects;
 
@@ -49,6 +52,8 @@ public class HeroBoardManager : MonoBehaviour
 
 	private string sceneName;
 
+	private float lastTimeStamp = 0f;
+
 	void Start () 
     {
 		Instance = this;
@@ -57,28 +62,31 @@ public class HeroBoardManager : MonoBehaviour
 		boxes = GameObject.FindGameObjectsWithTag("Box");
 
 		sceneName = SceneManager.GetActiveScene().name;
-		int pointGoalNumber = 0;
+		//pointGoalNumber = 0;
 
 		if (sceneName.Contains("3x3"))
 		{
-			boardSize = ((int) Mathf.Sqrt(boxes.Length));
+			linesToGenerate = ((int) Mathf.Sqrt(boxes.Length));
 			roundDuration = 45.0f;
-			timeBonus = 5.0f;
-			pointGoalNumber = 5;		//2 Star Rating Equivalent
+			timeBonus = 10.0f;			//should set theses equal to my average win round times. Essentially, getting a round for free
+			pointGoalNumber = 5;		//2 Star Rating - 1 Equivalent
+			bonusPointGoal = 8;
 		}
 		else if (sceneName.Contains("4x4"))
 		{
-			boardSize = ((int) Mathf.Sqrt(boxes.Length)) * 2;
+			linesToGenerate = ((int) Mathf.Sqrt(boxes.Length)) * 2;
 			roundDuration = 60.0f;
-			timeBonus = 10.0f;
+			timeBonus = 15.0f;
 			pointGoalNumber = 10;		//2 Star Rating Equivalent
+			bonusPointGoal = 15;
 		}
 		else if (sceneName.Contains("5x5"))
 		{
-			boardSize = ((int) Mathf.Sqrt(boxes.Length)) * 3;
+			linesToGenerate = ((int) Mathf.Sqrt(boxes.Length)) * 3;
 			roundDuration = 75.0f;
-			timeBonus = 15.0f;
+			timeBonus = 20.0f;
 			pointGoalNumber = 16;		//2 Star Rating Equivalent
+			bonusPointGoal = 24;
 		}	
 
 		usedLines = new List<int>();
@@ -174,24 +182,27 @@ public class HeroBoardManager : MonoBehaviour
 
 	public void RandomizeBoardLayout ()
 	{
+		Debug.Log("Round Time: " + (Time.time - lastTimeStamp));
 		ClearBoard();
+		
 
-		if (CampaignGameManager.Instance.PlayerWon() == "S02" || CampaignGameManager.Instance.PlayerWon() == "S03")
+		if (RoundWon())
 		{
 			IncrementRoundWins();
 
-			if (!BoardWon())
-			{
-				currentTimer += timeBonus;
-				overallTotalTime += timeBonus;
-			}
+			Debug.Log("W");
+		}
+		else
+		{
+			Debug.Log("L");
 		}
 		CampaignGameManager.Instance.ClearPlayerPoints();
 		
 
 		Line lineToStatic = null;
+		int randomLineQuantity = Random.Range(linesToGenerate - 1, linesToGenerate + 2);	//+-1 of linesToGenerate. inclusive
 
-		for (int i = 0; i < boardSize; i++)
+		for (int i = 0; i < randomLineQuantity; i++)
 		{
 			int randomLine = Random.Range(0, CampaignGameManager.Instance.lineObjects.Count);
 
@@ -208,6 +219,7 @@ public class HeroBoardManager : MonoBehaviour
 			lineToStatic.SetLineStatic(true);
 			lineToStatic.SetOpen(false);
 		}
+		lastTimeStamp = Time.time;
 		randomizedBoard = false;
 	}
 
@@ -249,9 +261,20 @@ public class HeroBoardManager : MonoBehaviour
 		}
 	}
 
+	bool RoundWon ()
+	{
+		return (CampaignGameManager.Instance.GetPlayerPoints() >= pointGoalNumber);
+	}
+
 	public void IncrementRoundWins ()
 	{
 		roundWins++;
+
+		if (CampaignGameManager.Instance.GetPlayerPoints() >= bonusPointGoal)
+		{
+			currentTimer += timeBonus;
+			overallTotalTime += timeBonus;
+		}
 	}
 
 	public bool BoardWon ()
@@ -268,7 +291,7 @@ public class HeroBoardManager : MonoBehaviour
 	{	
 		GameObject.Find("StartPrompt").SetActive(false);
 		RandomizeBoardLayout();
-		CampaignGameManager.Instance.CalculateHeroScoring();
+		//CampaignGameManager.Instance.CalculateHeroScoring();
 		paused = false;
 	}
 
